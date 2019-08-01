@@ -3,11 +3,16 @@ const app = express();
 const morgan = require('morgan');
 const path = require('path');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const connectDB = require('../config/db');
 
 app.use(morgan('dev'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//Connect Database;
+connectDB();
 
 app.use(express.static(path.join(__dirname, '../public')));
 

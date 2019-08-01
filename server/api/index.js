@@ -1,9 +1,7 @@
 const router = require('express').Router();
 
-//matches all requests to /api/users/
-router.use('/users', require('./users'));
-//matches all requests to /api/products
-// router.use('/products', require('./products'))
+router.use('/artworks', require('./artworks'));
+router.use('/exhibitions', require('./exhibitions'));
 
 router.use(function(req, res, next) {
   const err = new Error('Not Found.');
