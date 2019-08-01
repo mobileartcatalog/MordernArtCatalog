@@ -11,19 +11,32 @@ router.post('/', async (req, res, next) => {
       _id: new mongoose.Types.ObjectId(),
       ...req.body
     });
-    console.log('artwork,', artwork);
-    artwork
-      .save()
-      .then(result => {
-        console.log(result);
-      })
-      .catch(err => console.error(err));
-    res.status(201).json({
+    const result = await artwork.save();
+    res.status(200).json({
       message: 'Handling Post',
-      createProduct: artwork
+      createProduct: result
     });
   } catch (err) {
     console.error(err);
+    res.status(500).json({ error: err });
+  }
+});
+
+//get single artwork
+router.get('/:artworkId', async (req, res, next) => {
+  try {
+    const id = req.params.artworkId;
+    const artwork = await Artworks.findById(id);
+    if (artwork) {
+      res.status(200).json(artwork);
+    } else {
+      res
+        .status(404)
+        .json({ message: 'No valid entry found for provided ID.' });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
   }
 });
 
@@ -39,8 +52,39 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// router.put('/:userId', function(req, res, next) {});
+//update
+router.patch('/:artworkId', async (req, res, next) => {
+  try {
+    const id = req.params.artworkId;
+    const updateOps = {};
+    for (let ops of req.body) {
+      updateOps[ops.propName] = ops.value;
+    }
+    const result = await Artworks.update(
+      { _id: id },
+      { $set: updateOps }
+    ).exec();
+    res.status(200).json(result);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      error: err
+    });
+  }
+});
 
-// router.delete('/:userId', function(req, res, next) {});
+//delete
+router.delete('/:artworkId', (req, res, next) => {
+  const id = req.params.artworkId;
+  Artworks.remove({ _id: id })
+    .exec()
+    .then(result => {
+      res.status(200).json(result);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+});
 
 module.exports = router;
