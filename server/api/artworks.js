@@ -14,7 +14,7 @@ router.post('/', async (req, res, next) => {
     const result = await artwork.save();
     res.status(200).json({
       message: 'Handling Post',
-      createProduct: result
+      createArtwork: result
     });
   } catch (err) {
     console.error(err);

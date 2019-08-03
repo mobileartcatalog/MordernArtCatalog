@@ -3,7 +3,6 @@ const app = express();
 const morgan = require('morgan');
 const path = require('path');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const connectDB = require('../config/db');
 
 app.use(morgan('dev'));
