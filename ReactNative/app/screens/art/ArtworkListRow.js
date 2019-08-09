@@ -9,7 +9,7 @@ class ArtworkListRow extends Component {
     const { navigate } = this.props.navigation;
     return (
       <TouchableOpacity
-        onPress={() => navigate('ArtworkDetail', { id: artwork.id })}
+        onPress={() => navigate('ArtworkDetail', { id: artwork._id })}
       >
         <View>
           <Image

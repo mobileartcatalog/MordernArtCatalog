@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { withNavigation } from 'react-navigation';
 import { View, Button } from 'react-native';
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../stylesheets/forms.js';
 
-export default class LoginScreen extends Component {
+class LoginScreen extends Component {
   static navigationOptions = {
     title: 'Login',
   };
@@ -34,3 +35,5 @@ export default class LoginScreen extends Component {
     );
   }
 }
+
+export default withNavigation(LoginScreen)

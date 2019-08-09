@@ -45,5 +45,13 @@ const ExhibitionSchema = new Schema({
   ]
 });
 
+ExhibitionSchema.methods.getDateRange = function() {
+  return `${this.startDate} – ${this.endDate}`
+}
+
+ExhibitionSchema.methods.getVenue = function() {
+  return `${this.venue}, ${this.location}`
+}
+
 const Exhibitions = mongoose.model('Exhibitions', ExhibitionSchema);
 module.exports = Exhibitions;

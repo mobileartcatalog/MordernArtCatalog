@@ -26,6 +26,7 @@ router.post('/', async (req, res, next) => {
 router.get('/:artworkId', async (req, res, next) => {
   try {
     const id = req.params.artworkId;
+    console.log('req.params:', req.params)
     const artwork = await Artworks.findById(id);
     if (artwork) {
       res.status(200).json(artwork);
