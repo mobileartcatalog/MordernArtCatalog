@@ -7,7 +7,7 @@ import ArtworkListRow from './ArtworkListRow';
 
 class ArtworkList extends Component {
   static navigationOptions = {
-    title: '',
+    title: ''
   };
 
   componentDidMount() {
@@ -24,11 +24,7 @@ class ArtworkList extends Component {
         <FlatGrid
           itemDimension={150}
           items={art}
-          renderItem={({ item }) => (
-            <ArtworkListRow
-              artwork={item}
-            />
-          )}
+          renderItem={({ item }) => <ArtworkListRow artwork={item} />}
         />
       </View>
 
@@ -44,12 +40,12 @@ class ArtworkList extends Component {
 const mapState = state => {
   return {
     art: state.art.all,
-    count: state.art.count,
+    count: state.art.count
   };
 };
 
 const mapDispatch = dispatch => ({
-  getArt: () => dispatch(getArt()),
+  getArt: () => dispatch(getArt())
 });
 
 export default connect(

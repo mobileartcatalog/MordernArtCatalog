@@ -6,7 +6,7 @@ const multer = require('multer'); //file storing middleware
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, '../../public/imageUploads');
+    cb(null, './public/imageUploads/');
   },
   filename: function(req, file, cb) {
     cb(null, file.originalname);
@@ -33,14 +33,14 @@ const Artworks = require('../../models/artwork');
 const Exhibitions = require('../../models/exhibitions');
 
 //post
-router.post('/', upload.single('artworkImage'), async (req, res, next) => {
+router.post('/', upload.single('img1'), async (req, res, next) => {
   try {
     console.log(req.file);
     const artwork = new Artworks({
       _id: new mongoose.Types.ObjectId(),
       ...req.body
     });
-    artwork.img1.data = fs.readFileSync(req.files.path);
+    artwork.img1.data = fs.readFileSync(req.file.path);
     artwork.img1.contentType = req.file.mimetype;
     const result = await artwork.save();
     res.status(200).json({
