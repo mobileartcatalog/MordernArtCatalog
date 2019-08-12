@@ -6,10 +6,11 @@ import styles from '../../stylesheets/art';
 class ArtworkListRow extends Component {
   render() {
     const { artwork } = this.props;
+
     const { navigate } = this.props.navigation;
     return (
       <TouchableOpacity
-        onPress={() => navigate('ArtworkDetail', { id: artwork.id })}
+        onPress={() => navigate('ArtworkDetail', { id: artwork._id })}
       >
         <View>
           <Image

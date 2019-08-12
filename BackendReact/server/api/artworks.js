@@ -1,16 +1,47 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
 
+const fs = require('fs');
+const multer = require('multer'); //file storing middleware
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './public/imageUploads/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  //reject a file
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(new Error('file should be jpeg/png'), false);
+  }
+};
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 6
+  },
+  fileFilter: fileFilter
+});
+
 const Artworks = require('../../models/artwork');
 const Exhibitions = require('../../models/exhibitions');
 
 //post
-router.post('/', async (req, res, next) => {
+router.post('/', upload.single('img1'), async (req, res, next) => {
   try {
+    console.log(req.file);
     const artwork = new Artworks({
       _id: new mongoose.Types.ObjectId(),
       ...req.body
     });
+    artwork.img1.data = fs.readFileSync(req.file.path);
+    artwork.img1.contentType = req.file.mimetype;
     const result = await artwork.save();
     res.status(200).json({
       message: 'Handling Post',
@@ -44,6 +75,7 @@ router.get('/:artworkId', async (req, res, next) => {
 //@/api/artworks
 router.get('/', async (req, res, next) => {
   try {
+    //const data = await Artworks.find().select("artistname title image") //will return selected attributes
     const data = await Artworks.find();
     console.log('all artworks', data);
     res.json(data);
