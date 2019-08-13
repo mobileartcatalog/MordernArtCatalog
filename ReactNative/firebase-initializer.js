@@ -1,7 +1,7 @@
-import { config } from './firebase-config';
-import * as firebase from 'firebase/app';
+// import { config } from './firebase-config';
+// import * as firebase from 'firebase/app';
 
-import 'firebase/auth';
+// import 'firebase/auth';
 
-firebase.initializeApp(config);
-export default firebase;
+// firebase.initializeApp(config);
+// export default firebase;
