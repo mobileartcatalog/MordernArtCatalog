@@ -20,7 +20,7 @@ class ArtworkListRow extends Component {
               source={{
                 uri: `data:${
                   artwork.img1.contentType
-                },arrayBufferToBase64(artwork.img1.data.data)`
+                };base64,${arrayBufferToBase64(artwork.img1.data.data)}`
               }}
             />
           ) : (
