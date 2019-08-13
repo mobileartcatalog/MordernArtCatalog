@@ -25,6 +25,11 @@ export default class HomeScreen extends Component {
             onPress={() => navigate('Login')}
             style={styles.button}
           />
+          <Button
+            title="Signup"
+            onPress={() => navigate('Signup')}
+            style={styles.button}
+          />
         </ImageBackground>
       </View>
     );

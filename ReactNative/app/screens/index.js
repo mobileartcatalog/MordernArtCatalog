@@ -1,5 +1,6 @@
 export { default as HomeScreen } from './HomeScreen';
 export { default as LoginScreen } from './LoginScreen';
+export { default as SignupScreen } from './SignupScreen';
 export { default as Loading } from './Loading';
 
 export { default as ArtworkList } from './art/ArtworkList';

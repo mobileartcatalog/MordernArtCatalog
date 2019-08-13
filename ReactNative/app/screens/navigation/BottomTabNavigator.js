@@ -7,6 +7,7 @@ import {
 import {
   HomeScreen,
   LoginScreen,
+  SignupScreen,
   ArtworkList,
   ArtworkListRow,
   ArtworkDetail,
@@ -20,7 +21,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const HomeTab = createStackNavigator({
   Home: { screen: HomeScreen },
-  Login: { screen: LoginScreen }
+  Login: { screen: LoginScreen },
+  Signup: { screen: SignupScreen }
 });
 
 const FormTab = createStackNavigator({
