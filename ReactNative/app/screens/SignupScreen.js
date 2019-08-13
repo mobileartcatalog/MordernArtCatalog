@@ -5,6 +5,7 @@ import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../stylesheets/forms.js';
 import * as firebase from 'firebase';
+require('../../firebaseInititalizer');
 
 class SignupScreen extends Component {
   static navigationOptions = {
@@ -32,16 +33,18 @@ class SignupScreen extends Component {
   //   this.setState(() => ({ [name]: text }));
   // }
 
+  goToHomeScreen() {
+    this.props.navigator.push({
+      component: ArtworkList
+    });
+  }
+
   handleSignUp() {
+    const { navigate } = this.props.navigation;
     const { email, password1 } = this.state;
     this.setState({ loading: true });
     try {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password1)
-        .then(user => {
-          console.log(user);
-        });
+      this.props.firebase.createUserWithEmailAndPassword(email, password1);
     } catch (error) {
       this.setState({ error: 'Cannot authenticate', loading: false });
     }

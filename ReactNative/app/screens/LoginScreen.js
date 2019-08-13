@@ -22,18 +22,18 @@ class LoginScreen extends Component {
     this.onLogin = this.onLogin.bind(this);
   }
 
-  onLogin = (email, password) => {
+  async onLogin() {
+    const { navigate } = this.props.navigation;
+    const { email, password } = this.state;
+    this.setState({ loading: true });
     try {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then(res => {
-          console.log(res.user.email);
-        });
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      this.setState({ loading: false });
+      navigate('ArtworkList');
     } catch (error) {
       console.log(error.toString(error));
     }
-  };
+  }
 
   renderCurrentState() {
     if (this.state.loading) {
