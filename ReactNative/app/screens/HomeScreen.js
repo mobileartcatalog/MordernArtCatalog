@@ -4,9 +4,12 @@ import { Button } from 'react-native-elements';
 import styles from '../stylesheets/forms';
 
 export default class HomeScreen extends Component {
-  static navigationOptions = {
-    title: ''
-  };
+  // componentDidMount() {
+  //   firebase.auth().onAuthStateChanged(user => {
+  //     this.props.navigation.navigate(user ? 'ArtworkList' : 'SignUp');
+  //   });
+  // }
+
   render() {
     const { navigate } = this.props.navigation;
     const { width, height } = Dimensions.get('window');

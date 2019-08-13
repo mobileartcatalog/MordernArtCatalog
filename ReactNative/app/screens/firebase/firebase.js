@@ -1,5 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/auth';
+
 import {
   API_KEY,
   AUTH_DOMAIN,
@@ -8,6 +9,7 @@ import {
   STORAGE_BUCKET,
   MESSAGING_SENDER_ID
 } from 'react-native-dotenv';
+
 
 const config = {
   apiKey: API_KEY,
@@ -24,17 +26,17 @@ class Firebase {
     this.auth = app.auth();
   }
 
-  doCreateUserWithEmailAndPassword = (email, password) =>
+  createUserWithEmailAndPassword = (email, password) =>
     this.auth.createUserWithEmailAndPassword(email, password);
 
-  doSignInWithEmailAndPassword = (email, password) =>
+  signInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
 
-  doSignOut = () => this.auth.signOut();
+  signOut = () => this.auth.signOut();
 
-  doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+  passwordReset = email => this.auth.sendPasswordResetEmail(email);
 
-  doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
+  passwordUpdate = password => this.auth.currentUser.updatePassword(password);
 }
 
 export default Firebase;

@@ -7,7 +7,7 @@ import styles from '../stylesheets/forms.js';
 
 class LoginScreen extends Component {
   static navigationOptions = {
-    title: 'Login',
+    title: 'Login'
   };
 
   render() {
@@ -31,10 +31,14 @@ class LoginScreen extends Component {
           onPress={() => navigate('HomeScreen')}
           style={styles.button}
         />
+        <Button
+          title="Forgot password?"
+          onPress={() => navigate('HomeScreen')}
+          style={styles.button}
+        />
       </View>
     );
   }
 }
 
-export default withNavigation(LoginScreen)
-
+export default withNavigation(LoginScreen);
