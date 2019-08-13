@@ -1,7 +1,7 @@
 const { resolve } = require('path');
 
 module.exports = {
-  entry: './client/app.js',
+  entry: ['babel-polyfill', './client/app.js'],
   mode: 'development',
   context: __dirname,
   output: {
