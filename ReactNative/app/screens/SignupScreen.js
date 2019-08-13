@@ -4,7 +4,7 @@ import { Text, View, Button } from 'react-native';
 import { Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../stylesheets/forms.js';
-import * as Firebase from './firebase';
+import * as firebase from 'firebase';
 
 class SignupScreen extends Component {
   constructor() {
@@ -30,16 +30,19 @@ class SignupScreen extends Component {
 
   handleSignUp() {
     const { email, password1 } = this.state;
-    console.log(Firebase);
     this.setState({ loading: true });
     try {
-      Firebase.auth()
+      firebase
+        .auth()
         .createUserWithEmailAndPassword(email, password1)
         .then(() => {
           this.setState({
-            message: 'you signed up',
+            message: `you signed up, ${this.state.email}`,
             error: '',
-            loading: false
+            loading: false,
+            email: '',
+            password1: '',
+            password2: ''
           });
         });
     } catch (error) {
