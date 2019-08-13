@@ -5,7 +5,7 @@ import styles from '../stylesheets/forms';
 
 export default class HomeScreen extends Component {
   static navigationOptions = {
-    title: '',
+    title: ''
   };
   render() {
     const { navigate } = this.props.navigation;
@@ -16,7 +16,7 @@ export default class HomeScreen extends Component {
           style={styles.backgroundImage}
           source={{
             uri:
-              'http://hdwpro.com/wp-content/uploads/2017/03/Art-Background-Image-1024x768.png',
+              'http://hdwpro.com/wp-content/uploads/2017/03/Art-Background-Image-1024x768.png'
           }}
         >
           <Text style={styles.headlineText}>Mobile Art Catalog</Text>
