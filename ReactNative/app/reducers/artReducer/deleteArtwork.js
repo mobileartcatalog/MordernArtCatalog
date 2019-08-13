@@ -17,7 +17,7 @@ export const deleteArtwork = id => {
 };
 
 const reducer = (state, action) => {
-  let filteredArtList = state.all.filter(artwork => artwork.id !== action.id);
+  let filteredArtList = state.all.filter(artwork => artwork._id !== action.id);
   return { ...state, all: filteredArtList };
 };
 

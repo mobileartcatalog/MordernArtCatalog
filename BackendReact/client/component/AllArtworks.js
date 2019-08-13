@@ -1,14 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchArtworks } from '../reducer/artworks';
-
-//utility funcion -- convert image data from array format to string format
-function arrayBufferToBase64(buffer) {
-  var binary = '';
-  var bytes = [].slice.call(new Uint8Array(buffer));
-  bytes.forEach(b => (binary += String.fromCharCode(b)));
-  return window.btoa(binary);
-}
+import { arrayBufferToBase64 } from '../../utils';
 
 export class AllArtworks extends React.Component {
   componentDidMount() {
@@ -31,10 +24,10 @@ export class AllArtworks extends React.Component {
                   src={`data: ${
                     artwork.img1.contentType
                   }; base64,${arrayBufferToBase64(artwork.img1.data.data)}`}
-                  alt='image'
+                  alt="image"
                 />
               ) : (
-                <img src={artwork.imageUrl} alt='image' />
+                <img src={artwork.imageUrl} alt="image" />
               )}
             </div>
           ))}

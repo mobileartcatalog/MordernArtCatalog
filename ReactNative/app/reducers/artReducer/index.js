@@ -10,7 +10,7 @@ const initialState = {
   loading: false,
   all: [],
   selected: {},
-  count: 0,
+  count: 0
 };
 
 const artReducer = reduceReducers(
