@@ -101,6 +101,21 @@ class SignupScreen extends Component {
           onPress={this.handleSignUp}
           style={styles.button}
         />
+        <Button
+          title="Sign up with Google"
+          // onPress={this.handleSignUp}
+          style={styles.button}
+        />
+        <Button
+          title="Sign up with Facebook"
+          // onPress={this.handleSignUp}
+          style={styles.button}
+        />
+        <Button
+          title="Forgot password"
+          // onPress={this.handleSignUp}
+          style={styles.button}
+        />
 
         <Text>{this.state.message}</Text>
       </View>
