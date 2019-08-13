@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import { Dimensions, View, Text, ImageBackground } from 'react-native';
 import { Button } from 'react-native-elements';
+import * as firebase from 'firebase';
 import styles from '../stylesheets/forms';
 
 export default class HomeScreen extends Component {
-  // componentDidMount() {
-  //   firebase.auth().onAuthStateChanged(user => {
-  //     this.props.navigation.navigate(user ? 'ArtworkList' : 'SignUp');
-  //   });
-  // }
+  constructor() {
+    super();
+    this.state = {
+      currentUser: ''
+    };
+  }
+
+  componentDidMount() {
+    const { currentUser } = firebase.auth();
+    this.setState({ currentUser });
+  }
 
   render() {
     const { navigate } = this.props.navigation;
@@ -23,6 +30,7 @@ export default class HomeScreen extends Component {
           }}
         >
           <Text style={styles.headlineText}>Mobile Art Catalog</Text>
+          <Text style={styles.bodyText}>Welcome, {this.state.user}</Text>
           <Button
             title="Login"
             onPress={() => navigate('Login')}

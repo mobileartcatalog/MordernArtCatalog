@@ -7,6 +7,10 @@ import styles from '../stylesheets/forms.js';
 import * as firebase from 'firebase';
 
 class SignupScreen extends Component {
+  static navigationOptions = {
+    title: 'Create an account'
+  };
+
   constructor() {
     super();
     this.state = {
@@ -35,15 +39,8 @@ class SignupScreen extends Component {
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password1)
-        .then(() => {
-          this.setState({
-            message: `you signed up, ${this.state.email}`,
-            error: '',
-            loading: false,
-            email: '',
-            password1: '',
-            password2: ''
-          });
+        .then(user => {
+          console.log(user);
         });
     } catch (error) {
       this.setState({ error: 'Cannot authenticate', loading: false });
@@ -103,16 +100,11 @@ class SignupScreen extends Component {
         />
         <Button
           title="Sign up with Google"
-          // onPress={this.handleSignUp}
+          onPress={() => navigate('ArtworkList')}
           style={styles.button}
         />
         <Button
           title="Sign up with Facebook"
-          // onPress={this.handleSignUp}
-          style={styles.button}
-        />
-        <Button
-          title="Forgot password"
           // onPress={this.handleSignUp}
           style={styles.button}
         />
