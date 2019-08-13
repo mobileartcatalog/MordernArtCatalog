@@ -50,6 +50,10 @@ const ArtworkSchema = new Schema({
   note: {
     type: String
   },
+  img1: {
+    data: Buffer,
+    contentType: String
+  },
   exhibitions: [
     {
       exhibitions: {
