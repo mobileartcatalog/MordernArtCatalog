@@ -1,25 +1,26 @@
 import axios from 'axios';
-import artworkData from './data';
+import exhData from './data';
 
-const GETTING_ART = 'GETTING_ART';
-const GOT_ART = 'GOT_ART';
+const GETTING_EXH = 'GETTING_EXH';
+const GOT_EXH = 'GOT_EXH';
 
-const gettingArt = () => ({
-  type: 'GETTING_ART'
+const gettingExh = () => ({
+  type: 'GETTING_EXH'
 });
 
-const gotArt = data => ({
-  type: 'GOT_ART',
+const gotExh = data => ({
+  type: 'GOT_EXH',
   data
 });
 
-export const getArt = () => {
+export const getExh = () => {
   return async dispatch => {
     try {
-      dispatch(gettingArt());
-      // const data = artworkData;
-      const { data } = await axios.get('http://localhost:3000/api/artworks');
-      dispatch(gotArt(data));
+      dispatch(gettingExh());
+      const data = exhData;
+      // const { data } = await axios.get('http://localhost:3000/api/exhibitions');
+
+      dispatch(gotExh(data));
     } catch (err) {
       console.error(err);
     }
@@ -28,9 +29,9 @@ export const getArt = () => {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case GETTING_ART:
+    case GETTING_EXH:
       return { ...state, loading: true };
-    case GOT_ART:
+    case GOT_EXH:
       return {
         ...state,
         loading: false,

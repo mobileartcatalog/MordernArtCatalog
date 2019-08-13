@@ -16,10 +16,15 @@ class ArtworkList extends Component {
 
   render() {
     const { art, count } = this.props;
+    let label;
+    count === 1 ? (label = ' work found') : (label = ' works found');
 
     return (
       <View>
-        <Text>{count} works found</Text>
+        <Text>
+          {count}
+          {label}
+        </Text>
 
         <FlatGrid
           itemDimension={150}

@@ -5,42 +5,42 @@ export default StyleSheet.create({
     height: 700,
     width: 400,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   hamburger: { width: 44, height: 44, marginLeft: 20 },
-  
+
   button: {
     backgroundColor: 'orange',
     color: 'black',
-    width: '50%',
+    width: '50%'
   },
 
   field: {
-    width: '75%',
+    width: '75%'
   },
 
   icon: {
     color: 'black',
     fontSize: 20,
-    marginRight: 10,
+    marginRight: 10
   },
 
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-evenly'
   },
 
   headlineText: {
     color: 'black',
     fontSize: 34,
     fontWeight: '500',
-    marginTop: -300,
+    marginTop: -300
   },
 
   bodyText: {
-    color: 'gray',
+    color: 'white',
     fontSize: 24,
-    fontWeight: '100',
-  },
+    fontWeight: '100'
+  }
 });

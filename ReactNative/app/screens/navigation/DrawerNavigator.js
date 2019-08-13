@@ -12,6 +12,9 @@ import { Text } from 'react-native';
 import ArtworkListRow from '../art/ArtworkListRow';
 import ArtworkList from '../art/ArtworkList';
 import ArtworkForm from '../art/ArtworkForm';
+import ExhList from '../exhibitions/ExhList'
+import ExhListRow from '../exhibitions/ExhListRow';
+import ExhDetail from '../exhibitions/ExhDetail'
 import HomeScreen from '../HomeScreen';
 import BottomTabNavigator from './BottomTabNavigator';
 
