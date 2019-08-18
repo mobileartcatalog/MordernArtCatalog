@@ -24,8 +24,8 @@ const ArtworkSchema = new Schema({
     type: Number
   },
   artistname: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   inventorynumber: {
     type: Number
