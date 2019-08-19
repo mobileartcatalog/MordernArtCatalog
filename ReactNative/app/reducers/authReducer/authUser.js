@@ -3,38 +3,44 @@ import * as firebase from 'firebase';
 const AUTH_USER = 'AUTH_USER';
 const AUTH_ERROR = 'AUTH_ERROR';
 
-const authUser = () => ({
-  type: 'AUTH_USER'
+const authUser = (uid, email) => ({
+  type: 'AUTH_USER',
+  uid,
+  email
 });
 
 const authError = error => ({
-  type: AUTH_ERROR,
+  type: 'AUTH_ERROR',
   error
 });
 
-export function signupUser(email, password) {
-  return function(dispatch) {
-    Firebase.auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(response => {
-        dispatch(authUser());
-      })
-      .catch(error => {
-        console.log(error);
-        dispatch(authError(error));
+export const signupUser = (email, password) => {
+  return async dispatch => {
+    try {
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      await firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          const { uid, email } = user;
+          dispatch(authUser(uid, email));
+        }
       });
+    } catch (error) {
+      dispatch(authError(error));
+    }
   };
-}
+};
 
 export const loginUser = (email, password) => {
   return async dispatch => {
     try {
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      response => {
-        dispatch(authUser(user));
-      };
+      await firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          const { uid, email } = user;
+          dispatch(authUser(uid, email));
+        }
+      });
     } catch (error) {
-      console.log(error);
       dispatch(authError(error));
     }
   };
@@ -46,7 +52,9 @@ const reducer = (state, action) => {
       return {
         ...state,
         authenticated: true,
-        error: null
+        error: null,
+        uid: action.uid,
+        email: action.email
       };
     case AUTH_ERROR:
       return {

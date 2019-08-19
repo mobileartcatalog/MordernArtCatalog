@@ -1,11 +1,15 @@
 import reduceReducers from 'reduce-reducers';
 
-import authUser from './authUser';
+import loginUser from './authUser';
+import signupUser from './authUser';
 
 const initialState = {
   authenticated: false,
-  error: null
+  error: null,
+  uid: '',
+  email: ''
 };
-const authReducer = reduceReducers(initialState, authUser);
+
+const authReducer = reduceReducers(initialState, loginUser, signupUser);
 
 export default authReducer;

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
-import { Text, View } from 'react-native';
+import { Text, View, ActivityIndicator } from 'react-native';
 import { Formik } from 'formik';
-// import * as firebase from 'firebase';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../../stylesheets/forms.js';
 import {
@@ -12,13 +11,12 @@ import {
   StyledButton,
   StyledSecondaryButton
 } from '../formComponents';
-import authValidationSchema from './validationSchema';
-import { signupUser } from '../../reducers/authReducer';
+import signupValidationSchema from './validationSchema';
+import { signupUser } from '../../reducers/authReducer/authUser';
 
 class SignupScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
-    console.log('this.props', this.props);
     return (
       <View style={styles.container}>
         <View style={styles.innerContainer}>
@@ -31,10 +29,20 @@ class SignupScreen extends Component {
               confirmPassword: '',
               stayLoggedIn: false
             }}
-            onSubmit={values => {
-              this.props.signupUser(values.email, values.password);
+            onSubmit={(values, actions) => {
+              this.props
+                .signupUser(values.email, values.password)
+                .then(() => {
+                  actions.setFieldError('general', 'success!');
+                })
+                .catch(error => {
+                  actions.setFieldError('general', error.message);
+                })
+                .finally(() => {
+                  actions.setSubmitting(false);
+                });
             }}
-            validationSchema={authValidationSchema}
+            validationSchema={signupValidationSchema}
           >
             {formikProps => (
               <React.Fragment>
@@ -57,20 +65,17 @@ class SignupScreen extends Component {
                   secureTextEntry
                 />
 
-                {/* <View style={styles.horizontalLabel}>
-                  <Text style={styles.formLabel}>Keep me logged in</Text>
-                  <StyledSwitch
-                    formikKey="stayLoggedIn"
-                    formikProps={formikProps}
-                  />
-                </View> */}
-                <StyledButton
-                  title="Create account"
-                  onPress={formikProps.handleSubmit}
-                />
-                <Text style={styles.errorMessage}>
-                  {formikProps.errors.general}
-                </Text>
+                {formikProps.isSubmitting ? (
+                  <ActivityIndicator />
+                ) : (
+                  <React.Fragment>
+                    <StyledButton
+                      title="Create account"
+                      onPress={formikProps.handleSubmit}
+                    />
+                    <Text style={styles.errorMessage}>{this.props.error}</Text>
+                  </React.Fragment>
+                )}
               </React.Fragment>
             )}
           </Formik>
@@ -81,20 +86,16 @@ class SignupScreen extends Component {
             onPress={() => navigate('Login')}
           />
           <StyledSecondaryButton
-            title="Log in with Google"
+            title="Sign up with Google"
             icon={<Icon name="google" style={styles.icon} />}
             iconLeft
             // onPress={}
           />
           <StyledSecondaryButton
-            title="Log in with Facebook"
+            title="Sign up with Facebook"
             icon={<Icon name="facebook" style={styles.icon} />}
             iconLeft
             // onPress={}
-          />
-          <StyledSecondaryButton
-            title="Forgot password?"
-            // onPress={() => navigate('HomeScreen')}
           />
         </View>
       </View>

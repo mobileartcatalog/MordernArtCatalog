@@ -1,161 +1,124 @@
 import React, { Component } from 'react';
 import { withNavigation } from 'react-navigation';
-import { Text, TextInput, View, ActivityIndicator } from 'react-native';
-import { Formik, Field } from 'formik';
-import firebase from 'firebase';
-import { Input, Button, CheckBox } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { Text, View, ActivityIndicator } from 'react-native';
+import { Formik } from 'formik';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../../stylesheets/forms.js';
-
+import {
+  StyledInput,
+  StyledSwitch,
+  StyledButton,
+  StyledSecondaryButton
+} from '../formComponents';
+import { loginValidationSchema } from './validationSchema';
+import { loginUser } from '../../reducers/authReducer/authUser';
 
 class LoginScreen extends Component {
-  constructor() {
-    super();
-    this.state = {
-      email: '',
-      password: '',
-      loading: false,
-      error: '',
-      message: '',
-      keepLoggedIn: false
-    };
-    this.onLogin = this.onLogin.bind(this);
-  }
-
-  onLogin = (email, password) => {
-    try {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then(res => {
-          console.log(res.user.email);
-        });
-    } catch (error) {
-      console.log(error.toString(error));
-    }
-  };
-
-  renderCurrentState() {
+  render() {
     const { navigate } = this.props.navigation;
-
-    if (this.state.loading) {
-      return <ActivityIndicator size="large" />;
-    }
-
     return (
       <View style={styles.container}>
         <View style={styles.innerContainer}>
           <Text style={styles.h1}>Log in to your account</Text>
 
           <Formik
-            initialValues={{ email: '', password: '' }}
-            onSubmit={values => console.log(values)}
+            initialValues={{
+              email: '',
+              password: '',
+              stayLoggedIn: false
+            }}
+            onSubmit={(values, actions) => {
+              this.props
+                .loginUser(values.email, values.password)
+                .catch(error => {
+                  actions.setFieldError('general', error.message);
+                })
+                .finally(() => {
+                  actions.setSubmitting(false);
+                });
+            }}
+            validationSchema={loginValidationSchema}
           >
-            {props => (
-              <View>
-                <TextInput
-                style={styles.inputContainer}
-                  // containerStyle={styles.inputContainer}
-                  // inputContainerStyle={styles.inputText}
-                  autoCapitalize="none"
+            {formikProps => (
+              <React.Fragment>
+                <StyledInput
+                  formikProps={formikProps}
+                  formikKey={'email'}
                   placeholder="email"
                   autoFocus
-                  onChangeText={props.handleChange('email')}
-                  onBlur={props.handleBlur('email')}
-                  value={props.values.email}
                 />
-                <Input
-                  containerStyle={styles.inputContainer}
-                  inputContainerStyle={styles.inputText}
-                  autoCapitalize="none"
-                  placeholder="password"
-                  onChangeText={props.handleChange('password')}
-                  onBlur={props.handleBlur('password')}
-                  value={props.values.password}
+                <StyledInput
+                  formikProps={formikProps}
+                  formikKey={'password'}
+                  placeholder={'password'}
+                  secureTextEntry
                 />
-                <Button
-                  buttonStyle={styles.primaryButton}
-                  onPress={props.handleSubmit}
-                  title="Login"
-                />
-              </View>
+
+                {/* <View style={styles.horizontalLabel}>
+                  <Text style={styles.formLabel}>Keep me logged in</Text>
+                  <StyledSwitch
+                    formikKey="stayLoggedIn"
+                    formikProps={formikProps}
+                  />
+                </View> */}
+
+                {formikProps.isSubmitting ? (
+                  <ActivityIndicator />
+                ) : (
+                  <React.Fragment>
+                    <StyledButton
+                      title="Login"
+                      onPress={formikProps.handleSubmit}
+                    />
+                    <Text style={styles.errorMessage}>{this.props.error}</Text>
+                  </React.Fragment>
+                )}
+              </React.Fragment>
             )}
           </Formik>
-
-          {/* <Input
-            containerStyle={styles.inputContainer}
-            inputContainerStyle={styles.inputText}
-            autoCapitalize="none"
-            placeholder="email"
-            autoFocus
-            onChangeText={email => this.setState({ email })}
-            value={this.state.email}
-          />
-          <Input
-            containerStyle={styles.inputContainer}
-            inputContainerStyle={styles.inputText}
-            placeholder="password"
-            autoCapitalize="none"
-            secureTextEntry={true}
-            onChangeText={password => this.setState({ password })}
-            value={this.state.password}
-          /> */}
-
-          {/* <CheckBox
-            containerStyle={styles.checkboxContainer}
-            textStyle={styles.checkboxInput}
-            checkedColor="black"
-            uncheckedColor="gray"
-            center
-            title="Keep me logged in"
-            onPress={() =>
-              this.setState({ keepLoggedIn: !this.state.keepLoggedIn })
-            }
-            checked={this.state.keepLoggedIn}
-          /> */}
-          {/* <Button
-            title="Log in"
-            buttonStyle={styles.primaryButton}
-            onPress={this.onLogin}
-          /> */}
         </View>
         <View>
-          <Button
+          <StyledSecondaryButton
             title="Create new account"
-            buttonStyle={styles.secondaryButton}
-            titleStyle={styles.buttonText}
             onPress={() => navigate('Signup')}
           />
-          <Button
+          <StyledSecondaryButton
             title="Log in with Google"
-            buttonStyle={styles.secondaryButton}
-            titleStyle={styles.buttonText}
             icon={<Icon name="google" style={styles.icon} />}
             iconLeft
-            // onPress={this.handleSignUp}
+            // onPress={}
           />
-          <Button
+          <StyledSecondaryButton
             title="Log in with Facebook"
-            buttonStyle={styles.secondaryButton}
-            titleStyle={styles.buttonText}
             icon={<Icon name="facebook" style={styles.icon} />}
             iconLeft
-            // onPress={this.handleSignUp}
+            // onPress={}
           />
-          <Button
+          <StyledSecondaryButton
             title="Forgot password?"
-            buttonStyle={styles.secondaryButton}
-            titleStyle={styles.buttonText}
             // onPress={() => navigate('HomeScreen')}
           />
         </View>
       </View>
     );
   }
-
-  render() {
-    return <View>{this.renderCurrentState()}</View>;
-  }
 }
 
-export default withNavigation(LoginScreen);
+const mapState = state => {
+  return {
+    authenticated: state.auth.authenticated,
+    error: state.auth.error
+  };
+};
+
+const mapDispatch = dispatch => ({
+  loginUser: (email, password) => dispatch(loginUser(email, password))
+});
+
+export default withNavigation(
+  connect(
+    mapState,
+    mapDispatch
+  )(LoginScreen)
+);
