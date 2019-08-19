@@ -11,7 +11,8 @@ class ArtworkList extends Component {
   };
 
   componentDidMount() {
-    this.props.getArt();
+    const { getArt, loaded } = this.props;
+    if (!loaded) getArt();
   }
 
   render() {
@@ -32,18 +33,13 @@ class ArtworkList extends Component {
           renderItem={({ item }) => <ArtworkListRow artwork={item} />}
         />
       </View>
-
-      // {art.map(artwork => (
-      //   <View key={artwork.id}>
-      //     <ArtworkListRow artwork={artwork} />
-      //   </View>
-      // ))} */
     );
   }
 }
 
 const mapState = state => {
   return {
+    loaded: state.art.loaded,
     art: state.art.all,
     count: state.art.count
   };

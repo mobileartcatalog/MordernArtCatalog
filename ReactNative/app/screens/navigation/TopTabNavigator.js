@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Stylesheet, Text, View } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation';
 import {
-  HomeScreen,
+  LandingScreen,
   ArtworkList,
   ArtworkForm,
   ExhList,
@@ -14,7 +14,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const TopTabNavigator = createMaterialTopTabNavigator(
   {
     Home: {
-      screen: HomeScreen,
+      screen: LandingScreen,
       navigationOptions: {
         tabBarLabel: 'Home',
         tabBarIcon: ({ tintColor }) => (

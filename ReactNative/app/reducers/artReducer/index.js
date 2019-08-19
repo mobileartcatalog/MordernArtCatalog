@@ -8,6 +8,7 @@ import deleteArtwork from './deleteArtwork';
 
 const initialState = {
   loading: false,
+  loaded: false,
   all: [],
   selected: {},
   count: 0

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import artworkData from './data';
 
 const GETTING_ART = 'GETTING_ART';
 const GOT_ART = 'GOT_ART';
@@ -17,7 +16,6 @@ export const getArt = () => {
   return async dispatch => {
     try {
       dispatch(gettingArt());
-      // const data = artworkData;
       const { data } = await axios.get('http://localhost:3000/api/artworks');
       dispatch(gotArt(data));
     } catch (err) {
@@ -34,6 +32,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: false,
+        loaded: true,
         all: action.data,
         count: action.data.length
       };

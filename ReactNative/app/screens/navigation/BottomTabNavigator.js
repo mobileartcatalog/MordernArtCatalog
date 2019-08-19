@@ -2,10 +2,11 @@ import React from 'react';
 import {
   createBottomTabNavigator,
   createAppContainer,
-  createStackNavigator
+  createStackNavigator,
+  createSwitchNavigator
 } from 'react-navigation';
 import {
-  HomeScreen,
+  LandingScreen,
   LoginScreen,
   SignupScreen,
   ArtworkList,
@@ -19,8 +20,14 @@ import {
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+const switchNavigator = createSwitchNavigator({
+  Home: { screen: LandingScreen },
+  Login: { screen: LoginScreen },
+  Signup: { screen: SignupScreen }
+});
+
 const HomeTab = createStackNavigator({
-  Home: { screen: HomeScreen },
+  Home: { screen: LandingScreen },
   Login: { screen: LoginScreen },
   Signup: { screen: SignupScreen }
 });

@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import { Dimensions, View, Text, ImageBackground } from 'react-native';
 import { Button } from 'react-native-elements';
+// import { connect } from 'react-redux';
 import * as firebase from 'firebase';
-import styles from '../stylesheets/forms';
+import styles from '../../stylesheets/forms';
+// import {  } from '../../reducers/userReducer/';
 
-export default class HomeScreen extends Component {
+class LandingScreen extends Component {
   constructor() {
     super();
     this.state = {
-      currentUser: ''
+      user: {}
     };
   }
 
-  componentDidMount() {
-    const { currentUser } = firebase.auth();
-    this.setState({ currentUser });
-  }
+  // componentDidMount() {
+  //   ('1');
+  // }
 
   render() {
     const { navigate } = this.props.navigation;
@@ -30,7 +31,7 @@ export default class HomeScreen extends Component {
           }}
         >
           <Text style={styles.headlineText}>Mobile Art Catalog</Text>
-          <Text style={styles.bodyText}>Welcome, {this.state.user}</Text>
+          {/* <Text style={styles.bodyText}>Welcome, {this.state.user}</Text> */}
           <Button
             title="Login"
             onPress={() => navigate('Login')}
@@ -46,3 +47,20 @@ export default class HomeScreen extends Component {
     );
   }
 }
+
+// const mapState = state => {
+//   return {
+//     user: state.user.user
+//   };
+// };
+
+// const mapDispatch = dispatch => ({
+//   : () => dispatch(())
+// });
+
+// export default connect(
+//   mapState,
+//   mapDispatch
+// )(LandingScreen);
+
+export default LandingScreen;
