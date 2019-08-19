@@ -30,7 +30,7 @@ class LoginScreen extends Component {
             }}
             onSubmit={(values, actions) => {
               this.props
-                .loginUser(values.email, values.password)
+                .loginUser(values.email, values.password, values.stayLoggedIn)
                 .catch(error => {
                   actions.setFieldError('general', error.message);
                 })
@@ -55,13 +55,13 @@ class LoginScreen extends Component {
                   secureTextEntry
                 />
 
-                {/* <View style={styles.horizontalLabel}>
+                <View style={styles.horizontalLabel}>
                   <Text style={styles.formLabel}>Keep me logged in</Text>
                   <StyledSwitch
                     formikKey="stayLoggedIn"
                     formikProps={formikProps}
                   />
-                </View> */}
+                </View>
 
                 {formikProps.isSubmitting ? (
                   <ActivityIndicator />
@@ -71,7 +71,15 @@ class LoginScreen extends Component {
                       title="Login"
                       onPress={formikProps.handleSubmit}
                     />
-                    <Text style={styles.errorMessage}>{this.props.error}</Text>
+                    {!this.props.email ? (
+                      <Text style={styles.errorMessage}>
+                        {this.props.error}
+                      </Text>
+                    ) : (
+                      <Text style={styles.errorMessage}>
+                        {`welcome, ${this.props.uid}`}
+                      </Text>
+                    )}
                   </React.Fragment>
                 )}
               </React.Fragment>
@@ -108,12 +116,15 @@ class LoginScreen extends Component {
 const mapState = state => {
   return {
     authenticated: state.auth.authenticated,
-    error: state.auth.error
+    error: state.auth.error,
+    email: state.auth.email,
+    uid: state.auth.uid
   };
 };
 
 const mapDispatch = dispatch => ({
-  loginUser: (email, password) => dispatch(loginUser(email, password))
+  loginUser: (email, password, stayLoggedIn) =>
+    dispatch(loginUser(email, password, stayLoggedIn))
 });
 
 export default withNavigation(

@@ -31,7 +31,7 @@ class SignupScreen extends Component {
             }}
             onSubmit={(values, actions) => {
               this.props
-                .signupUser(values.email, values.password)
+                .signupUser(values.email, values.password, values.stayLoggedIn)
                 .then(() => {
                   actions.setFieldError('general', 'success!');
                 })
@@ -64,6 +64,13 @@ class SignupScreen extends Component {
                   placeholder={'confirm password'}
                   secureTextEntry
                 />
+                <View style={styles.horizontalLabel}>
+                  <Text style={styles.formLabel}>Keep me logged in</Text>
+                  <StyledSwitch
+                    formikKey="stayLoggedIn"
+                    formikProps={formikProps}
+                  />
+                </View>
 
                 {formikProps.isSubmitting ? (
                   <ActivityIndicator />
