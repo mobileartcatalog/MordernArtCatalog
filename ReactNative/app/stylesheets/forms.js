@@ -17,21 +17,19 @@ export default StyleSheet.create({
 
   container: {
     backgroundColor: 'rgba(119, 136, 153, 0.35)',
-    // backgroundColor: '#afd9e3',
     height: '100%',
-    justifyContent: 'center',
-    marginBottom: 10
+    justifyContent: 'center'
   },
 
   innerContainer: {
     alignItems: 'center',
+    // top: 40,
     backgroundColor: 'rgba(119, 136, 153, 0.1)',
     borderColor: 'rgba(119, 136, 153, 0.25)',
     borderWidth: 0.5,
     borderRadius: 8,
     margin: 20,
-    paddingVertical: 30,
-    marginBottom: 40
+    paddingVertical: 30
   },
 
   horizontalLabel: {
@@ -59,31 +57,25 @@ export default StyleSheet.create({
     borderBottomWidth: 0
   },
 
-  checkboxContainer: {
-    backgroundColor: 'transparent',
-    borderWidth: 0,
-    marginBottom: 10
-  },
-
-  checkboxInput: {
-    backgroundColor: 'transparent'
-  },
-
   primaryButton: {
     backgroundColor: 'slategray',
     height: 40,
     borderWidth: 1,
     borderColor: 'transparent',
     borderRadius: 10,
-    paddingHorizontal: 20
-    // shadowColor: '#000',
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.6,
-    // shadowRadius: 2
+    paddingHorizontal: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.6,
+    shadowRadius: 2
   },
 
   secondaryButton: {
     backgroundColor: 'transparent'
+  },
+
+  switch: {
+    marginBottom: 20
   },
 
   Disable: {
@@ -107,7 +99,8 @@ export default StyleSheet.create({
   },
 
   headlineText: {
-    color: 'black',
+    textAlign: 'center',
+    color: '#2b8c5f',
     fontSize: 30,
     fontWeight: '500'
   },
@@ -118,17 +111,17 @@ export default StyleSheet.create({
     fontWeight: '100'
   },
   h1: {
-    color: 'gray',
+    color: 'slategray',
+    textAlign: 'center',
     fontSize: 20,
     marginBottom: 10
   },
   inputWrapper: { marginHorizontal: 20, marginVertical: 5 },
 
   errorMessage: {
-    color: '#f06102',
-    marginTop: 2,
-    marginBottom: 6
-
+    color: '#2b8c5f',
+    marginVertical: 5
+    // marginBottom: 6
   },
   formLabel: {
     fontSize: 16,

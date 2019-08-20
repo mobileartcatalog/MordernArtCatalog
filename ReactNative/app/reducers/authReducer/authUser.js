@@ -1,8 +1,8 @@
 import * as firebase from 'firebase';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const AUTH_USER = 'AUTH_USER';
 const AUTH_ERROR = 'AUTH_ERROR';
+const LOGGED_OUT = 'LOGGED_OUT';
 
 const authUser = (uid, email) => ({
   type: 'AUTH_USER',
@@ -15,34 +15,11 @@ const authError = error => ({
   error
 });
 
-export const getUser = () => {
-  return async dispatch => {
-    try {
-      const user = await AsyncStorage.multiGet(['uid', 'email']);
-      if (user) {
-        const uid = '12345';
-        const email = 'fakeemail';
-        dispatch(authUser(uid, email));
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
+const loggedOut = () => ({
+  type: 'LOGGED_OUT'
+});
 
-export const storeUser = (uid, email) => {
-  return async dispatch => {
-    const uid = ['uid', uid];
-    const email = ['email', email];
-    try {
-      await AsyncStorage.multiSet([uid, email]);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-export const signupUser = (email, password, stayLoggedIn) => {
+export const signupUser = (email, password) => {
   return async dispatch => {
     try {
       await firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -50,9 +27,6 @@ export const signupUser = (email, password, stayLoggedIn) => {
         if (user) {
           const { uid, email } = user;
           dispatch(authUser(uid, email));
-          if (stayLoggedIn) {
-            dispatch(storeUser(uid, email));
-          }
         }
       });
     } catch (error) {
@@ -61,19 +35,48 @@ export const signupUser = (email, password, stayLoggedIn) => {
   };
 };
 
-export const loginUser = (email, password, stayLoggedIn) => {
+export const loginUser = (email, password, persistLogin) => {
   return async dispatch => {
     try {
+      if (persistLogin) {
+        await firebase
+          .auth()
+          .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      } else {
+        await firebase
+          .auth()
+          .setPersistence(firebase.auth.Auth.Persistence.NONE);
+      }
       await firebase.auth().signInWithEmailAndPassword(email, password);
-      await firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          const { uid, email } = user;
-          dispatch(authUser(uid, email));
-          if (stayLoggedIn) {
-            dispatch(storeUser(uid, email));
-          }
-        }
-      });
+      dispatch(getUser());
+    } catch (error) {
+      dispatch(authError(error));
+    }
+  };
+};
+
+export const getUser = () => {
+  return async dispatch => {
+    try {
+      const user = await firebase.auth().currentUser;
+      console.log('getUser results', user);
+      if (user) {
+        const { uid, email } = user;
+        dispatch(authUser(uid, email));
+      }
+    } catch (error) {
+      dispatch(authError(error));
+    }
+  };
+};
+
+export const logoutUser = () => {
+  return async dispatch => {
+    try {
+      await firebase.auth().signOut();
+      dispatch(getUser());
+      dispatch(loggedOut());
+      // clear art, exhibitions, user data from state
     } catch (error) {
       dispatch(authError(error));
     }
@@ -94,6 +97,14 @@ const reducer = (state, action) => {
       return {
         ...state,
         error: action.error.message
+      };
+    case LOGGED_OUT:
+      return {
+        ...state,
+        authenticated: false,
+        error: null,
+        uid: '',
+        email: ''
       };
     default:
       return state;

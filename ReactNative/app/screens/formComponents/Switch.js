@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch } from 'react-native';
+import styles from '../../stylesheets/forms';
 
 const StyledSwitch = ({ label, formikKey, formikProps, ...rest }) => {
   const inputStyles = {
@@ -14,7 +15,8 @@ const StyledSwitch = ({ label, formikKey, formikProps, ...rest }) => {
   }
   return (
     <Switch
-      trackColor={{ false: 'whitesmoke', true: '#f06102' }}
+      style={styles.switch}
+      trackColor={{ false: 'lightslategray', true: '#74c29e' }}
       thumbColor="slategray"
       value={formikProps.values[formikKey]}
       onValueChange={value => {

@@ -6,30 +6,19 @@ import {
   createSwitchNavigator
 } from 'react-navigation';
 import {
-  LandingScreen,
-  LoginScreen,
-  SignupScreen,
+  UserHome,
   ArtworkList,
   ArtworkListRow,
   ArtworkDetail,
   ArtworkForm,
   ExhList,
-  ExhListRow,
-  ExhDetail
+  ExhListRow
 } from '..';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const switchNavigator = createSwitchNavigator({
-  Home: { screen: LandingScreen },
-  Login: { screen: LoginScreen },
-  Signup: { screen: SignupScreen }
-});
-
-const HomeTab = createStackNavigator({
-  Home: { screen: LandingScreen },
-  Login: { screen: LoginScreen },
-  Signup: { screen: SignupScreen }
+const HomeTab = createSwitchNavigator({
+  Home: { screen: UserHome }
 });
 
 const FormTab = createStackNavigator({
@@ -45,10 +34,9 @@ const ArtworkTab = createStackNavigator({
 const ExhTab = createStackNavigator({
   ExhList: { screen: ExhList },
   ExhListRow: { screen: ExhListRow }
-  // ExhDetail: { screen: ExhDetail }
 });
 
-const BottomTabNavigator = createBottomTabNavigator(
+const AppNavigator = createBottomTabNavigator(
   {
     Home: {
       screen: HomeTab,
@@ -101,4 +89,4 @@ const BottomTabNavigator = createBottomTabNavigator(
   }
 );
 
-export default createAppContainer(BottomTabNavigator);
+export default createAppContainer(AppNavigator);

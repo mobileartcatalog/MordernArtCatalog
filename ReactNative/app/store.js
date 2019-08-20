@@ -4,10 +4,9 @@ import { createLogger } from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import art from './reducers/artReducer/';
 import exhibitions from './reducers/exhReducer';
-import user from './reducers/userReducer';
 import auth from './reducers/authReducer';
 
-const rootReducer = combineReducers({ art, exhibitions, user, auth });
+const rootReducer = combineReducers({ art, exhibitions, auth });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))
 );

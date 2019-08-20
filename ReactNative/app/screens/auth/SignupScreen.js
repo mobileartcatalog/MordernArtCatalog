@@ -7,7 +7,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../../stylesheets/forms.js';
 import {
   StyledInput,
-  StyledSwitch,
   StyledButton,
   StyledSecondaryButton
 } from '../formComponents';
@@ -26,12 +25,11 @@ class SignupScreen extends Component {
             initialValues={{
               name: '',
               password: '',
-              confirmPassword: '',
-              stayLoggedIn: false
+              confirmPassword: ''
             }}
             onSubmit={(values, actions) => {
               this.props
-                .signupUser(values.email, values.password, values.stayLoggedIn)
+                .signupUser(values.email, values.password)
                 .then(() => {
                   actions.setFieldError('general', 'success!');
                 })
@@ -64,13 +62,6 @@ class SignupScreen extends Component {
                   placeholder={'confirm password'}
                   secureTextEntry
                 />
-                <View style={styles.horizontalLabel}>
-                  <Text style={styles.formLabel}>Keep me logged in</Text>
-                  <StyledSwitch
-                    formikKey="stayLoggedIn"
-                    formikProps={formikProps}
-                  />
-                </View>
 
                 {formikProps.isSubmitting ? (
                   <ActivityIndicator />

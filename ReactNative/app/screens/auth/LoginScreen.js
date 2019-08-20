@@ -19,6 +19,8 @@ class LoginScreen extends Component {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
+        <Text style={styles.headlineText}>Art Catalog</Text>
+
         <View style={styles.innerContainer}>
           <Text style={styles.h1}>Log in to your account</Text>
 
@@ -26,16 +28,17 @@ class LoginScreen extends Component {
             initialValues={{
               email: '',
               password: '',
-              stayLoggedIn: false
+              persistLogin: false
             }}
             onSubmit={(values, actions) => {
               this.props
-                .loginUser(values.email, values.password, values.stayLoggedIn)
+                .loginUser(values.email, values.password, values.persistLogin)
                 .catch(error => {
                   actions.setFieldError('general', error.message);
                 })
                 .finally(() => {
                   actions.setSubmitting(false);
+                  actions.resetForm();
                 });
             }}
             validationSchema={loginValidationSchema}
@@ -55,13 +58,11 @@ class LoginScreen extends Component {
                   secureTextEntry
                 />
 
-                <View style={styles.horizontalLabel}>
-                  <Text style={styles.formLabel}>Keep me logged in</Text>
-                  <StyledSwitch
-                    formikKey="stayLoggedIn"
-                    formikProps={formikProps}
-                  />
-                </View>
+                <Text style={styles.formLabel}>Keep me logged in</Text>
+                <StyledSwitch
+                  formikKey="persistLogin"
+                  formikProps={formikProps}
+                />
 
                 {formikProps.isSubmitting ? (
                   <ActivityIndicator />
@@ -88,6 +89,7 @@ class LoginScreen extends Component {
         </View>
         <View>
           <StyledSecondaryButton
+            titleStyle={{ color: '#2b8c5f' }}
             title="Create new account"
             onPress={() => navigate('Signup')}
           />
@@ -105,7 +107,7 @@ class LoginScreen extends Component {
           />
           <StyledSecondaryButton
             title="Forgot password?"
-            // onPress={() => navigate('HomeScreen')}
+            // onPress={}
           />
         </View>
       </View>
@@ -123,8 +125,8 @@ const mapState = state => {
 };
 
 const mapDispatch = dispatch => ({
-  loginUser: (email, password, stayLoggedIn) =>
-    dispatch(loginUser(email, password, stayLoggedIn))
+  loginUser: (email, password, persistLogin) =>
+    dispatch(loginUser(email, password, persistLogin))
 });
 
 export default withNavigation(

@@ -14,7 +14,7 @@ const StyledInput = ({ formikKey, formikProps, ...rest }) => {
   };
 
   if (formikProps.touched[formikKey] && formikProps.errors[formikKey]) {
-    inputStyles.borderColor = '#f06102';
+    inputStyles.borderColor = '#1dbf53';
   }
 
   return (

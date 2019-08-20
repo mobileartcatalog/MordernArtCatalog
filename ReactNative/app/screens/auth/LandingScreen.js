@@ -1,66 +1,32 @@
 import React, { Component } from 'react';
-import { Dimensions, View, Text, ImageBackground } from 'react-native';
-import { Button } from 'react-native-elements';
-// import { connect } from 'react-redux';
-import * as firebase from 'firebase';
-import styles from '../../stylesheets/forms';
-// import {  } from '../../reducers/userReducer/';
+import { connect } from 'react-redux';
+
+import { getUser } from '../../reducers/authReducer/authUser';
+import UserHome from '../user/UserHome';
+import LoginScreen from './LoginScreen';
 
 class LandingScreen extends Component {
-  constructor() {
-    super();
-    this.state = {
-      user: {}
-    };
+  componentDidMount() {
+    this.props.getUser();
+    console.log('landing props after componentDidMount getUser', this.props);
   }
 
-  // componentDidMount() {
-  //   ('1');
-  // }
-
   render() {
-    const { navigate } = this.props.navigation;
-    const { width, height } = Dimensions.get('window');
-    return (
-      <View style={styles.container}>
-        <ImageBackground
-          style={styles.backgroundImage}
-          source={{
-            uri:
-              'http://hdwpro.com/wp-content/uploads/2017/03/Art-Background-Image-1024x768.png'
-          }}
-        >
-          <Text style={styles.headlineText}>Mobile Art Catalog</Text>
-          {/* <Text style={styles.bodyText}>Welcome, {this.state.user}</Text> */}
-          <Button
-            title="Login"
-            onPress={() => navigate('Login')}
-            style={styles.button}
-          />
-          <Button
-            title="Signup"
-            onPress={() => navigate('Signup')}
-            style={styles.button}
-          />
-        </ImageBackground>
-      </View>
-    );
+    return this.props.authenticated ? <UserHome /> : <LoginScreen />;
   }
 }
 
-// const mapState = state => {
-//   return {
-//     user: state.user.user
-//   };
-// };
+const mapState = state => {
+  return {
+    authenticated: state.auth.authenticated
+  };
+};
 
-// const mapDispatch = dispatch => ({
-//   : () => dispatch(())
-// });
+const mapDispatch = dispatch => ({
+  getUser: () => dispatch(getUser())
+});
 
-// export default connect(
-//   mapState,
-//   mapDispatch
-// )(LandingScreen);
-
-export default LandingScreen;
+export default connect(
+  mapState,
+  mapDispatch
+)(LandingScreen);

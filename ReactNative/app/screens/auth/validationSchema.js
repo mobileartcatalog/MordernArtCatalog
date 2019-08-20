@@ -11,7 +11,7 @@ export const loginValidationSchema = yup.object().shape({
     .required()
     .min(6, 'Password must be at least 6 characters')
     .label('Password'),
-  stayLoggedIn: yup.boolean().label('stayLoggedIn')
+  persistLogin: yup.boolean()
 });
 
 export const signupValidationSchema = yup.object().shape({
@@ -31,6 +31,5 @@ export const signupValidationSchema = yup.object().shape({
     .test('passwords-match', 'The passwords must match', function(value) {
       return this.parent.password === value;
     })
-    .label('Confirm password'),
-  stayLoggedIn: yup.boolean().label('stayLoggedIn')
+    .label('Confirm password')
 });

@@ -1,6 +1,7 @@
 export { default as LandingScreen } from './auth/LandingScreen';
 export { default as LoginScreen } from './auth/LoginScreen';
 export { default as SignupScreen } from './auth/SignupScreen';
+export { default as UserHome } from './user/UserHome';
 
 export { default as ArtworkList } from './art/ArtworkList';
 export { default as ArtworkListRow } from './art/ArtworkListRow';
