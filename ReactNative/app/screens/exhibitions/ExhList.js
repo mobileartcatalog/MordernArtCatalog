@@ -10,7 +10,8 @@ class ExhList extends Component {
   };
 
   componentDidMount() {
-    this.props.getExh();
+    const { loaded, getExh } = this.props;
+    if (!loaded) getExh();
   }
 
   render() {
@@ -39,6 +40,7 @@ class ExhList extends Component {
 
 const mapState = state => {
   return {
+    loaded: state.exhibitions.loaded,
     exhibitions: state.exhibitions.all,
     count: state.exhibitions.count
   };

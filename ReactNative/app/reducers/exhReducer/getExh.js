@@ -35,6 +35,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         loading: false,
+        loaded: true,
         all: action.data,
         count: action.data.length
       };

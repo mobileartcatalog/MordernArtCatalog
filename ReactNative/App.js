@@ -3,8 +3,7 @@ import { Provider } from 'react-redux';
 import store from './app/store';
 import Firebase, { FirebaseContext } from './app/screens/firebase';
 
-import MainNavigation from './app/screens/navigation/BottomTabNavigator';
-import HamburgerIcon from './app/screens/navigation/HamburgerIcon';
+import RootNavigator from './app/screens/navigation/RootNavigator';
 
 console.disableYellowBox = true;
 
@@ -19,7 +18,7 @@ export default class App extends Component {
     return (
       <FirebaseContext.Provider value={new Firebase()}>
         <Provider store={store}>
-          <MainNavigation />
+          <RootNavigator />
         </Provider>
       </FirebaseContext.Provider>
     );

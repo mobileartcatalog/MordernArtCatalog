@@ -2,27 +2,23 @@ import React from 'react';
 import {
   createBottomTabNavigator,
   createAppContainer,
-  createStackNavigator
+  createStackNavigator,
+  createSwitchNavigator
 } from 'react-navigation';
 import {
-  HomeScreen,
-  LoginScreen,
-  SignupScreen,
+  UserHome,
   ArtworkList,
   ArtworkListRow,
   ArtworkDetail,
   ArtworkForm,
   ExhList,
-  ExhListRow,
-  ExhDetail
+  ExhListRow
 } from '..';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const HomeTab = createStackNavigator({
-  Home: { screen: HomeScreen },
-  Login: { screen: LoginScreen },
-  Signup: { screen: SignupScreen }
+const HomeTab = createSwitchNavigator({
+  Home: { screen: UserHome }
 });
 
 const FormTab = createStackNavigator({
@@ -38,10 +34,9 @@ const ArtworkTab = createStackNavigator({
 const ExhTab = createStackNavigator({
   ExhList: { screen: ExhList },
   ExhListRow: { screen: ExhListRow }
-  // ExhDetail: { screen: ExhDetail }
 });
 
-const BottomTabNavigator = createBottomTabNavigator(
+const AppNavigator = createBottomTabNavigator(
   {
     Home: {
       screen: HomeTab,
@@ -94,4 +89,4 @@ const BottomTabNavigator = createBottomTabNavigator(
   }
 );
 
-export default createAppContainer(BottomTabNavigator);
+export default createAppContainer(AppNavigator);
