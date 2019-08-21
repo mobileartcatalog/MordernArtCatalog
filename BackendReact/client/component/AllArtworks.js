@@ -1,7 +1,9 @@
+/* eslint-disable jsx-quotes */
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchArtworks } from '../reducer/artworks';
 import { arrayBufferToBase64 } from '../../utils';
+import AddArtwork from './Upload';
 
 export class AllArtworks extends React.Component {
   componentDidMount() {
@@ -24,14 +26,20 @@ export class AllArtworks extends React.Component {
                   src={`data: ${
                     artwork.img1.contentType
                   }; base64,${arrayBufferToBase64(artwork.img1.data.data)}`}
-                  alt="image"
+                  alt='image'
+                  style={{ height: 400 }}
                 />
               ) : (
-                <img src={artwork.imageUrl} alt="image" />
+                <img
+                  src={artwork.imageUrl}
+                  alt='image'
+                  style={{ height: 400 }}
+                />
               )}
             </div>
           ))}
         </div>
+        <AddArtwork />
       </div>
     );
   }
