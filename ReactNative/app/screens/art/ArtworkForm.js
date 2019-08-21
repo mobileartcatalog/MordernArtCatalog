@@ -18,40 +18,29 @@ class ArtworkForm extends Component {
       title: '',
       date: '',
       medium: '',
-      dimensions: '',
-      imageData: '',
-      imageType: ''
+      dimension: '',
+      img1: null,
+      imageShow: false
     };
     this.handleSave = this.handleSave.bind(this);
     this.handleImage = this.handleImage.bind(this);
   }
 
   handleSave() {
-    const {
-      title,
-      date,
-      medium,
-      dimensions,
-      imageData,
-      imageType
-    } = this.state;
-    const artwork = { title, date, medium, dimensions, imageData, imageType };
-    this.props.addArtwork(artwork);
-    console.log(
-      'in form',
-      title,
-      date,
-      medium,
-      dimensions,
-      imageData,
-      imageType
-    );
+    this.props.addArtwork(this.state);
+    this.setState({
+      title: '',
+      date: '',
+      medium: '',
+      dimension: '',
+      img1: null,
+      imageShow: !this.state.imageShow
+    });
   }
 
-  handleImage(imageData, imageType) {
+  handleImage(img1) {
     this.setState({
-      imageData,
-      imageType
+      img1
     });
   }
 
@@ -82,10 +71,10 @@ class ArtworkForm extends Component {
         />
         <Input
           style={styles.field}
-          placeholder='dimensions'
+          placeholder='dimension'
           leftIcon={<Icon name='pencil' style={styles.icon} />}
-          value={this.state.dimensions}
-          onChangeText={dimensions => this.setState({ dimensions })}
+          value={this.state.dimension}
+          onChangeText={dimension => this.setState({ dimension })}
         />
         <Button
           style={styles.button}
@@ -93,7 +82,10 @@ class ArtworkForm extends Component {
           onPress={this.handleSave}
         />
         <Button style={styles.button} title='Clear' />
-        <UploadImage getimageData={this.handleImage} />
+        <UploadImage
+          getimageData={this.handleImage}
+          imageShow={this.state.imageShow}
+        />
       </View>
     );
   }

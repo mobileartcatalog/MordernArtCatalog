@@ -11,9 +11,16 @@ export default class App extends Component {
     this.handleChoosePhoto = this.handleChoosePhoto.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.imageShow !== prevProps.imageShow) {
+      this.setState({ artworkImage: null });
+    }
+  }
+
   handleChoosePhoto = () => {
     const option = {
       title: 'Select Artwork',
+      noData: true,
       takePhotoButtonTitle: 'Take Photo...',
       chooseFromLibraryButtonTitle: 'Choose from Library...'
     };
@@ -21,15 +28,13 @@ export default class App extends Component {
     const { getimageData } = this.props;
     ImagePicker.showImagePicker(option, res => {
       console.log('Response = ', res);
-      getimageData(res.data, res.type);
+      getimageData(res);
       if (res.didCancel) {
         console.log('User cancelled image picker');
       } else if (res.error) {
         console.log('ImagePicker Error: ', res.error);
       } else {
         const source = { uri: res.uri };
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
         this.setState({
           artworkImage: source
         });
@@ -44,7 +49,7 @@ export default class App extends Component {
         {artworkImage && (
           <Image
             source={{ uri: artworkImage.uri }}
-            style={{ width: 300, height: 300 }}
+            style={{ width: 300, height: 300, alignSelf: 'center' }}
           />
         )}
         <Button title='Choose Photo' onPress={this.handleChoosePhoto} />

@@ -1,9 +1,9 @@
 /* eslint-disable jsx-quotes */
 import React from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import { addArtworkThunk } from '../reducer/artworks';
 
-export default class AddArtwork extends React.Component {
+class AddArtwork extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,21 +33,14 @@ export default class AddArtwork extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { title, date, medium, dimension, img1 } = this.state;
-    const fd = new FormData();
-    fd.append('img1', img1);
-    fd.append('title', title);
-    fd.append('date', date);
-    fd.append('medium', medium);
-    fd.append('dimension', dimension);
-    axios
-      .post('http://localhost:3000/api/artworks', fd)
-      .then(res => console.log(res));
+    // const { title, date, medium, dimension, img1 } = this.state;
+    this.props.addArtwork(this.state);
     this.setState({
       title: '',
       date: '',
       medium: '',
-      dimension: ''
+      dimension: '',
+      img1: null
     });
   }
   render() {
@@ -96,3 +89,12 @@ export default class AddArtwork extends React.Component {
     );
   }
 }
+
+const mapDispatch = dispatch => ({
+  addArtwork: artwork => dispatch(addArtworkThunk(artwork))
+});
+
+export default connect(
+  null,
+  mapDispatch
+)(AddArtwork);
