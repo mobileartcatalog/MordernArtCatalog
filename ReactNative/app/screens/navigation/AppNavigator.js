@@ -11,8 +11,9 @@ import {
   ArtworkListRow,
   ArtworkDetail,
   ArtworkForm,
+  ExhHome,
   ExhList,
-  ExhListRow,
+  ExhDetail,
   ExhForm
 } from '..';
 
@@ -23,7 +24,8 @@ const HomeTab = createSwitchNavigator({
 });
 
 const FormTab = createStackNavigator({
-  ArtworkForm: { screen: ArtworkForm }
+  ArtworkForm: { screen: ArtworkForm },
+  ExhForm: { screen: ExhForm }
 });
 
 const ArtworkTab = createStackNavigator({
@@ -33,9 +35,9 @@ const ArtworkTab = createStackNavigator({
 });
 
 const ExhTab = createBottomTabNavigator({
+  // ExhHome: { screen: ExhHome },
   ExhList: { screen: ExhList },
-  ExhListRow: { screen: ExhListRow },
-  ExhForm: { screen: ExhForm }
+  ExhDetail: { screen: ExhDetail }
 });
 
 const AppNavigator = createBottomTabNavigator(

@@ -10,10 +10,10 @@ const gettingExhDetail = id => ({
 
 const gotExhDetail = exh => ({
   type: 'GOT_EXH_DETAIL',
-  art
+  exh
 });
 
-export const getArtworkDetail = id => {
+export const getExhDetail = id => {
   return async dispatch => {
     try {
       dispatch(gettingExhDetail());

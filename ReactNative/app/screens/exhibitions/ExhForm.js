@@ -24,9 +24,9 @@ class ExhForm extends Component {
               endDate: ''
             }}
             onSubmit={(values, actions) => {
-              const { title, venue, location, startDate, endDate } = values;
+              console.log('exh values', values);
               this.props
-                .addExh(title, venue, location, startDate, endDate)
+                .addExh(values)
                 .catch(error => {
                   actions.setFieldError('general', error.message);
                 })
@@ -79,22 +79,13 @@ class ExhForm extends Component {
   }
 }
 
-const mapState = state => {
-  return {
-    // authenticated: state.auth.authenticated,
-    // error: state.auth.error,
-    // email: state.auth.email,
-    // uid: state.auth.uid
-  };
-};
-
 const mapDispatch = dispatch => ({
   addExh: exh => dispatch(addExh(exh))
 });
 
 export default withNavigation(
   connect(
-    mapState,
+    null,
     mapDispatch
   )(ExhForm)
 );

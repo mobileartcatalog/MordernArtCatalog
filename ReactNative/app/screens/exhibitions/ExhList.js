@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, SafeAreaView } from 'react-native';
 import { connect } from 'react-redux';
 import { getExh } from '../../reducers/exhReducer/getExh';
 import ExhListRow from './ExhListRow';
@@ -22,6 +22,7 @@ class ExhList extends Component {
       : (label = ' exhibitions found');
 
     return (
+      <SafeAreaView style={{marginTop: 90}}>
       <View>
         <Text>
           {count}
@@ -29,11 +30,12 @@ class ExhList extends Component {
         </Text>
 
         {exhibitions.map(exh => (
-          <View key={exh.id}>
+          <View key={exh._id}>
             <ExhListRow exhibition={exh} />
           </View>
         ))}
       </View>
+      </SafeAreaView >
     );
   }
 }
