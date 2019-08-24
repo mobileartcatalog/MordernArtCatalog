@@ -35,7 +35,8 @@ const ArtworkTab = createStackNavigator({
 
 const ExhTab = createStackNavigator({
   ExhList: { screen: ExhList },
-  ExhDetail: { screen: ExhDetail }
+  ExhDetail: { screen: ExhDetail },
+  ExhForm: { screen: ExhForm }
 });
 
 const AppNavigator = createBottomTabNavigator(

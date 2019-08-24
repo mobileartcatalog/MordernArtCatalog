@@ -13,6 +13,7 @@ class ExhDetail extends Component {
   }
 
   render() {
+    console.log(this.props.selected);
     const { _id, title, venue, location } = this.props.selected;
     if (this.props.selected) {
       return (

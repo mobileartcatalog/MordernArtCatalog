@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, SafeAreaView } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
+import { StyledButton } from '../../screens/formComponents';
 import { getExh } from '../../reducers/exhReducer/getExh';
 import ExhListRow from './ExhListRow';
 
@@ -15,6 +17,7 @@ class ExhList extends Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     const { exhibitions, count } = this.props;
     let label;
     count === 1
@@ -30,6 +33,11 @@ class ExhList extends Component {
             {count}
             {label}
           </Text>
+
+          <StyledButton
+            title="new exhibition"
+            onPress={() => navigate('ExhForm')}
+          />
 
           {exhibitions.map(exh => (
             <View key={exh._id}>
@@ -54,7 +62,9 @@ const mapDispatch = dispatch => ({
   getExh: () => dispatch(getExh())
 });
 
-export default connect(
-  mapState,
-  mapDispatch
-)(ExhList);
+export default withNavigation(
+  connect(
+    mapState,
+    mapDispatch
+  )(ExhList)
+);

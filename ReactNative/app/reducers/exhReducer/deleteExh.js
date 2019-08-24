@@ -18,8 +18,13 @@ export const deleteExh = id => {
 };
 
 const reducer = (state, action) => {
-  let filteredExhList = state.all.filter(exh => exh._id !== action.id);
-  return { ...state, all: filteredExhList };
+  let updatedExhList = state.all.filter(exh => exh._id !== action.id);
+  let updatedCount = updatedExhList.length;
+  return {
+    ...state,
+    all: updatedExhList,
+    count: updatedCount
+  };
 };
 
 export default reducer;
