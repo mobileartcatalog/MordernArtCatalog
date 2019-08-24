@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BASE_URL } from 'react-native-dotenv';
 
 const GETTING_EXH_DETAIL = 'GETTING_EXH_DETAIL';
 const GOT_EXH_DETAIL = 'GOT_EXH_DETAIL';
@@ -17,9 +18,7 @@ export const getExhDetail = id => {
   return async dispatch => {
     try {
       dispatch(gettingExhDetail());
-      const { data } = await axios.get(
-        `http://localhost:3000/api/exhibitions/${id}`
-      );
+      const { data } = await axios.get(`${BASE_URL}/api/exhibitions/${id}`);
       dispatch(gotExhDetail(data));
     } catch (err) {
       console.error(err);

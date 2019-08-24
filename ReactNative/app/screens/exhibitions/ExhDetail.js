@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text } from 'react-native';
+import { StyledButton } from '../formComponents';
 import { getExhDetail } from '../../reducers/exhReducer/getExhDetail';
+import { deleteExh } from '../../reducers/exhReducer/deleteExh';
 import styles from '../../stylesheets/art';
 
 class ExhDetail extends Component {
@@ -11,13 +13,17 @@ class ExhDetail extends Component {
   }
 
   render() {
-    const { exh } = this.props;
-    if (exh) {
+    const { _id, title, venue, location } = this.props.selected;
+    if (this.props.selected) {
       return (
         <View>
-          <Text>{exh.title}</Text>
-          <Text>{exh.venue}</Text>
-          <Text>{exh.location}</Text>
+          <Text>{title}</Text>
+          <Text>{venue}</Text>
+          <Text>{location}</Text>
+          <StyledButton
+            title="delete exhibition"
+            onPress={id => this.props.deleteExh(_id)}
+          />
         </View>
       );
     }
@@ -27,12 +33,13 @@ class ExhDetail extends Component {
 
 const mapState = state => {
   return {
-    exh: state.exhibitions.selected
+    selected: state.exhibitions.selected
   };
 };
 
 const mapDispatch = dispatch => ({
-  getExhDetail: id => dispatch(getExhDetail(id))
+  getExhDetail: id => dispatch(getExhDetail(id)),
+  deleteExh: id => dispatch(deleteExh(id))
 });
 
 export default connect(

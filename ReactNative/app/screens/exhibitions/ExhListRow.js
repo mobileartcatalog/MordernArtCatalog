@@ -14,8 +14,6 @@ class ExhListRow extends Component {
       endDate
     } = this.props.exhibition;
 
-    console.log('exh row props', this.props);
-
     const { navigate } = this.props.navigation;
 
     let venueDisplay, dateDisplay;

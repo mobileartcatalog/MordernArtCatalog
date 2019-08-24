@@ -3,6 +3,7 @@ import reduceReducers from 'reduce-reducers';
 import getExh from './getExh';
 import getExhDetail from './getExhDetail';
 import addExh from './addExh'
+import deleteExh from './deleteExh'
 
 const initialState = {
   loading: false,
@@ -12,6 +13,6 @@ const initialState = {
   count: 0
 };
 
-const exhReducer = reduceReducers(initialState, getExh, getExhDetail, addExh);
+const exhReducer = reduceReducers(initialState, getExh, getExhDetail, addExh, deleteExh);
 
 export default exhReducer;
