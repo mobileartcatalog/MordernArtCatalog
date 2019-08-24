@@ -21,21 +21,23 @@ class ExhList extends Component {
       ? (label = ' exhibition found')
       : (label = ' exhibitions found');
 
-    return (
-      <SafeAreaView style={{marginTop: 90}}>
-      <View>
-        <Text>
-          {count}
-          {label}
-        </Text>
+    return this.props.selected ? (
+      <ExhDetail />
+    ) : (
+      <SafeAreaView>
+        <View>
+          <Text>
+            {count}
+            {label}
+          </Text>
 
-        {exhibitions.map(exh => (
-          <View key={exh._id}>
-            <ExhListRow exhibition={exh} />
-          </View>
-        ))}
-      </View>
-      </SafeAreaView >
+          {exhibitions.map(exh => (
+            <View key={exh._id}>
+              <ExhListRow exhibition={exh} />
+            </View>
+          ))}
+        </View>
+      </SafeAreaView>
     );
   }
 }
