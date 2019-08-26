@@ -4,3 +4,20 @@ body {
   background-color: grey;
   text-align: center;
 }
+
+nav {
+  align-items: center;
+  background-color: rgb(78, 74, 74);
+  display: flex;
+  height: 80px;
+  padding: 10px;
+  margin: 0;
+}
+
+nav a {
+  margin: 10px;
+}
+
+a {
+  color: #e8e9f3;
+}

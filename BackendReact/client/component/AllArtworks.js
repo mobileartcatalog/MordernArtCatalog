@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { fetchArtworks } from '../reducer/artworks';
 import { arrayBufferToBase64 } from '../../utils';
 import AddArtwork from './Upload';
+import { Link } from 'react-router-dom';
 
 export class AllArtworks extends React.Component {
   componentDidMount() {
@@ -20,22 +21,26 @@ export class AllArtworks extends React.Component {
           <h2>All Artworks</h2>
           {artworks.map(artwork => (
             <div key={artwork._id}>
-              <h4>{artwork.title}</h4>
-              {!artwork.imageUrl && true ? (
-                <img
-                  src={`data: ${
-                    artwork.img1.contentType
-                  }; base64,${arrayBufferToBase64(artwork.img1.data.data)}`}
-                  alt='image'
-                  style={{ height: 400 }}
-                />
-              ) : (
-                <img
-                  src={artwork.imageUrl}
-                  alt='image'
-                  style={{ height: 400 }}
-                />
-              )}
+              <Link to={`/${artwork._id}`}>
+                <div>
+                  <h4>{artwork.title}</h4>
+                  {artwork.img1 && true ? (
+                    <img
+                      src={`data: ${
+                        artwork.img1.contentType
+                      }; base64,${arrayBufferToBase64(artwork.img1.data.data)}`}
+                      alt='image'
+                      style={{ height: 400 }}
+                    />
+                  ) : (
+                    <img
+                      src='defaultImage.png'
+                      alt='image'
+                      style={{ height: 400 }}
+                    />
+                  )}
+                </div>
+              </Link>
             </div>
           ))}
         </div>
