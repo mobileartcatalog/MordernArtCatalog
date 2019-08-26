@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
+import { View, Text, TouchableOpacity, } from 'react-native';
 import styles from '../../stylesheets/art';
 
 class ExhListRow extends Component {
@@ -14,8 +15,6 @@ class ExhListRow extends Component {
       endDate
     } = this.props.exhibition;
 
-    const { navigate } = this.props.navigation;
-
     let venueDisplay, dateDisplay;
     venue && location
       ? (venueDisplay = `${venue}, ${location}`)
@@ -28,7 +27,7 @@ class ExhListRow extends Component {
     return (
       <TouchableOpacity
         style={styles.innerContainer}
-        onPress={() => navigate('ExhDetail', { id: _id })}
+        onPress={id => this.props.navigation.navigate('ExhDetail', { id: _id })}
       >
         <View style={{ margin: 10 }}>
           <Text style={styles.title}>{title}</Text>
@@ -40,4 +39,15 @@ class ExhListRow extends Component {
   }
 }
 
-export default withNavigation(ExhListRow);
+const mapState = state => {
+  return {
+    selected: state.exhibitions.selected
+  };
+};
+
+export default withNavigation(
+  connect(
+    mapState,
+    null
+  )(ExhListRow)
+);

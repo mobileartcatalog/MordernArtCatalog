@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import { View, Text, SafeAreaView } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
-import { StyledButton } from '../../screens/formComponents';
+import { StyledSecondaryButton } from '../../screens/formComponents';
 import { getExh } from '../../reducers/exhReducer/getExh';
 import ExhListRow from './ExhListRow';
+import ExhSearch from './SearchBar';
+import styles from '../../stylesheets/forms';
+import { addingExhForm } from '../../reducers/exhReducer/addExh';
 
 class ExhList extends Component {
   static navigationOptions = {
-    title: ''
+    title: '',
+    headerStyle: styles.stackNav
   };
 
   componentDidMount() {
@@ -27,24 +31,24 @@ class ExhList extends Component {
     return this.props.selected ? (
       <ExhDetail />
     ) : (
-      <SafeAreaView>
-        <View>
-          <Text>
-            {count}
-            {label}
-          </Text>
+      <SafeAreaView style={styles.container}>
+        <ExhSearch />
 
-          <StyledButton
-            title="new exhibition"
-            onPress={() => navigate('ExhForm')}
-          />
+        <StyledSecondaryButton
+          title="new exhibition"
+          onPress={() => navigate('ExhForm')}
+        />
 
-          {exhibitions.map(exh => (
-            <View key={exh._id}>
-              <ExhListRow exhibition={exh} />
-            </View>
-          ))}
-        </View>
+        <Text style={styles.bodyText}>
+          {count}
+          {label}
+        </Text>
+
+        {exhibitions.map(exh => (
+          <View key={exh._id}>
+            <ExhListRow exhibition={exh} />
+          </View>
+        ))}
       </SafeAreaView>
     );
   }
@@ -54,12 +58,14 @@ const mapState = state => {
   return {
     loaded: state.exhibitions.loaded,
     exhibitions: state.exhibitions.all,
-    count: state.exhibitions.count
+    count: state.exhibitions.count,
+    formVisible: state.exhibitions.formVisible
   };
 };
 
 const mapDispatch = dispatch => ({
-  getExh: () => dispatch(getExh())
+  getExh: () => dispatch(getExh()),
+  addingExhForm: () => dispatch(addingExhForm())
 });
 
 export default withNavigation(

@@ -9,6 +9,10 @@ export default StyleSheet.create({
   },
   hamburger: { width: 44, height: 44, marginLeft: 20 },
 
+  stackNav: {
+    backgroundColor: 'whitesmoke'
+  },
+
   button: {
     backgroundColor: 'orange',
     color: 'black',
@@ -16,20 +20,23 @@ export default StyleSheet.create({
   },
 
   container: {
-    backgroundColor: 'rgba(119, 136, 153, 0.35)',
-    height: '100%',
-    justifyContent: 'center'
+    backgroundColor: 'whitesmoke',
+    height: '100%'
   },
 
   innerContainer: {
     alignItems: 'center',
-    // top: 40,
     backgroundColor: 'rgba(119, 136, 153, 0.1)',
     borderColor: 'rgba(119, 136, 153, 0.25)',
     borderWidth: 0.5,
     borderRadius: 8,
     margin: 20,
     paddingVertical: 30
+  },
+
+  navContainer: {
+    flexDirection: 'row',
+    margin: 10
   },
 
   horizontalLabel: {
@@ -78,6 +85,10 @@ export default StyleSheet.create({
     marginBottom: 20
   },
 
+  title: {
+    fontWeight: '700'
+  },
+
   Disable: {
     backgroundColor: 'gray',
     borderColor: 'transparent',
@@ -106,9 +117,11 @@ export default StyleSheet.create({
   },
 
   bodyText: {
-    color: 'white',
-    fontSize: 24,
-    fontWeight: '100'
+    color: 'black',
+    fontSize: 14,
+    fontWeight: '100',
+    textAlign: 'left',
+    margin: 10
   },
   h1: {
     color: 'slategray',

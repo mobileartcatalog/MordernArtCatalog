@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-import { Dimensions, View, Text } from 'react-native';
-import { Button } from 'react-native-elements';
+import { View, Text, ActivityIndicator } from 'react-native';
 import styles from '../../stylesheets/forms.js';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { getArt } from '../../reducers/artReducer/getArt';
 import { getExh } from '../../reducers/exhReducer/getExh';
 import { logoutUser } from '../../reducers/authReducer/authUser';
-import { StyledButton, StyledSecondaryButton } from '../formComponents';
+import { StyledSecondaryButton } from '../formComponents';
 
 class UserHome extends Component {
   componentDidMount() {
-    const { loaded } = this.props;
+    const { loaded, getExh, getArt } = this.props;
     if (!loaded) {
-      this.props.getArt();
-      this.props.getExh();
+      // getArt();
+      getExh();
     }
   }
 
@@ -30,7 +28,6 @@ class UserHome extends Component {
       email,
       logoutUser
     } = this.props;
-    console.log('user props', this.props);
 
     // if (authenticated) {
     return (
@@ -39,17 +36,25 @@ class UserHome extends Component {
         <Text style={styles.h1}>{email}</Text>
 
         <View style={styles.innerContainer}>
-          <StyledSecondaryButton
-            title={`Artwork  ${artCount}`}
-            onPress={() => navigate('ArtworkList')}
-          />
+          {!artCount ? (
+            <ActivityIndicator />
+          ) : (
+            <StyledSecondaryButton
+              title={`Artwork  ${artCount}`}
+              onPress={() => navigate('ArtworkList')}
+            />
+          )}
         </View>
 
         <View style={styles.innerContainer}>
-          <StyledSecondaryButton
-            title={`Exhibitions  ${exhCount}`}
-            onPress={() => navigate('ExhList')}
-          />
+          {!exhCount ? (
+            <ActivityIndicator />
+          ) : (
+            <StyledSecondaryButton
+              title={`Exhibitions  ${exhCount}`}
+              onPress={() => navigate('ExhList')}
+            />
+          )}
         </View>
 
         <StyledSecondaryButton title="Log out" onPress={() => logoutUser()} />

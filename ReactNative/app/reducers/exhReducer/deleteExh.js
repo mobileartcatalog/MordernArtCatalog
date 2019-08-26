@@ -23,7 +23,7 @@ const reducer = (state, action) => {
   return {
     ...state,
     all: updatedExhList,
-    count: updatedCount
+    count: updatedCount,
   };
 };
 

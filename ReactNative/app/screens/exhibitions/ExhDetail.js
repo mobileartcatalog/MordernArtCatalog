@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
-import { StyledButton } from '../formComponents';
+import { withNavigation } from 'react-navigation';
+import { View, Text, SafeAreaView, Alert } from 'react-native';
+import { StyledButton, StyledSecondaryButton } from '../formComponents';
 import { getExhDetail } from '../../reducers/exhReducer/getExhDetail';
 import { deleteExh } from '../../reducers/exhReducer/deleteExh';
-import styles from '../../stylesheets/art';
+import styles from '../../stylesheets/forms';
+import { clearSelected } from '../../reducers/exhReducer/getExhDetail';
 
 class ExhDetail extends Component {
   componentDidMount() {
@@ -12,20 +14,67 @@ class ExhDetail extends Component {
     this.props.getExhDetail(id);
   }
 
+  handleDelete() {
+    this.props.deleteExh(this.props.selected._id);
+    this.props.clearSelected();
+    this.props.navigation.navigate('ExhList');
+  }
+
   render() {
-    console.log(this.props.selected);
-    const { _id, title, venue, location } = this.props.selected;
+    const {
+      _id,
+      title,
+      venue,
+      location,
+      startDate,
+      endDate
+    } = this.props.selected;
+
+    let venueDisplay, dateDisplay;
+    venue && location
+      ? (venueDisplay = `${venue}, ${location}`)
+      : (venueDisplay = `${venue}`);
+
+    startDate && endDate
+      ? (dateDisplay = `${startDate} – ${endDate}`)
+      : (dateDisplay = `${startDate}`);
+
     if (this.props.selected) {
       return (
-        <View>
-          <Text>{title}</Text>
-          <Text>{venue}</Text>
-          <Text>{location}</Text>
-          <StyledButton
-            title="delete exhibition"
-            onPress={id => this.props.deleteExh(_id)}
-          />
-        </View>
+        <SafeAreaView style={styles.container}>
+          <View style={{ margin: 10 }}>
+            <View style={{ margin: 10 }}>
+              <Text style={styles.title}>{title}</Text>
+              <Text>{venueDisplay}</Text>
+              <Text>{dateDisplay}</Text>
+            </View>
+
+            <StyledSecondaryButton
+              title="add artwork"
+              onPress={() => Alert.alert(`this doesn't work yet`, `:(`)}
+            />
+            <StyledSecondaryButton
+              title="delete exhibition"
+              onPress={() =>
+                Alert.alert(
+                  'Delete?',
+                  'Are you sure you want to permanently delete this exhibition?',
+                  [
+                    {
+                      text: 'Cancel',
+                      onPress: () => console.log('Cancel Pressed'),
+                      style: 'cancel'
+                    },
+                    {
+                      text: 'Delete',
+                      onPress: () => this.handleDelete()
+                    }
+                  ]
+                )
+              }
+            />
+          </View>
+        </SafeAreaView>
       );
     }
     return <Text>no.</Text>;
@@ -40,10 +89,13 @@ const mapState = state => {
 
 const mapDispatch = dispatch => ({
   getExhDetail: id => dispatch(getExhDetail(id)),
-  deleteExh: id => dispatch(deleteExh(id))
+  deleteExh: id => dispatch(deleteExh(id)),
+  clearSelected: () => dispatch(clearSelected())
 });
 
-export default connect(
-  mapState,
-  mapDispatch
-)(ExhDetail);
+export default withNavigation(
+  connect(
+    mapState,
+    mapDispatch
+  )(ExhDetail)
+);

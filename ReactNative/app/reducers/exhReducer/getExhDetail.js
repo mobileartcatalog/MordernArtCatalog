@@ -3,6 +3,7 @@ import { BASE_URL } from 'react-native-dotenv';
 
 const GETTING_EXH_DETAIL = 'GETTING_EXH_DETAIL';
 const GOT_EXH_DETAIL = 'GOT_EXH_DETAIL';
+const CLEAR_SELECTED = 'CLEAR_SELECTED';
 
 const gettingExhDetail = id => ({
   type: 'GETTING_EXH_DETAIL',
@@ -14,15 +15,25 @@ const gotExhDetail = exh => ({
   exh
 });
 
+const clearingSelected = () => ({
+  type: 'CLEAR_SELECTED'
+});
+
 export const getExhDetail = id => {
   return async dispatch => {
     try {
       dispatch(gettingExhDetail());
       const { data } = await axios.get(`${BASE_URL}/api/exhibitions/${id}`);
       dispatch(gotExhDetail(data));
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
+  };
+};
+
+export const clearSelected = () => {
+  return async dispatch => {
+    dispatch(clearingSelected());
   };
 };
 
@@ -32,6 +43,8 @@ const reducer = (state, action) => {
       return { ...state, loading: true };
     case GOT_EXH_DETAIL:
       return { ...state, loading: false, selected: action.exh };
+    case CLEAR_SELECTED:
+      return { ...state, selected: {}, formVisible: false };
     default:
       return state;
   }

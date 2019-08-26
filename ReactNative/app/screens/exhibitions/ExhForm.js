@@ -24,7 +24,6 @@ class ExhForm extends Component {
               endDate: ''
             }}
             onSubmit={(values, actions) => {
-              console.log('exh values', values);
               this.props
                 .addExh(values)
                 .catch(error => {
@@ -33,6 +32,7 @@ class ExhForm extends Component {
                 .finally(() => {
                   actions.setSubmitting(false);
                   actions.resetForm();
+                  navigate('ExhDetail', { id: this.props.selected._id });
                 });
             }}
             validationSchema={exhValidationSchema}
@@ -79,13 +79,19 @@ class ExhForm extends Component {
   }
 }
 
+const mapState = state => {
+  return {
+    selected: state.exhibitions.selected
+  };
+};
+
 const mapDispatch = dispatch => ({
   addExh: exh => dispatch(addExh(exh))
 });
 
 export default withNavigation(
   connect(
-    null,
+    mapState,
     mapDispatch
   )(ExhForm)
 );
