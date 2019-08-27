@@ -76,7 +76,9 @@ export const updateArtThunk = (id, updateData) => {
 
       const { data } = await axios.patch(`/api/artworks/${id}`, fd);
       console.log('in thunk @@@@@the returned from patch', data);
-      // dispatch(updateArtwork(id, data));
+      ///use data.images to query from Image collection, create a image api
+      ///dispatch the data as selected, and image data to a new state
+      dispatch(updateArtwork(id, data));
     } catch (err) {
       console.error(err);
     }
