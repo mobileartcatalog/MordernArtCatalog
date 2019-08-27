@@ -36,11 +36,8 @@ const ExhibitionSchema = new Schema({
   },
   artworks: [
     {
-      artworks: {
-        type: Schema.Types.ObjectId,
-        ref: 'Artworks'
-      },
-      catalogueNumber: Number
+      type: Schema.Types.ObjectId,
+      ref: 'Artworks'
     }
   ]
 });

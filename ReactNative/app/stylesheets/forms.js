@@ -13,6 +13,11 @@ export default StyleSheet.create({
     backgroundColor: 'whitesmoke'
   },
 
+  thumbnail: {
+    height: 150,
+    width: 150
+  },
+
   button: {
     backgroundColor: 'orange',
     color: 'black',
