@@ -15,6 +15,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const ImgSchema = new Schema({
+  _id: {
+    type: Schema.Types.ObjectId
+  },
+  data: Buffer,
+  contentType: String
+});
 //create schema
 const ArtworkSchema = new Schema({
   _id: {
@@ -54,6 +61,23 @@ const ArtworkSchema = new Schema({
     data: Buffer,
     contentType: String
   },
+  img2: {
+    data: Buffer,
+    contentType: String
+  },
+  img3: {
+    data: Buffer,
+    contentType: String
+  },
+  img4: {
+    data: Buffer,
+    contentType: String
+  },
+  img5: {
+    data: Buffer,
+    contentType: String
+  },
+  artworkpics: [ImgSchema],
   exhibitions: [
     {
       exhibitions: {

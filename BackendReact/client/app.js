@@ -2,15 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from './store';
-import { Upload } from './component/Upload';
-import { Artworks } from './component/AllArtworks';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Root } from './component/Root';
 
 ReactDOM.render(
   <Provider store={store}>
-    <div>
-      <h1>Modern Art Catalog</h1>
-      <Artworks />
-    </div>
+    <Router>
+      <Root />
+    </Router>
   </Provider>,
   document.getElementById('app')
 );
