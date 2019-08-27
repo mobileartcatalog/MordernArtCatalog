@@ -25,7 +25,7 @@ router.post('/', async (req, res, next) => {
 router.get('/:exhibitionId', async (req, res, next) => {
   try {
     const id = req.params.exhibitionId;
-    const exhibiton = await Exhibitions.findById(id);
+    const exhibiton = await Exhibitions.findById(id).populate('Artworks');
     if (exhibiton) {
       res.status(200).json(exhibiton);
     } else {
