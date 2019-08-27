@@ -1,5 +1,4 @@
 import axios from 'axios';
-import artworkData from './data';
 
 const GETTING_ARTWORK_DETAIL = 'GETTING_ARTWORK_DETAIL';
 const GOT_ARTWORK_DETAIL = 'GOT_ARTWORK_DETAIL';

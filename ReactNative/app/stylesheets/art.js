@@ -31,6 +31,17 @@ export default StyleSheet.create({
     // alignItems: 'center',
   },
 
+  innerContainer: {
+    // alignItems: 'center',
+    backgroundColor: 'whitesmoke',
+    // backgroundColor: 'rgba(119, 136, 153, 0.1)',
+    borderColor: 'rgba(119, 136, 153, 0.25)',
+    borderWidth: 0.5,
+    // borderRadius: 8,
+    // margin: 20,
+    paddingVertical: 10
+  },
+
   row: {
     // flex: 1,
     flexWrap: 'wrap',

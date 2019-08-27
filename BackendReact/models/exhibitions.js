@@ -25,14 +25,14 @@ const ExhibitionSchema = new Schema({
     type: String
   },
   title: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   startDate: {
-    type: Date
+    type: String
   },
   endDate: {
-    type: Date
+    type: String
   },
   artworks: [
     {
@@ -46,12 +46,12 @@ const ExhibitionSchema = new Schema({
 });
 
 ExhibitionSchema.methods.getDateRange = function() {
-  return `${this.startDate} – ${this.endDate}`
-}
+  return `${this.startDate} – ${this.endDate}`;
+};
 
 ExhibitionSchema.methods.getVenue = function() {
-  return `${this.venue}, ${this.location}`
-}
+  return `${this.venue}, ${this.location}`;
+};
 
 const Exhibitions = mongoose.model('Exhibitions', ExhibitionSchema);
 module.exports = Exhibitions;
