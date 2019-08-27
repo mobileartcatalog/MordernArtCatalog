@@ -31,6 +31,7 @@ const upload = multer({
 
 const Artworks = require('../../models/artwork');
 const Exhibitions = require('../../models/exhibitions');
+const Image = require('../../models/image');
 
 //post
 router.post('/', upload.single('img1'), async (req, res, next) => {
@@ -95,23 +96,24 @@ router.patch(
     try {
       console.log('*****in api updata,', req.files);
       const id = req.params.artworkId;
-      const updateOps = {};
-      if (req.body.length > 0) {
-        for (let ops of req.body) {
-          updateOps[ops.propName] = ops.value;
-        }
-      }
+      ////for other fields update , Works
+      // const updateOps = {};
+      // if (req.body.length > 0) {
+      //   for (let ops of req.body) {
+      //     updateOps[ops.propName] = ops.value;
+      //   }
+      // }
 
       ///when store img as img2,img3...
 
-      if (req.files.length > 0) {
-        for (let i = 0; i < req.files.length; i++) {
-          updateOps[`img${i + 2}`] = {
-            data: fs.readFileSync(req.files[i].path),
-            contentType: req.files[i].mimetype
-          };
-        }
-      }
+      // if (req.files.length > 0) {
+      //   for (let i = 0; i < req.files.length; i++) {
+      //     updateOps[`img${i + 2}`] = {
+      //       data: fs.readFileSync(req.files[i].path),
+      //       contentType: req.files[i].mimetype
+      //     };
+      //   }
+      // }
       // console.log('updateOps', updateOps);
 
       // if (req.files) {
@@ -133,15 +135,44 @@ router.patch(
       //       .catch(error => console.error(error));
       //   });
       // }
+      if (req.files.length > 0) {
+        Artworks.findById(id, async (err, artwork) => {
+          if (err) {
+            console.error(err);
+          } else {
+            const imgIdArr = [];
+            for (let i = 0; i < req.files.length; i++) {
+              const img = {
+                data: fs.readFileSync(req.files[i].path),
+                contentType: req.files[i].mimetype
+              };
+              const image = new Image({
+                _id: new mongoose.Types.ObjectId(),
+                ...img
+              });
+              const result = await image.save();
+              console.log('image collection return', result);
+              imgIdArr.push(result._id);
+            }
+            artwork.images = [...artwork.images, ...imgIdArr];
+            const imageResult = await artwork.save();
+            console.log('imageResult', imageResult);
+            res.status(200).json(imageResult);
+          }
+        });
+      }
+
       //previos working before add multi imgs
-      const result = await Artworks.update(
-        { _id: id },
-        { $set: updateOps }
-      ).exec();
+      // const result = await Artworks.update(
+      //   { _id: id },
+      //   { $set: updateOps }
+      // ).exec();
+
       // const result = await Artworks.findByIdAndUpdate(id, updateOps, {
       //   new: true
       // }).exec();
-      res.status(200).json(result);
+
+      // res.status(200).json(result);
     } catch (err) {
       console.log(err);
       res.status(500).json({
