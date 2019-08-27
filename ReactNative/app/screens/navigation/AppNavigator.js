@@ -12,7 +12,8 @@ import {
   ArtworkDetail,
   ArtworkForm,
   ExhList,
-  ExhListRow
+  ExhDetail,
+  ExhForm
 } from '..';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -22,7 +23,8 @@ const HomeTab = createSwitchNavigator({
 });
 
 const FormTab = createStackNavigator({
-  ArtworkForm: { screen: ArtworkForm }
+  ArtworkForm: { screen: ArtworkForm },
+  ExhForm: { screen: ExhForm }
 });
 
 const ArtworkTab = createStackNavigator({
@@ -33,7 +35,8 @@ const ArtworkTab = createStackNavigator({
 
 const ExhTab = createStackNavigator({
   ExhList: { screen: ExhList },
-  ExhListRow: { screen: ExhListRow }
+  ExhDetail: { screen: ExhDetail },
+  ExhForm: { screen: ExhForm }
 });
 
 const AppNavigator = createBottomTabNavigator(

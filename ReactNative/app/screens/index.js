@@ -11,3 +11,4 @@ export { default as ArtworkForm } from './art/ArtworkForm';
 export { default as ExhList } from './exhibitions/ExhList';
 export { default as ExhListRow } from './exhibitions/ExhListRow';
 export { default as ExhDetail } from './exhibitions/ExhDetail';
+export { default as ExhForm } from './exhibitions/ExhForm';

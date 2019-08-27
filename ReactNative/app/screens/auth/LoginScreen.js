@@ -16,7 +16,7 @@ import { loginUser } from '../../reducers/authReducer/authUser';
 
 class LoginScreen extends Component {
   render() {
-    const { navigate } = this.props.navigation;
+    const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
         <Text style={styles.headlineText}>Art Catalog</Text>
