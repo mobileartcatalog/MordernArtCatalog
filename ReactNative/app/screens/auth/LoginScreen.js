@@ -16,7 +16,7 @@ import { loginUser } from '../../reducers/authReducer/authUser';
 
 class LoginScreen extends Component {
   render() {
-    const {} = this.props.navigation;
+    const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
         <Text style={styles.headlineText}>Art Catalog</Text>
@@ -91,7 +91,7 @@ class LoginScreen extends Component {
           <StyledSecondaryButton
             titleStyle={{ color: '#2b8c5f' }}
             title="Create new account"
-            onPress={() => 'Signup'}
+            onPress={() => navigate('Signup')}
           />
           <StyledSecondaryButton
             title="Log in with Google"

@@ -12,7 +12,7 @@ class UserHome extends Component {
   componentDidMount() {
     const { loaded, getExh, getArt } = this.props;
     if (!loaded) {
-      // getArt();
+      getArt();
       getExh();
     }
   }
