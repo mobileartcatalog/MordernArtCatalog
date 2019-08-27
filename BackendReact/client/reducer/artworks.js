@@ -38,7 +38,6 @@ export const addArtworkThunk = artwork => {
   return async dispatch => {
     try {
       const { img1, title, date, medium, dimension } = artwork;
-      console.log('in thunk addArtwork', img1, title);
       const fd = new FormData();
       fd.append('img1', img1);
       fd.append('title', title);
