@@ -69,7 +69,6 @@ export const updateArtThunk = (id, updateData) => {
     try {
       console.log('in thunk,', updateData);
       const fd = new FormData();
-
       for (let i = 0; i < updateData.length; i++) {
         fd.append('artworkpics', updateData[i]);
       }

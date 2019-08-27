@@ -80,10 +80,8 @@ const ArtworkSchema = new Schema({
   artworkpics: [ImgSchema],
   exhibitions: [
     {
-      exhibitions: {
-        type: Schema.Types.ObjectId,
-        ref: 'Exhibitions'
-      }
+      type: Schema.Types.ObjectId,
+      ref: 'Exhibitions'
     }
   ]
 });
