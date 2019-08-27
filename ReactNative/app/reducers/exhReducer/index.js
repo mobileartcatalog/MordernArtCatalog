@@ -11,9 +11,9 @@ const initialState = {
   loaded: false,
   all: [],
   selected: {},
-  formVisible: false,
   count: 0,
-  searchResults: []
+  searchResults: [],
+  artworkIds: []
 };
 
 const exhReducer = reduceReducers(

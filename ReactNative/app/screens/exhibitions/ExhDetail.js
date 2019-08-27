@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-import { View, Text, SafeAreaView, Alert } from 'react-native';
+import { View, Text, Image, SafeAreaView, Alert } from 'react-native';
 import { StyledButton, StyledSecondaryButton } from '../formComponents';
 import { getExhDetail } from '../../reducers/exhReducer/getExhDetail';
 import { deleteExh } from '../../reducers/exhReducer/deleteExh';
+
+import { filterArtworks, arrayBufferToBase64 } from '../../utils';
 import styles from '../../stylesheets/forms';
 import { clearSelected } from '../../reducers/exhReducer/getExhDetail';
 
@@ -30,6 +32,13 @@ class ExhDetail extends Component {
       endDate
     } = this.props.selected;
 
+    const artworks = filterArtworks(
+      this.props.artworkIds,
+      this.props.allArtwork
+    );
+
+    console.log('artworks', artworks);
+
     let venueDisplay, dateDisplay;
     venue && location
       ? (venueDisplay = `${venue}, ${location}`)
@@ -47,6 +56,24 @@ class ExhDetail extends Component {
               <Text style={styles.title}>{title}</Text>
               <Text>{venueDisplay}</Text>
               <Text>{dateDisplay}</Text>
+
+              <Text>Artworks</Text>
+
+              {artworks.map(art => {
+                return (
+                  <View>
+                    <Text>{art.title}</Text>
+                    <Image
+                      style={styles.thumbnail}
+                      source={{
+                        uri: `data:${
+                          art.img1.contentType
+                        };base64,${arrayBufferToBase64(art.img1.data.data)}`
+                      }}
+                    />
+                  </View>
+                );
+              })}
             </View>
 
             <StyledSecondaryButton
@@ -83,7 +110,9 @@ class ExhDetail extends Component {
 
 const mapState = state => {
   return {
-    selected: state.exhibitions.selected
+    allArtwork: state.art.all,
+    selected: state.exhibitions.selected,
+    artworkIds: state.exhibitions.artworkIds
   };
 };
 

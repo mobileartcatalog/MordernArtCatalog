@@ -42,9 +42,9 @@ const reducer = (state, action) => {
     case GETTING_EXH_DETAIL:
       return { ...state, loading: true };
     case GOT_EXH_DETAIL:
-      return { ...state, loading: false, selected: action.exh };
+      return { ...state, loading: false, selected: action.exh, artworkIds: action.exh.artworks  };
     case CLEAR_SELECTED:
-      return { ...state, selected: {}, formVisible: false };
+      return { ...state, selected: {}, artworkIds: []};
     default:
       return state;
   }

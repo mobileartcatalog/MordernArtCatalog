@@ -21,13 +21,13 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-//get single exhibiton
+//get single exhibition
 router.get('/:exhibitionId', async (req, res, next) => {
   try {
     const id = req.params.exhibitionId;
-    const exhibiton = await Exhibitions.findById(id);
-    if (exhibiton) {
-      res.status(200).json(exhibiton);
+    const exhibition = await Exhibitions.findById(id).populate('Artworks');
+    if (exhibition) {
+      res.status(200).json(exhibition);
     } else {
       res
         .status(404)
