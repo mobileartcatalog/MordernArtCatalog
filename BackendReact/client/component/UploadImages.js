@@ -40,7 +40,7 @@ class UploadImages extends React.Component {
             multiple
             onChange={this.fileSelectedHandler}
           />
-          <button type='submit'>Submit</button>
+          <button type='submit'>Upload</button>
         </form>
         {/* <div className='artworkpics'>
           {this.state.artworkpics && (

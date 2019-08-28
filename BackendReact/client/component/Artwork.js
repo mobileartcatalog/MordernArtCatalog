@@ -4,7 +4,7 @@ import { fetchSingleArt } from '../reducer/artworks';
 import { arrayBufferToBase64 } from '../../utils';
 import UploadImages from './UploadImages';
 
-class Artwork extends React.Component {
+class ArtworkCompo extends React.Component {
   componentDidMount() {
     const id = this.props.match.params.artworkId;
     this.props.setSingleArt(id);
@@ -68,7 +68,7 @@ const mapDispatch = dispatch => {
   };
 };
 
-export default connect(
+export const Artwork = connect(
   mapState,
   mapDispatch
-)(Artwork);
+)(ArtworkCompo);

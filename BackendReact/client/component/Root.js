@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
 import { Artworks } from './AllArtworks';
 import { Exhibitions } from './Exhibitions';
-import Artwork from './Artwork';
+import { Artwork } from './Artwork';
 
 export const Root = () => {
   return (

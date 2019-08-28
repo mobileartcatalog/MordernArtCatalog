@@ -37,13 +37,11 @@ export const fetchArtworks = () => {
 export const addArtworkThunk = artwork => {
   return async dispatch => {
     try {
-      const { img1, title, date, medium, dimension } = artwork;
       const fd = new FormData();
-      fd.append('img1', img1);
-      fd.append('title', title);
-      fd.append('date', date);
-      fd.append('medium', medium);
-      fd.append('dimension', dimension);
+      let keys = Object.keys(artwork);
+      keys.forEach(key => {
+        fd.append(`${key}`, artwork[key]);
+      });
       const { data } = await axios.post('/api/artworks', fd);
       dispatch(addArtwork(data.createArtwork));
     } catch (err) {
@@ -72,17 +70,13 @@ export const updateArtThunk = (id, updateData) => {
       }
       const { data } = await axios.patch(`/api/artworks/${id}`, fd);
       console.log('in thunk @@@@@the returned from patch', data);
-      ///use data.images to query from Image collection, create a image api
 
-      ///dispatch the data as selected, and image data to a new state
       dispatch(updateArtwork(id, data));
     } catch (err) {
       console.error(err);
     }
   };
 };
-
-export //reducer
 
 const initialState = {
   all: [],
@@ -98,7 +92,6 @@ const reducer = (state = initialState, action) => {
     case SET_ARTWORKS:
       return { ...state, loading: false, all: action.artworks };
     case SET_SINGLEART:
-      console.log('action.selected.images', action.selected.images);
       return {
         ...state,
         selected: action.selected.artwork,
@@ -108,13 +101,6 @@ const reducer = (state = initialState, action) => {
     case ADD_ARTWORK:
       return { ...state, all: [...state.all, action.artwork] };
     case UPDATE_ARTWORK:
-      // let updateArtworks = state.all.map(artwork => {
-      //   if (artwork._id === action.id) {
-      //     return action.updateData.artwork;
-      //   } else {
-      //     return artwork;
-      //   }
-      // });
       return {
         ...state,
         all: state.all.map(artwork => {

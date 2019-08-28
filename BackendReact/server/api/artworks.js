@@ -60,7 +60,7 @@ router.post('/', upload.single('img1'), async (req, res, next) => {
 router.get('/:artworkId', async (req, res, next) => {
   try {
     const id = req.params.artworkId;
-    console.log('req.params:', req.params);
+    // console.log('req.params:', req.params);
     const artwork = await Artworks.findById(id);
     if (artwork) {
       if (!artwork.images.length) {
@@ -137,7 +137,7 @@ router.patch(
             }
             artwork.images = [...artwork.images, ...imgIdArr];
             const updatedArtwork = await artwork.save();
-            console.log('imageResult', updatedArtwork);
+            // console.log('imageResult', updatedArtwork);
             const images = await Image.find()
               .where('_id')
               .in(updatedArtwork.images)
