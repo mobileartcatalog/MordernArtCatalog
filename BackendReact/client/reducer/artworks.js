@@ -56,7 +56,6 @@ export const fetchSingleArt = id => {
   return async dispatch => {
     try {
       const { data } = await axios.get(`/api/artworks/${id}`);
-      console.log('fetchSingle by id', data);
       dispatch(setSingleArt(data));
     } catch (err) {
       console.log('Fetching a singel artwork goes wrong');
@@ -67,16 +66,14 @@ export const fetchSingleArt = id => {
 export const updateArtThunk = (id, updateData) => {
   return async dispatch => {
     try {
-      console.log('in thunk,', updateData);
       const fd = new FormData();
       for (let i = 0; i < updateData.length; i++) {
         fd.append('artworkpics', updateData[i]);
       }
-      console.log('formdata in thunk,', fd);
-
       const { data } = await axios.patch(`/api/artworks/${id}`, fd);
       console.log('in thunk @@@@@the returned from patch', data);
       ///use data.images to query from Image collection, create a image api
+
       ///dispatch the data as selected, and image data to a new state
       dispatch(updateArtwork(id, data));
     } catch (err) {
@@ -90,6 +87,7 @@ export //reducer
 const initialState = {
   all: [],
   selected: {},
+  images: [],
   loading: false
 };
 
@@ -100,7 +98,13 @@ const reducer = (state = initialState, action) => {
     case SET_ARTWORKS:
       return { ...state, loading: false, all: action.artworks };
     case SET_SINGLEART:
-      return { ...state, selected: action.selected, loading: false };
+      console.log('action.selected.images', action.selected.images);
+      return {
+        ...state,
+        selected: action.selected.artwork,
+        images: action.selected.images,
+        loading: false
+      };
     case ADD_ARTWORK:
       return { ...state, all: [...state.all, action.artwork] };
     case UPDATE_ARTWORK:

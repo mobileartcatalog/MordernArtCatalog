@@ -63,7 +63,21 @@ router.get('/:artworkId', async (req, res, next) => {
     console.log('req.params:', req.params);
     const artwork = await Artworks.findById(id);
     if (artwork) {
-      res.status(200).json(artwork);
+      if (!artwork.images.length) {
+        const response = { artwork, images: [] };
+        res.status(200).json(response);
+      } else {
+        console.log('image arrr', artwork.images);
+        const images = await Image.find()
+          .where('_id')
+          .in(artwork.images)
+          .exec();
+        const response = {
+          artwork,
+          images
+        };
+        res.status(200).json(response);
+      }
     } else {
       res
         .status(404)

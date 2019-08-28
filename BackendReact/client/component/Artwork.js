@@ -11,10 +11,11 @@ class Artwork extends React.Component {
   }
 
   render() {
-    console.log('in artcomp', this.props.selected);
     if (this.props.loading) return <div>Loading</div>;
     if (!this.props.selected.title) return <div>Loading</div>;
     const { title, date, medium, img1 } = this.props.selected;
+    const { images } = this.props;
+
     return (
       <div>
         <h4>{title}</h4>
@@ -30,9 +31,23 @@ class Artwork extends React.Component {
         <h4>Medium</h4>
         <p>{medium}</p>
         <h4>Dimensions</h4>
-        <ul>
-          <li>More image</li>
-        </ul>
+        {images.length ? (
+          images.map(image => {
+            return (
+              <div key={image._id}>
+                <img
+                  src={`data: ${
+                    image.contentType
+                  }; base64,${arrayBufferToBase64(image.data.data)}`}
+                  alt='image'
+                  style={{ height: 100 }}
+                />
+              </div>
+            );
+          })
+        ) : (
+          <p>No images</p>
+        )}
         <UploadImages />
       </div>
     );
@@ -42,6 +57,7 @@ class Artwork extends React.Component {
 const mapState = state => {
   return {
     selected: state.artworks.selected,
+    images: state.artworks.images,
     loading: state.artworks.loading
   };
 };
