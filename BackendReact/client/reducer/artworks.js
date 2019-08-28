@@ -15,9 +15,9 @@ const setSingleArt = selected => ({
   type: SET_SINGLEART,
   selected
 });
-const updateArtwork = (id, data) => ({
+const updateArtwork = (id, updateData) => ({
   type: UPDATE_ARTWORK,
-  data,
+  updateData,
   id
 });
 
@@ -108,14 +108,25 @@ const reducer = (state = initialState, action) => {
     case ADD_ARTWORK:
       return { ...state, all: [...state.all, action.artwork] };
     case UPDATE_ARTWORK:
-      let updateArtworks = state.all.map(artwork => {
-        if (artwork._id === action.id) {
-          return action.data;
-        } else {
-          return artwork;
-        }
-      });
-      return { ...state, all: updateArtworks, selected: action.data };
+      // let updateArtworks = state.all.map(artwork => {
+      //   if (artwork._id === action.id) {
+      //     return action.updateData.artwork;
+      //   } else {
+      //     return artwork;
+      //   }
+      // });
+      return {
+        ...state,
+        all: state.all.map(artwork => {
+          if (artwork._id === action.id) {
+            return action.updateData.artwork;
+          } else {
+            return artwork;
+          }
+        }),
+        selected: action.updateData.artwork,
+        images: action.updateData.images
+      };
     default:
       return state;
   }

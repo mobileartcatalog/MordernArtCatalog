@@ -95,7 +95,6 @@ router.get('/', async (req, res, next) => {
   try {
     //const data = await Artworks.find().select("artistname title image") //will return selected attributes
     const data = await Artworks.find();
-    console.log('all artworks', data);
     res.json(data);
   } catch (err) {
     console.error(err);
@@ -118,37 +117,6 @@ router.patch(
       //   }
       // }
 
-      ///when store img as img2,img3...
-
-      // if (req.files.length > 0) {
-      //   for (let i = 0; i < req.files.length; i++) {
-      //     updateOps[`img${i + 2}`] = {
-      //       data: fs.readFileSync(req.files[i].path),
-      //       contentType: req.files[i].mimetype
-      //     };
-      //   }
-      // }
-      // console.log('updateOps', updateOps);
-
-      // if (req.files) {
-      //   Artworks.findById(id, function(err, artwork) {
-      //     if (err) {
-      //       console.error(err);
-      //     } else {
-      //       for (let i = 0; i < req.files.length; i++) {
-      //         const img = {
-      //           data: fs.readFileSync(req.files[i].path),
-      //           contentType: req.files[i].mimetype
-      //         };
-      //         artwork.artworkpics.push(img);
-      //       }
-      //     }
-      //     artwork
-      //       .save()
-      //       .then(result => console.log('save the img files', result))
-      //       .catch(error => console.error(error));
-      //   });
-      // }
       if (req.files.length > 0) {
         Artworks.findById(id, async (err, artwork) => {
           if (err) {
@@ -165,13 +133,19 @@ router.patch(
                 ...img
               });
               const result = await image.save();
-              console.log('image collection return', result);
               imgIdArr.push(result._id);
             }
             artwork.images = [...artwork.images, ...imgIdArr];
-            const imageResult = await artwork.save();
-            console.log('imageResult', imageResult);
-            res.status(200).json(imageResult);
+            const updatedArtwork = await artwork.save();
+            console.log('imageResult', updatedArtwork);
+            const images = await Image.find()
+              .where('_id')
+              .in(updatedArtwork.images)
+              .exec();
+            res.status(200).json({
+              artwork: updatedArtwork,
+              images
+            });
           }
         });
       }
