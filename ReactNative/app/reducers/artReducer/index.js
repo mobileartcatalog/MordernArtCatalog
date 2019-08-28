@@ -11,6 +11,7 @@ const initialState = {
   loaded: false,
   all: [],
   selected: {},
+  images: [],
   count: 0
 };
 

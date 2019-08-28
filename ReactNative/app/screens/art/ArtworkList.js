@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { FlatGrid } from 'react-native-super-grid';
 import { connect } from 'react-redux';
 import { getArt } from '../../reducers/artReducer/getArt';
