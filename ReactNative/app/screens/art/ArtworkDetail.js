@@ -5,6 +5,7 @@ import ScaledImage from 'react-native-scaled-image';
 import { getArtworkDetail } from '../../reducers/artReducer/getArtworkDetail';
 import styles from '../../stylesheets/art';
 import { arrayBufferToBase64 } from '../../utils';
+import MultiImages from './MultiImagesUpload';
 
 class ArtworkDetail extends Component {
   componentDidMount() {
@@ -48,6 +49,7 @@ class ArtworkDetail extends Component {
               })}
             </ScrollView>
           ) : null}
+          <MultiImages />
         </View>
       );
     }
