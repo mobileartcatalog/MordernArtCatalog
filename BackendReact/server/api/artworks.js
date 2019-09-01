@@ -148,6 +148,20 @@ router.patch(
             });
           }
         });
+      } else {
+        ////for other fields update , Works
+        // const updateOps = {};
+        // if (req.body.length > 0) {
+        //   for (let ops of req.body) {
+        //     updateOps[ops.propName] = ops.value;
+        //   }
+        // }
+        //previos working before add multi imgs
+        // const result = await Artworks.update(
+        //   { _id: id },
+        //   { $set: updateOps }
+        // ).exec();
+        // res.status(200).json(result);
       }
 
       //previos working before add multi imgs

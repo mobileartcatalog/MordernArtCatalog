@@ -21,10 +21,11 @@ export const addArt = artwork => {
       fd.append('date', date);
       fd.append('medium', medium);
       fd.append('dimension', dimension);
-      axios
-        .post('http://localhost:3000/api/artworks', fd)
-        .then(res => console.log(res));
-      // dispatch(addedArt(data));
+      const { data } = await axios.post(
+        'http://localhost:3000/api/artworks',
+        fd
+      );
+      dispatch(addedArt(data.createArtwork));
     } catch (err) {
       console.error(err);
     }
@@ -34,7 +35,11 @@ export const addArt = artwork => {
 const reducer = (state, action) => {
   switch (action.type) {
     case ADDED_ART:
-      return { ...state, all: [...state.all, action.art] };
+      return {
+        ...state,
+        all: [...state.all, action.artwork],
+        count: state.count + 1
+      };
     default:
       return state;
   }

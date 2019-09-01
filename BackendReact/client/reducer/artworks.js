@@ -64,10 +64,12 @@ export const fetchSingleArt = id => {
 export const updateArtThunk = (id, updateData) => {
   return async dispatch => {
     try {
+      console.log('let me see updataData', updateData);
       const fd = new FormData();
       for (let i = 0; i < updateData.length; i++) {
         fd.append('artworkpics', updateData[i]);
       }
+      console.log('!!!!let me see fd', fd);
       const { data } = await axios.patch(`/api/artworks/${id}`, fd);
       console.log('in thunk @@@@@the returned from patch', data);
 

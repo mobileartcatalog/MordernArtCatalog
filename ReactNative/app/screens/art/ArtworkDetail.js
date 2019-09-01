@@ -19,7 +19,7 @@ class ArtworkDetail extends Component {
     console.log('artwirk in detal!!!', artwork);
     if (artwork.img1) {
       return (
-        <View>
+        <ScrollView>
           <ScaledImage
             source={{
               uri: `data:${
@@ -37,20 +37,22 @@ class ArtworkDetail extends Component {
               {images.map(image => {
                 console.log('image arr', image);
                 return (
-                  <Image
-                    source={{
-                      uri: `data:${
-                        image.contentType
-                      };base64,${arrayBufferToBase64(image.data.data)}`
-                    }}
-                    style={styles.thumbnail}
-                  />
+                  <View key={image._id}>
+                    <Image
+                      source={{
+                        uri: `data:${
+                          image.contentType
+                        };base64,${arrayBufferToBase64(image.data.data)}`
+                      }}
+                      style={styles.thumbnail}
+                    />
+                  </View>
                 );
               })}
             </ScrollView>
           ) : null}
-          <MultiImages />
-        </View>
+          <MultiImages artworkId={artwork._id} />
+        </ScrollView>
       );
     }
     return <Text>loading</Text>;
