@@ -32,7 +32,13 @@ const reducer = (state, action) => {
     case GETTING_ARTWORK_DETAIL:
       return { ...state, loading: true };
     case GOT_ARTWORK_DETAIL:
-      return { ...state, loading: false, selected: action.art };
+      console.log('in thunk reducer', action.art);
+      return {
+        ...state,
+        loading: false,
+        selected: action.art.artwork,
+        images: action.art.images
+      };
     default:
       return state;
   }

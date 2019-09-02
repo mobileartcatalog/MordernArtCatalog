@@ -24,6 +24,7 @@ class UploadImages extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.updateArt(this.props.selected._id, this.state.artworkpics);
+    console.log('before pass to thunk', this.state.artworkpics);
     this.setState({
       artworkpics: null
     });
@@ -40,7 +41,7 @@ class UploadImages extends React.Component {
             multiple
             onChange={this.fileSelectedHandler}
           />
-          <button type='submit'>Submit</button>
+          <button type='submit'>Upload</button>
         </form>
         {/* <div className='artworkpics'>
           {this.state.artworkpics && (

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Button, Image, Text } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 
-export default class App extends Component {
+export default class UploadImage extends Component {
   constructor(props) {
     super(props);
     this.state = {

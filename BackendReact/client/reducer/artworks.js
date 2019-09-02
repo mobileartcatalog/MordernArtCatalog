@@ -15,9 +15,9 @@ const setSingleArt = selected => ({
   type: SET_SINGLEART,
   selected
 });
-const updateArtwork = (id, data) => ({
+const updateArtwork = (id, updateData) => ({
   type: UPDATE_ARTWORK,
-  data,
+  updateData,
   id
 });
 
@@ -37,13 +37,11 @@ export const fetchArtworks = () => {
 export const addArtworkThunk = artwork => {
   return async dispatch => {
     try {
-      const { img1, title, date, medium, dimension } = artwork;
       const fd = new FormData();
-      fd.append('img1', img1);
-      fd.append('title', title);
-      fd.append('date', date);
-      fd.append('medium', medium);
-      fd.append('dimension', dimension);
+      let keys = Object.keys(artwork);
+      keys.forEach(key => {
+        fd.append(`${key}`, artwork[key]);
+      });
       const { data } = await axios.post('/api/artworks', fd);
       dispatch(addArtwork(data.createArtwork));
     } catch (err) {
@@ -56,7 +54,6 @@ export const fetchSingleArt = id => {
   return async dispatch => {
     try {
       const { data } = await axios.get(`/api/artworks/${id}`);
-      console.log('fetchSingle by id', data);
       dispatch(setSingleArt(data));
     } catch (err) {
       console.log('Fetching a singel artwork goes wrong');
@@ -67,17 +64,15 @@ export const fetchSingleArt = id => {
 export const updateArtThunk = (id, updateData) => {
   return async dispatch => {
     try {
-      console.log('in thunk,', updateData);
+      console.log('let me see updataData', updateData);
       const fd = new FormData();
       for (let i = 0; i < updateData.length; i++) {
         fd.append('artworkpics', updateData[i]);
       }
-      console.log('formdata in thunk,', fd);
-
+      console.log('!!!!let me see fd', fd);
       const { data } = await axios.patch(`/api/artworks/${id}`, fd);
       console.log('in thunk @@@@@the returned from patch', data);
-      ///use data.images to query from Image collection, create a image api
-      ///dispatch the data as selected, and image data to a new state
+
       dispatch(updateArtwork(id, data));
     } catch (err) {
       console.error(err);
@@ -85,11 +80,10 @@ export const updateArtThunk = (id, updateData) => {
   };
 };
 
-export //reducer
-
 const initialState = {
   all: [],
   selected: {},
+  images: [],
   loading: false
 };
 
@@ -100,18 +94,27 @@ const reducer = (state = initialState, action) => {
     case SET_ARTWORKS:
       return { ...state, loading: false, all: action.artworks };
     case SET_SINGLEART:
-      return { ...state, selected: action.selected, loading: false };
+      return {
+        ...state,
+        selected: action.selected.artwork,
+        images: action.selected.images,
+        loading: false
+      };
     case ADD_ARTWORK:
       return { ...state, all: [...state.all, action.artwork] };
     case UPDATE_ARTWORK:
-      let updateArtworks = state.all.map(artwork => {
-        if (artwork._id === action.id) {
-          return action.data;
-        } else {
-          return artwork;
-        }
-      });
-      return { ...state, all: updateArtworks, selected: action.data };
+      return {
+        ...state,
+        all: state.all.map(artwork => {
+          if (artwork._id === action.id) {
+            return action.updateData.artwork;
+          } else {
+            return artwork;
+          }
+        }),
+        selected: action.updateData.artwork,
+        images: action.updateData.images
+      };
     default:
       return state;
   }

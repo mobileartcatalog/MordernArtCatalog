@@ -60,10 +60,24 @@ router.post('/', upload.single('img1'), async (req, res, next) => {
 router.get('/:artworkId', async (req, res, next) => {
   try {
     const id = req.params.artworkId;
-    console.log('req.params:', req.params);
+    // console.log('req.params:', req.params);
     const artwork = await Artworks.findById(id);
     if (artwork) {
-      res.status(200).json(artwork);
+      if (!artwork.images.length) {
+        const response = { artwork, images: [] };
+        res.status(200).json(response);
+      } else {
+        console.log('image arrr', artwork.images);
+        const images = await Image.find()
+          .where('_id')
+          .in(artwork.images)
+          .exec();
+        const response = {
+          artwork,
+          images
+        };
+        res.status(200).json(response);
+      }
     } else {
       res
         .status(404)
@@ -81,7 +95,6 @@ router.get('/', async (req, res, next) => {
   try {
     //const data = await Artworks.find().select("artistname title image") //will return selected attributes
     const data = await Artworks.find();
-    console.log('all artworks', data);
     res.json(data);
   } catch (err) {
     console.error(err);
@@ -104,37 +117,6 @@ router.patch(
       //   }
       // }
 
-      ///when store img as img2,img3...
-
-      // if (req.files.length > 0) {
-      //   for (let i = 0; i < req.files.length; i++) {
-      //     updateOps[`img${i + 2}`] = {
-      //       data: fs.readFileSync(req.files[i].path),
-      //       contentType: req.files[i].mimetype
-      //     };
-      //   }
-      // }
-      // console.log('updateOps', updateOps);
-
-      // if (req.files) {
-      //   Artworks.findById(id, function(err, artwork) {
-      //     if (err) {
-      //       console.error(err);
-      //     } else {
-      //       for (let i = 0; i < req.files.length; i++) {
-      //         const img = {
-      //           data: fs.readFileSync(req.files[i].path),
-      //           contentType: req.files[i].mimetype
-      //         };
-      //         artwork.artworkpics.push(img);
-      //       }
-      //     }
-      //     artwork
-      //       .save()
-      //       .then(result => console.log('save the img files', result))
-      //       .catch(error => console.error(error));
-      //   });
-      // }
       if (req.files.length > 0) {
         Artworks.findById(id, async (err, artwork) => {
           if (err) {
@@ -151,15 +133,35 @@ router.patch(
                 ...img
               });
               const result = await image.save();
-              console.log('image collection return', result);
               imgIdArr.push(result._id);
             }
             artwork.images = [...artwork.images, ...imgIdArr];
-            const imageResult = await artwork.save();
-            console.log('imageResult', imageResult);
-            res.status(200).json(imageResult);
+            const updatedArtwork = await artwork.save();
+            // console.log('imageResult', updatedArtwork);
+            const images = await Image.find()
+              .where('_id')
+              .in(updatedArtwork.images)
+              .exec();
+            res.status(200).json({
+              artwork: updatedArtwork,
+              images
+            });
           }
         });
+      } else {
+        ////for other fields update , Works
+        // const updateOps = {};
+        // if (req.body.length > 0) {
+        //   for (let ops of req.body) {
+        //     updateOps[ops.propName] = ops.value;
+        //   }
+        // }
+        //previos working before add multi imgs
+        // const result = await Artworks.update(
+        //   { _id: id },
+        //   { $set: updateOps }
+        // ).exec();
+        // res.status(200).json(result);
       }
 
       //previos working before add multi imgs
