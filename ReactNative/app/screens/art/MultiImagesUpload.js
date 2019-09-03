@@ -9,7 +9,7 @@ export class MultiImages extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: null
+      images: null,
     };
     this.pickMultiImages = this.pickMultiImages.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
@@ -20,7 +20,7 @@ export class MultiImages extends Component {
       multiple: true,
       waitAnimationEnd: false,
       includeExif: true,
-      forceJpg: true
+      forceJpg: true,
     })
       .then(images => {
         this.setState({
@@ -31,9 +31,9 @@ export class MultiImages extends Component {
               width: image.width,
               height: image.height,
               type: image.mime,
-              name: image.filename
+              name: image.filename,
             };
-          })
+          }),
         });
       })
       .catch(err => console.log(err));
@@ -43,14 +43,14 @@ export class MultiImages extends Component {
     const { uploadImages, artworkId } = this.props;
     uploadImages(artworkId, this.state.images);
     this.setState({
-      images: null
+      images: null,
     });
   }
 
   render() {
     return (
       <View>
-        <Button title='Select More Images' onPress={this.pickMultiImages} />
+        <Button title="Select More Images" onPress={this.pickMultiImages} />
         <ScrollView horizontal>
           {this.state.images
             ? this.state.images.map((i, index) => (
@@ -60,14 +60,14 @@ export class MultiImages extends Component {
               ))
             : null}
         </ScrollView>
-        <Button title='Upload' onPress={this.handleUpload} />
+        <Button title="Upload" onPress={this.handleUpload} />
       </View>
     );
   }
 }
 
 const mapDispatch = dispatch => ({
-  uploadImages: (id, images) => dispatch(uploadImagesthunk(id, images))
+  uploadImages: (id, images) => dispatch(uploadImagesthunk(id, images)),
 });
 
 export default connect(

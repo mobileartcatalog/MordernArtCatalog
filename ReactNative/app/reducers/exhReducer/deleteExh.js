@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { BASE_URL } from 'react-native-dotenv';
 
+const DELETED_EXH = 'DELETED_EXH';
+
 const deletedExh = id => ({
   type: 'DELETED_EXH',
-  id
+  id,
 });
 
 export const deleteExh = id => {
@@ -18,13 +20,18 @@ export const deleteExh = id => {
 };
 
 const reducer = (state, action) => {
-  let updatedExhList = state.all.filter(exh => exh._id !== action.id);
-  let updatedCount = updatedExhList.length;
-  return {
-    ...state,
-    all: updatedExhList,
-    count: updatedCount,
-  };
+  switch (action.type) {
+    case DELETED_EXH:
+      let updatedExhList = state.all.filter(exh => exh._id !== action.id);
+      let updatedCount = updatedExhList.length;
+      return {
+        ...state,
+        all: updatedExhList,
+        count: updatedCount,
+      };
+    default:
+      return state;
+  }
 };
 
 export default reducer;
