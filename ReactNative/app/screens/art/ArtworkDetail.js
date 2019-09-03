@@ -24,7 +24,7 @@ class ArtworkDetail extends Component {
             source={{
               uri: `data:${
                 artwork.img1.contentType
-              };base64,${arrayBufferToBase64(artwork.img1.data.data)}`
+              };base64,${arrayBufferToBase64(artwork.img1.data.data)}`,
             }}
             width={width}
           />
@@ -42,7 +42,7 @@ class ArtworkDetail extends Component {
                       source={{
                         uri: `data:${
                           image.contentType
-                        };base64,${arrayBufferToBase64(image.data.data)}`
+                        };base64,${arrayBufferToBase64(image.data.data)}`,
                       }}
                       style={styles.thumbnail}
                     />
@@ -63,12 +63,12 @@ const mapState = state => {
   return {
     artwork: state.art.selected,
     images: state.art.images,
-    loading: state.art.loading
+    loading: state.art.loading,
   };
 };
 
 const mapDispatch = dispatch => ({
-  getArtworkDetail: id => dispatch(getArtworkDetail(id))
+  getArtworkDetail: id => dispatch(getArtworkDetail(id)),
 });
 
 export default connect(

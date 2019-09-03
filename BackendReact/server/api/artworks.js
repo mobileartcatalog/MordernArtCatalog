@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
   },
   filename: function(req, file, cb) {
     cb(null, file.originalname);
-  }
+  },
 });
 
 const fileFilter = (req, file, cb) => {
@@ -24,9 +24,9 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 1024 * 1024 * 10
+    fileSize: 1024 * 1024 * 10,
   },
-  fileFilter: fileFilter
+  fileFilter: fileFilter,
 });
 
 const Artworks = require('../../models/artwork');
@@ -39,7 +39,7 @@ router.post('/', upload.single('img1'), async (req, res, next) => {
     console.log(req.file);
     const artwork = new Artworks({
       _id: new mongoose.Types.ObjectId(),
-      ...req.body
+      ...req.body,
     });
     if (req.file) {
       artwork.img1.data = fs.readFileSync(req.file.path);
@@ -48,7 +48,7 @@ router.post('/', upload.single('img1'), async (req, res, next) => {
     const result = await artwork.save();
     res.status(200).json({
       message: 'Handling Post',
-      createArtwork: result
+      createArtwork: result,
     });
   } catch (err) {
     console.error(err);
@@ -74,7 +74,7 @@ router.get('/:artworkId', async (req, res, next) => {
           .exec();
         const response = {
           artwork,
-          images
+          images,
         };
         res.status(200).json(response);
       }
@@ -93,8 +93,8 @@ router.get('/:artworkId', async (req, res, next) => {
 //@/api/artworks
 router.get('/', async (req, res, next) => {
   try {
-    //const data = await Artworks.find().select("artistname title image") //will return selected attributes
-    const data = await Artworks.find();
+    const data = await Artworks.find().select('-images'); //will return selected attributes
+    // const data = await Artworks.find();
     res.json(data);
   } catch (err) {
     console.error(err);
@@ -126,11 +126,11 @@ router.patch(
             for (let i = 0; i < req.files.length; i++) {
               const img = {
                 data: fs.readFileSync(req.files[i].path),
-                contentType: req.files[i].mimetype
+                contentType: req.files[i].mimetype,
               };
               const image = new Image({
                 _id: new mongoose.Types.ObjectId(),
-                ...img
+                ...img,
               });
               const result = await image.save();
               imgIdArr.push(result._id);
@@ -144,7 +144,7 @@ router.patch(
               .exec();
             res.status(200).json({
               artwork: updatedArtwork,
-              images
+              images,
             });
           }
         });
@@ -178,7 +178,7 @@ router.patch(
     } catch (err) {
       console.log(err);
       res.status(500).json({
-        error: err
+        error: err,
       });
     }
   }

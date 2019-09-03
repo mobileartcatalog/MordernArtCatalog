@@ -5,7 +5,7 @@ const UPLOAD_IMAGES = 'UPLOAD_IMAGES';
 const uploadImages = (id, updateData) => ({
   type: 'UPLOAD_IMAGES',
   id,
-  updateData
+  updateData,
 });
 
 export const uploadImagesthunk = (id, images) => {
@@ -16,7 +16,7 @@ export const uploadImagesthunk = (id, images) => {
         fd.append('artworkpics', {
           uri: images[i].uri,
           type: images[i].type,
-          name: images[i].name
+          name: images[i].name,
         });
       }
       const { data } = await axios.patch(
@@ -36,15 +36,15 @@ const reducer = (state, action) => {
     case UPLOAD_IMAGES:
       return {
         ...state,
-        all: state.all.map(artwork => {
-          if (artwork._id === action.id) {
-            return action.updateData.artwork;
-          } else {
-            return artwork;
-          }
-        }),
+        // all: state.all.map(artwork => {
+        //   if (artwork._id === action.id) {
+        //     return action.updateData.artwork;
+        //   } else {
+        //     return artwork;
+        //   }
+        // }),
         selected: action.updateData.artwork,
-        images: action.updateData.images
+        images: action.updateData.images,
       };
     default:
       return state;

@@ -1,5 +1,7 @@
 // import axios from 'axios';
 
+const DELETED_ARTWORK = 'DELETED_ARTWORK'
+
 const deletedArtwork = id => ({
   type: 'DELETED_ARTWORK',
   id,
@@ -17,8 +19,18 @@ export const deleteArtwork = id => {
 };
 
 const reducer = (state, action) => {
-  let filteredArtList = state.all.filter(artwork => artwork._id !== action.id);
-  return { ...state, all: filteredArtList };
+  switch (action.type) {
+    case DELETED_ARTWORK:
+      let updatedArtList = state.all.filter(art => art._id !== action.id);
+      let updatedCount = updatedArtList.length;
+      return {
+        ...state,
+        all: updatedArtList,
+        count: updatedCount,
+      };
+    default:
+      return state;
+  }
 };
 
 export default reducer;
