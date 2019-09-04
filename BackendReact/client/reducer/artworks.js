@@ -6,6 +6,7 @@ const SET_ARTWORKS = 'SET_ARTWORKS';
 const ADD_ARTWORK = 'ADD_ARTWORK';
 const SET_SINGLEART = 'SET_SINGLEART';
 const UPDATE_ARTWORK = 'UPDATE_ARTWORK';
+const DETELE_ARTWORK = 'DETELE_ARTWORK';
 
 //action creator
 const gettingArtworks = () => ({ type: GETTING_ARTWORKS });
@@ -18,6 +19,10 @@ const setSingleArt = selected => ({
 const updateArtwork = (id, updateData) => ({
   type: UPDATE_ARTWORK,
   updateData,
+  id
+});
+const deleteArtwork = id => ({
+  type: DETELE_ARTWORK,
   id
 });
 
@@ -75,7 +80,18 @@ export const updateArtThunk = (id, updateData) => {
 
       dispatch(updateArtwork(id, data));
     } catch (err) {
-      console.error(err);
+      console.log(err);
+    }
+  };
+};
+
+export const deleteArtworkthunk = id => {
+  return async dispatch => {
+    try {
+      await axios.delete(`/api/artworks/${id}`);
+      dispatch(deleteArtwork(id));
+    } catch (err) {
+      console.log(err);
     }
   };
 };
@@ -114,6 +130,11 @@ const reducer = (state = initialState, action) => {
         }),
         selected: action.updateData.artwork,
         images: action.updateData.images
+      };
+    case DETELE_ARTWORK:
+      return {
+        ...state,
+        all: state.all.filter(art => art._id !== action.id)
       };
     default:
       return state;
