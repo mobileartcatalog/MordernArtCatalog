@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Text, Dimensions, ScrollView, Image } from 'react-native';
+import {
+  View,
+  Text,
+  Dimensions,
+  ScrollView,
+  Image,
+  Button,
+  Alert
+} from 'react-native';
 import ScaledImage from 'react-native-scaled-image';
 import { getArtworkDetail } from '../../reducers/artReducer/getArtworkDetail';
+import { deleteArtwork } from '../../reducers/artReducer/deleteArtwork';
 import styles from '../../stylesheets/art';
 import { arrayBufferToBase64 } from '../../utils';
 import MultiImages from './MultiImagesUpload';
@@ -11,12 +20,19 @@ class ArtworkDetail extends Component {
   componentDidMount() {
     const id = this.props.navigation.getParam('id');
     this.props.getArtworkDetail(id);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
+  handleDelete() {
+    const id = this.props.navigation.getParam('id');
+    this.props.deleteArtwork(id);
+    //Do I need to clear the state.seleted??
+    this.props.navigation.navigate('ArtworkList');
+  }
   render() {
     const { artwork, images } = this.props;
     const { width } = Dimensions.get('window');
-    console.log('artwirk in detal!!!', artwork);
+
     if (artwork.img1) {
       return (
         <ScrollView>
@@ -24,7 +40,7 @@ class ArtworkDetail extends Component {
             source={{
               uri: `data:${
                 artwork.img1.contentType
-              };base64,${arrayBufferToBase64(artwork.img1.data.data)}`,
+              };base64,${arrayBufferToBase64(artwork.img1.data.data)}`
             }}
             width={width}
           />
@@ -42,7 +58,7 @@ class ArtworkDetail extends Component {
                       source={{
                         uri: `data:${
                           image.contentType
-                        };base64,${arrayBufferToBase64(image.data.data)}`,
+                        };base64,${arrayBufferToBase64(image.data.data)}`
                       }}
                       style={styles.thumbnail}
                     />
@@ -52,6 +68,26 @@ class ArtworkDetail extends Component {
             </ScrollView>
           ) : null}
           <MultiImages artworkId={artwork._id} />
+          <Button
+            title='Delete Artwork'
+            onPress={() =>
+              Alert.alert(
+                'Delete?',
+                'Are you sure you want to permanently delete this artwork?',
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel'
+                  },
+                  {
+                    text: 'Delete',
+                    onPress: () => this.handleDelete()
+                  }
+                ]
+              )
+            }
+          />
         </ScrollView>
       );
     }
@@ -63,12 +99,13 @@ const mapState = state => {
   return {
     artwork: state.art.selected,
     images: state.art.images,
-    loading: state.art.loading,
+    loading: state.art.loading
   };
 };
 
 const mapDispatch = dispatch => ({
   getArtworkDetail: id => dispatch(getArtworkDetail(id)),
+  deleteArtwork: id => dispatch(deleteArtwork(id))
 });
 
 export default connect(

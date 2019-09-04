@@ -77,11 +77,11 @@ class ExhDetail extends Component {
             </View>
 
             <StyledSecondaryButton
-              title="add artwork"
+              title='add artwork'
               onPress={() => Alert.alert(`this doesn't work yet`, `:(`)}
             />
             <StyledSecondaryButton
-              title="delete exhibition"
+              title='delete exhibition'
               onPress={() =>
                 Alert.alert(
                   'Delete?',
