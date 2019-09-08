@@ -6,14 +6,17 @@ import { fetchSingleArt, deleteArtworkthunk } from '../reducer/artworks';
 import { arrayBufferToBase64 } from '../../utils';
 import UploadImages from './UploadImages';
 import { Modal } from './Modal';
+import { Redirect } from 'react-router-dom';
 
 class ArtworkCompo extends React.Component {
   constructor() {
     super();
     this.state = {
-      isOpen: false
+      isOpen: false,
+      redirect: false
     };
     this.handleComfirm = this.handleComfirm.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
   componentDidMount() {
@@ -21,8 +24,12 @@ class ArtworkCompo extends React.Component {
     this.props.setSingleArt(id);
   }
 
-  handleComfirm() {
+  handleCancel() {
     this.setState({ isOpen: false });
+  }
+
+  handleComfirm() {
+    this.setState({ isOpen: false, redirect: true });
   }
 
   handleDelete() {
@@ -37,16 +44,19 @@ class ArtworkCompo extends React.Component {
     const { title, date, medium, img1, _id } = this.props.selected;
     const { images } = this.props;
 
+    if (this.state.redirect) return <Redirect to='/' />;
+
     return (
       <div className='artwork'>
         <div className='artworkInfo'>
-          <img
-            src={`data: ${img1.contentType}; base64,${arrayBufferToBase64(
-              img1.data.data
-            )}`}
-            alt='artworkimage'
-            height='500'
-          />
+          <div className='imgContainer'>
+            <img
+              src={`data: ${img1.contentType}; base64,${arrayBufferToBase64(
+                img1.data.data
+              )}`}
+              alt='artworkimage'
+            />
+          </div>
           <div className='artwork-detail'>
             <h3>{title}</h3>
             <h4>artisit</h4>
@@ -60,9 +70,12 @@ class ArtworkCompo extends React.Component {
             <div className='upload'>
               <UploadImages />
             </div>
-            <button onClick={this.handleDelete}>Delete</button>
+            <button id='deleteartwork' onClick={this.handleDelete}>
+              Delete this artwork
+            </button>
             <Modal
               show={this.state.isOpen}
+              cancel={this.handleCancel}
               confirm={this.handleComfirm}
               id={this.props.match.params.artworkId}
             />
