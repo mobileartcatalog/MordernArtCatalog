@@ -15,7 +15,7 @@ class UploadImages extends React.Component {
   }
 
   fileSelectedHandler(event) {
-    console.log('in fileSelect event', event.target.files);
+    // console.log('in fileSelect event', event.target.files);
     this.setState({
       artworkpics: Array.from(event.target.files)
     });
@@ -24,7 +24,6 @@ class UploadImages extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.updateArt(this.props.selected._id, this.state.artworkpics);
-    console.log('before pass to thunk', this.state.artworkpics);
     this.setState({
       artworkpics: null
     });
@@ -33,7 +32,9 @@ class UploadImages extends React.Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <label htmlFor='artworkpics'>Choose more images to upload</label>
+          <label htmlFor='artworkpics'>
+            Choose Images to Upload(PNG,JPG)(Max 4pcs/time)
+          </label>
           <input
             type='file'
             name='artworkpics'
@@ -43,10 +44,6 @@ class UploadImages extends React.Component {
           />
           <button type='submit'>Upload</button>
         </form>
-        {/* <div className='artworkpics'>
-          {this.state.artworkpics && (
-          <img />)}
-        </div> */}
       </div>
     );
   }

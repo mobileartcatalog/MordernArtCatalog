@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
-
 const fs = require('fs');
 const multer = require('multer'); //file storing middleware
+const Artworks = require('../../models/artwork');
+const Image = require('../../models/image');
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -10,7 +11,7 @@ const storage = multer.diskStorage({
   },
   filename: function(req, file, cb) {
     cb(null, file.originalname);
-  },
+  }
 });
 
 const fileFilter = (req, file, cb) => {
@@ -24,14 +25,10 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 1024 * 1024 * 10,
+    fileSize: 1024 * 1024 * 10
   },
-  fileFilter: fileFilter,
+  fileFilter: fileFilter
 });
-
-const Artworks = require('../../models/artwork');
-const Exhibitions = require('../../models/exhibitions');
-const Image = require('../../models/image');
 
 //post
 router.post('/', upload.single('img1'), async (req, res, next) => {
@@ -39,7 +36,7 @@ router.post('/', upload.single('img1'), async (req, res, next) => {
     console.log(req.file);
     const artwork = new Artworks({
       _id: new mongoose.Types.ObjectId(),
-      ...req.body,
+      ...req.body
     });
     if (req.file) {
       artwork.img1.data = fs.readFileSync(req.file.path);
@@ -48,7 +45,7 @@ router.post('/', upload.single('img1'), async (req, res, next) => {
     const result = await artwork.save();
     res.status(200).json({
       message: 'Handling Post',
-      createArtwork: result,
+      createArtwork: result
     });
   } catch (err) {
     console.error(err);
@@ -74,7 +71,7 @@ router.get('/:artworkId', async (req, res, next) => {
           .exec();
         const response = {
           artwork,
-          images,
+          images
         };
         res.status(200).json(response);
       }
@@ -107,17 +104,11 @@ router.patch(
   upload.array('artworkpics', 4),
   async (req, res, next) => {
     try {
-      console.log('*****in api updata,', req.files);
+      console.log('*****in api updata req.file,', req.files);
       const id = req.params.artworkId;
-      ////for other fields update , Works
-      // const updateOps = {};
-      // if (req.body.length > 0) {
-      //   for (let ops of req.body) {
-      //     updateOps[ops.propName] = ops.value;
-      //   }
-      // }
 
-      if (req.files.length > 0) {
+      if (req.files) {
+        console.log('req.file happen?????');
         Artworks.findById(id, async (err, artwork) => {
           if (err) {
             console.error(err);
@@ -126,76 +117,58 @@ router.patch(
             for (let i = 0; i < req.files.length; i++) {
               const img = {
                 data: fs.readFileSync(req.files[i].path),
-                contentType: req.files[i].mimetype,
+                contentType: req.files[i].mimetype
               };
               const image = new Image({
                 _id: new mongoose.Types.ObjectId(),
-                ...img,
+                ...img
               });
               const result = await image.save();
               imgIdArr.push(result._id);
             }
             artwork.images = [...artwork.images, ...imgIdArr];
             const updatedArtwork = await artwork.save();
-            // console.log('imageResult', updatedArtwork);
             const images = await Image.find()
               .where('_id')
               .in(updatedArtwork.images)
               .exec();
             res.status(200).json({
               artwork: updatedArtwork,
-              images,
+              images
             });
           }
         });
       } else {
-        ////for other fields update , Works
-        // const updateOps = {};
-        // if (req.body.length > 0) {
-        //   for (let ops of req.body) {
-        //     updateOps[ops.propName] = ops.value;
-        //   }
-        // }
-        //previos working before add multi imgs
-        // const result = await Artworks.update(
-        //   { _id: id },
-        //   { $set: updateOps }
-        // ).exec();
-        // res.status(200).json(result);
+        ////for other fields update
+        const result = await Artworks.findByIdAndUpdate(id, req.body, {
+          new: true
+        }).exec();
+        res.status(200).json({ artwork: result, images: [] });
       }
-
-      //previos working before add multi imgs
-      // const result = await Artworks.update(
-      //   { _id: id },
-      //   { $set: updateOps }
-      // ).exec();
-
-      // const result = await Artworks.findByIdAndUpdate(id, updateOps, {
-      //   new: true
-      // }).exec();
-
-      // res.status(200).json(result);
     } catch (err) {
       console.log(err);
       res.status(500).json({
-        error: err,
+        error: err
       });
     }
   }
 );
 
 //delete
-router.delete('/:artworkId', (req, res, next) => {
+router.delete('/:artworkId', async (req, res, next) => {
   const id = req.params.artworkId;
-  Artworks.remove({ _id: id })
-    .exec()
-    .then(result => {
-      res.status(200).json(result);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json({ error: err });
-    });
+  try {
+    const artwork = await Artworks.findByIdAndRemove(id);
+    if (artwork.images.length) {
+      await Image.deleteMany()
+        .where('_id')
+        .in(artwork.images);
+    }
+    res.status(200).json({ message: `${artwork._id} is deleted` });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err });
+  }
 });
 
 module.exports = router;

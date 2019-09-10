@@ -5,7 +5,7 @@ const UPLOAD_IMAGES = 'UPLOAD_IMAGES';
 const uploadImages = (id, updateData) => ({
   type: 'UPLOAD_IMAGES',
   id,
-  updateData,
+  updateData
 });
 
 export const uploadImagesthunk = (id, images) => {
@@ -16,14 +16,13 @@ export const uploadImagesthunk = (id, images) => {
         fd.append('artworkpics', {
           uri: images[i].uri,
           type: images[i].type,
-          name: images[i].name,
+          name: images[i].name
         });
       }
       const { data } = await axios.patch(
         `http://localhost:3000/api/artworks/${id}`,
         fd
       );
-      console.log('!!!!!From RN thunk id', id, typeof id);
       dispatch(uploadImages(id, data));
     } catch (err) {
       console.error(err);
@@ -44,7 +43,7 @@ const reducer = (state, action) => {
         //   }
         // }),
         selected: action.updateData.artwork,
-        images: action.updateData.images,
+        images: action.updateData.images
       };
     default:
       return state;

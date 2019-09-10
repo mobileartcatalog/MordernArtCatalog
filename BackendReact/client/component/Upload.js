@@ -39,7 +39,7 @@ class AddArtwork extends React.Component {
       title: '',
       date: '',
       medium: '',
-      dimension: '',
+      dimensions: '',
       img1: null
     });
   }
@@ -73,11 +73,11 @@ class AddArtwork extends React.Component {
             onChange={this.handleChange}
           />
 
-          <label htmlFor='dimension'>Dimension:</label>
+          <label htmlFor='dimensions'>Dimension:</label>
           <input
             type='text'
-            name='dimension'
-            value={this.state.dimension}
+            name='dimensions'
+            value={this.state.dimensions}
             onChange={this.handleChange}
           />
 
