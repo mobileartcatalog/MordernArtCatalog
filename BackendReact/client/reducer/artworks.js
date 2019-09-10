@@ -1,14 +1,15 @@
 import axios from 'axios';
 
 //action type
-const GETTING_ARTWORKS = 'GETTING_ARTWORKS';
+const LOADING = 'LOADING';
 const SET_ARTWORKS = 'SET_ARTWORKS';
 const ADD_ARTWORK = 'ADD_ARTWORK';
 const SET_SINGLEART = 'SET_SINGLEART';
 const UPDATE_ARTWORK = 'UPDATE_ARTWORK';
+const DETELE_ARTWORK = 'DETELE_ARTWORK';
 
 //action creator
-const gettingArtworks = () => ({ type: GETTING_ARTWORKS });
+const loading = () => ({ type: LOADING });
 const setArtworks = artworks => ({ type: SET_ARTWORKS, artworks });
 const addArtwork = artwork => ({ type: ADD_ARTWORK, artwork });
 const setSingleArt = selected => ({
@@ -20,12 +21,16 @@ const updateArtwork = (id, updateData) => ({
   updateData,
   id
 });
+const deleteArtwork = id => ({
+  type: DETELE_ARTWORK,
+  id
+});
 
 //thunk creator
 export const fetchArtworks = () => {
   return async dispatch => {
     try {
-      dispatch(gettingArtworks());
+      dispatch(loading());
       const { data } = await axios.get('/api/artworks');
       dispatch(setArtworks(data));
     } catch (err) {
@@ -64,18 +69,37 @@ export const fetchSingleArt = id => {
 export const updateArtThunk = (id, updateData) => {
   return async dispatch => {
     try {
-      console.log('let me see updataData', updateData);
       const fd = new FormData();
       for (let i = 0; i < updateData.length; i++) {
         fd.append('artworkpics', updateData[i]);
       }
-      console.log('!!!!let me see fd', fd);
       const { data } = await axios.patch(`/api/artworks/${id}`, fd);
-      console.log('in thunk @@@@@the returned from patch', data);
-
       dispatch(updateArtwork(id, data));
     } catch (err) {
-      console.error(err);
+      console.log(err);
+    }
+  };
+};
+
+export const updateArtInfo = (id, updateDate) => {
+  return async dispatch => {
+    try {
+      const { data } = await axios.patch(`/api/artworks/${id}`, updateDate);
+      dispatch(updateArtwork(id, data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const deleteArtworkthunk = id => {
+  return async dispatch => {
+    try {
+      dispatch(loading());
+      await axios.delete(`/api/artworks/${id}`);
+      dispatch(deleteArtwork(id));
+    } catch (err) {
+      console.log(err);
     }
   };
 };
@@ -89,7 +113,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case GETTING_ARTWORKS:
+    case LOADING:
       return { ...state, loading: true };
     case SET_ARTWORKS:
       return { ...state, loading: false, all: action.artworks };
@@ -113,7 +137,16 @@ const reducer = (state = initialState, action) => {
           }
         }),
         selected: action.updateData.artwork,
-        images: action.updateData.images
+        images:
+          action.updateData.images.length > 0
+            ? action.updateData.images
+            : state.images
+      };
+    case DETELE_ARTWORK:
+      return {
+        ...state,
+        all: state.all.filter(art => art._id !== action.id),
+        loading: false
       };
     default:
       return state;

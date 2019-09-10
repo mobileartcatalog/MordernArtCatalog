@@ -78,7 +78,7 @@ class ExhDetail extends Component {
 
             <LinkArtModal />
             <StyledSecondaryButton
-              title="delete exhibition"
+              title='delete exhibition'
               onPress={() =>
                 Alert.alert(
                   'Delete?',

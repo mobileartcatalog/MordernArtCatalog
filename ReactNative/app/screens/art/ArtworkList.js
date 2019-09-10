@@ -4,6 +4,7 @@ import { FlatGrid } from 'react-native-super-grid';
 import { connect } from 'react-redux';
 import { getArt } from '../../reducers/artReducer/getArt';
 import ArtworkListRow from './ArtworkListRow';
+import { withNavigation } from 'react-navigation';
 
 class ArtworkList extends Component {
   static navigationOptions = {
@@ -49,7 +50,9 @@ const mapDispatch = dispatch => ({
   getArt: () => dispatch(getArt())
 });
 
-export default connect(
-  mapState,
-  mapDispatch
-)(ArtworkList);
+export default withNavigation(
+  connect(
+    mapState,
+    mapDispatch
+  )(ArtworkList)
+);
