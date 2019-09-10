@@ -69,15 +69,22 @@ export const fetchSingleArt = id => {
 export const updateArtThunk = (id, updateData) => {
   return async dispatch => {
     try {
-      console.log('let me see updataData', updateData);
       const fd = new FormData();
       for (let i = 0; i < updateData.length; i++) {
         fd.append('artworkpics', updateData[i]);
       }
-      console.log('!!!!let me see fd', fd);
       const { data } = await axios.patch(`/api/artworks/${id}`, fd);
-      console.log('in thunk @@@@@the returned from patch', data);
+      dispatch(updateArtwork(id, data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
 
+export const updateArtInfo = (id, updateDate) => {
+  return async dispatch => {
+    try {
+      const { data } = await axios.patch(`/api/artworks/${id}`, updateDate);
       dispatch(updateArtwork(id, data));
     } catch (err) {
       console.log(err);
@@ -130,7 +137,10 @@ const reducer = (state = initialState, action) => {
           }
         }),
         selected: action.updateData.artwork,
-        images: [...state.images, ...action.updateData.images]
+        images:
+          action.updateData.images.length > 0
+            ? action.updateData.images
+            : state.images
       };
     case DETELE_ARTWORK:
       return {

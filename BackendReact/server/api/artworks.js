@@ -104,18 +104,11 @@ router.patch(
   upload.array('artworkpics', 4),
   async (req, res, next) => {
     try {
-      console.log('*****in api updata,', req.files);
+      console.log('*****in api updata req.file,', req.files);
       const id = req.params.artworkId;
-      ////for other fields update , Works
-      // const updateOps = {};
-      // if (req.body.length > 0) {
-      //   for (let ops of req.body) {
-      //     updateOps[ops.propName] = ops.value;
-      //   }
-      // }
 
-      // if (req.files.length > 0) {
       if (req.files) {
+        console.log('req.file happen?????');
         Artworks.findById(id, async (err, artwork) => {
           if (err) {
             console.error(err);
@@ -135,7 +128,6 @@ router.patch(
             }
             artwork.images = [...artwork.images, ...imgIdArr];
             const updatedArtwork = await artwork.save();
-            // console.log('imageResult', updatedArtwork);
             const images = await Image.find()
               .where('_id')
               .in(updatedArtwork.images)
@@ -147,35 +139,12 @@ router.patch(
           }
         });
       } else {
-        ////for other fields update , Works
-        const updateOps = {};
-        if (req.body.length > 0) {
-          for (let ops of req.body) {
-            updateOps[ops.propName] = ops.value;
-          }
-        }
-        //previos working before add multi imgs
-        // const result = await Artworks.update(
-        //   { _id: id },
-        //   { $set: updateOps }
-        // ).exec();
-        const result = await Artworks.findByIdAndUpdate(id, updateOps, {
+        ////for other fields update
+        const result = await Artworks.findByIdAndUpdate(id, req.body, {
           new: true
         }).exec();
         res.status(200).json({ artwork: result, images: [] });
       }
-
-      //previos working before add multi imgs
-      // const result = await Artworks.update(
-      //   { _id: id },
-      //   { $set: updateOps }
-      // ).exec();
-
-      // const result = await Artworks.findByIdAndUpdate(id, updateOps, {
-      //   new: true
-      // }).exec();
-
-      // res.status(200).json(result);
     } catch (err) {
       console.log(err);
       res.status(500).json({

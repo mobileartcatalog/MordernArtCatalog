@@ -21,6 +21,7 @@ class ArtworkCompo extends React.Component {
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleEditclick = this.handleEditclick.bind(this);
+    this.handleEditComfirm = this.handleEditComfirm.bind(this);
   }
   componentDidMount() {
     const id = this.props.match.params.artworkId;
@@ -41,8 +42,13 @@ class ArtworkCompo extends React.Component {
     });
   }
 
-  handleEditclick() {}
+  handleEditclick() {
+    this.setState({ isEdit: true });
+  }
 
+  handleEditComfirm() {
+    this.setState({ isEdit: false });
+  }
   render() {
     if (this.props.loading) return <div>Loading</div>;
     if (!this.props.selected.title) return <div>Loading</div>;
@@ -65,7 +71,10 @@ class ArtworkCompo extends React.Component {
           <div className='artwork-detail'>
             <h3>{title}</h3>
             <button onClick={this.handleEditclick}>Edit</button>
-            <ModalEdit />
+            <ModalEdit
+              show={this.state.isEdit}
+              confirm={this.handleEditComfirm}
+            />
             <h4>artisit</h4>
             <p>[artisit]</p>
             <h4>Description</h4>
@@ -84,7 +93,6 @@ class ArtworkCompo extends React.Component {
               show={this.state.isOpen}
               cancel={this.handleCancel}
               confirm={this.handleComfirm}
-              id={this.props.match.params.artworkId}
             />
           </div>
         </div>

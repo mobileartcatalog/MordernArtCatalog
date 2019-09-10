@@ -60,6 +60,7 @@ export class Modalcompo extends React.Component {
         <div className='modal' style={modalStyle}>
           <p>Are you sure you wish to delete this artwork?</p>
           <button
+            type='button'
             style={buttonStyle1}
             onClick={() => {
               this.props.cancel();
@@ -69,6 +70,7 @@ export class Modalcompo extends React.Component {
           </button>
 
           <button
+            type='button'
             style={buttonStyle2}
             onClick={() => {
               this.props.deleteArtwork(this.props.id);

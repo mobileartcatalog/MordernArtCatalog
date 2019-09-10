@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteArtworkthunk } from '../reducer/artworks';
+import { updateArtInfo } from '../reducer/artworks';
 
 //The gray background style
 const greybackground = {
@@ -17,20 +17,10 @@ const greybackground = {
 const modalStyle = {
   backgroundColor: '#FFFFFF',
   borderRadius: 10,
-  maxWidth: 300,
-  minHeight: 150,
+  maxWidth: 500,
+  minHeight: 350,
   margin: '0 auto',
   padding: 30
-};
-
-const buttonStyle1 = {
-  position: 'relative',
-  left: -50,
-  width: 70,
-  minHeight: 40,
-  borderRadius: 5,
-  backgroundColor: '#4FD0FF',
-  color: '#FFFFFF'
 };
 
 const buttonStyle2 = {
@@ -47,49 +37,100 @@ export class Modalcompo extends React.Component {
   constructor() {
     super();
     this.state = {
-      message: false
+      title: '',
+      date: '',
+      medium: '',
+      dimensions: ''
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
+
+  handleSubmit() {
+    event.preventDefault();
+    const currentState = this.state;
+    const payload = {};
+    for (let key in currentState) {
+      if (currentState[key] !== '') {
+        payload[key] = currentState[key];
+      }
+    }
+    this.props.updateArt(this.props.selected._id, payload);
+    this.props.confirm();
+  }
+
   render() {
+    const { title, medium, date, dimensions } = this.props.selected;
+
     if (!this.props.show) {
       return null;
     }
-
     return (
       <div className='backdrop' style={greybackground}>
         <div className='modal' style={modalStyle}>
-          <p>Are you sure you wish to delete this artwork?</p>
-          <button
-            style={buttonStyle1}
-            onClick={() => {
-              this.props.cancel();
-            }}
-          >
-            Cancel
-          </button>
-
-          <button
-            style={buttonStyle2}
-            onClick={() => {
-              this.props.deleteArtwork(this.props.id);
-              this.setState({ message: true });
-            }}
-          >
-            Delete
-          </button>
+          <h4>Update Artwork Infomation</h4>
+          <form className='updateform' onSubmit={this.handleSubmit}>
+            <label htmlFor='title'>Title:</label>
+            <input
+              type='text'
+              name='title'
+              value={this.state.title}
+              placeholder={title}
+              onChange={this.handleChange}
+            />
+            <label htmlFor='date'>Date:</label>
+            <input
+              type='text'
+              name='date'
+              value={this.state.date}
+              placeholder={date}
+              onChange={this.handleChange}
+            />
+            <label htmlFor='medium'>Medium:</label>
+            <input
+              type='text'
+              name='medium'
+              value={this.state.medium}
+              placeholder={medium}
+              onChange={this.handleChange}
+            />
+            <label htmlFor='dimensions'>Dimensions:</label>
+            <input
+              type='text'
+              name='dimensions'
+              value={this.state.dimensions}
+              placeholder={dimensions}
+              onChange={this.handleChange}
+            />
+            <button type='submit' style={buttonStyle2}>
+              Submit
+            </button>
+          </form>
         </div>
       </div>
     );
   }
 }
 
+const mapState = state => {
+  return {
+    selected: state.artworks.selected
+  };
+};
+
 const mapDispatch = dispatch => {
   return {
-    deleteArtwork: id => dispatch(deleteArtworkthunk(id))
+    updateArt: (id, data) => dispatch(updateArtInfo(id, data))
   };
 };
 
 export const ModalEdit = connect(
-  null,
+  mapState,
   mapDispatch
 )(Modalcompo);
