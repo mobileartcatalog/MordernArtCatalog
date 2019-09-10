@@ -129,7 +129,7 @@ const reducer = (state = initialState, action) => {
           }
         }),
         selected: action.updateData.artwork,
-        images: action.updateData.images
+        images: [...state.images, ...action.updateData.images]
       };
     case DETELE_ARTWORK:
       return {

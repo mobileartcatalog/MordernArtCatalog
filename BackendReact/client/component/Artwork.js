@@ -7,17 +7,20 @@ import { arrayBufferToBase64 } from '../../utils';
 import UploadImages from './UploadImages';
 import { Modal } from './Modal';
 import { Redirect } from 'react-router-dom';
+import { ModalEdit } from './ModalEdit';
 
 class ArtworkCompo extends React.Component {
   constructor() {
     super();
     this.state = {
       isOpen: false,
-      redirect: false
+      redirect: false,
+      isEdit: false
     };
     this.handleComfirm = this.handleComfirm.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleEditclick = this.handleEditclick.bind(this);
   }
   componentDidMount() {
     const id = this.props.match.params.artworkId;
@@ -37,6 +40,8 @@ class ArtworkCompo extends React.Component {
       isOpen: true
     });
   }
+
+  handleEditclick() {}
 
   render() {
     if (this.props.loading) return <div>Loading</div>;
@@ -59,6 +64,8 @@ class ArtworkCompo extends React.Component {
           </div>
           <div className='artwork-detail'>
             <h3>{title}</h3>
+            <button onClick={this.handleEditclick}>Edit</button>
+            <ModalEdit />
             <h4>artisit</h4>
             <p>[artisit]</p>
             <h4>Description</h4>

@@ -114,7 +114,8 @@ router.patch(
       //   }
       // }
 
-      if (req.files.length > 0) {
+      // if (req.files.length > 0) {
+      if (req.files) {
         Artworks.findById(id, async (err, artwork) => {
           if (err) {
             console.error(err);
@@ -147,18 +148,21 @@ router.patch(
         });
       } else {
         ////for other fields update , Works
-        // const updateOps = {};
-        // if (req.body.length > 0) {
-        //   for (let ops of req.body) {
-        //     updateOps[ops.propName] = ops.value;
-        //   }
-        // }
+        const updateOps = {};
+        if (req.body.length > 0) {
+          for (let ops of req.body) {
+            updateOps[ops.propName] = ops.value;
+          }
+        }
         //previos working before add multi imgs
         // const result = await Artworks.update(
         //   { _id: id },
         //   { $set: updateOps }
         // ).exec();
-        // res.status(200).json(result);
+        const result = await Artworks.findByIdAndUpdate(id, updateOps, {
+          new: true
+        }).exec();
+        res.status(200).json({ artwork: result, images: [] });
       }
 
       //previos working before add multi imgs
