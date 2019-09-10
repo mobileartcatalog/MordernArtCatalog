@@ -44,33 +44,15 @@ const buttonStyle2 = {
 };
 
 export class Modalcompo extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      message: false
-    };
-  }
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     message: false
+  //   };
+  // }
   render() {
     if (!this.props.show) {
       return null;
-    }
-
-    if (this.state.message) {
-      return (
-        <div className='backdrop' style={greybackground}>
-          <div className='modal' style={modalStyle}>
-            <p>Artwork has been deleted!</p>
-            <button
-              style={{ ...buttonStyle1, left: 0 }}
-              onClick={() => {
-                this.props.confirm();
-              }}
-            >
-              OK
-            </button>
-          </div>
-        </div>
-      );
     }
 
     return (
@@ -90,7 +72,7 @@ export class Modalcompo extends React.Component {
             style={buttonStyle2}
             onClick={() => {
               this.props.deleteArtwork(this.props.id);
-              this.setState({ message: true });
+              this.props.confirm();
             }}
           >
             Delete

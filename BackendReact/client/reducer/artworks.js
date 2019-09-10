@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 //action type
-const GETTING_ARTWORKS = 'GETTING_ARTWORKS';
+const LOADING = 'LOADING';
 const SET_ARTWORKS = 'SET_ARTWORKS';
 const ADD_ARTWORK = 'ADD_ARTWORK';
 const SET_SINGLEART = 'SET_SINGLEART';
@@ -9,7 +9,7 @@ const UPDATE_ARTWORK = 'UPDATE_ARTWORK';
 const DETELE_ARTWORK = 'DETELE_ARTWORK';
 
 //action creator
-const gettingArtworks = () => ({ type: GETTING_ARTWORKS });
+const loading = () => ({ type: LOADING });
 const setArtworks = artworks => ({ type: SET_ARTWORKS, artworks });
 const addArtwork = artwork => ({ type: ADD_ARTWORK, artwork });
 const setSingleArt = selected => ({
@@ -30,7 +30,7 @@ const deleteArtwork = id => ({
 export const fetchArtworks = () => {
   return async dispatch => {
     try {
-      dispatch(gettingArtworks());
+      dispatch(loading());
       const { data } = await axios.get('/api/artworks');
       dispatch(setArtworks(data));
     } catch (err) {
@@ -88,6 +88,7 @@ export const updateArtThunk = (id, updateData) => {
 export const deleteArtworkthunk = id => {
   return async dispatch => {
     try {
+      dispatch(loading());
       await axios.delete(`/api/artworks/${id}`);
       dispatch(deleteArtwork(id));
     } catch (err) {
@@ -105,7 +106,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case GETTING_ARTWORKS:
+    case LOADING:
       return { ...state, loading: true };
     case SET_ARTWORKS:
       return { ...state, loading: false, all: action.artworks };
@@ -134,7 +135,8 @@ const reducer = (state = initialState, action) => {
     case DETELE_ARTWORK:
       return {
         ...state,
-        all: state.all.filter(art => art._id !== action.id)
+        all: state.all.filter(art => art._id !== action.id),
+        loading: false
       };
     default:
       return state;
