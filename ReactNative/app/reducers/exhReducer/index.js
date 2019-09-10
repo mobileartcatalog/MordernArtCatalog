@@ -4,6 +4,7 @@ import getExh from './getExh';
 import getExhDetail from './getExhDetail';
 import addExh from './addExh';
 import deleteExh from './deleteExh';
+import linkArtToExh from './linkArtToExh'
 import search from './search';
 
 const initialState = {
@@ -13,7 +14,8 @@ const initialState = {
   selected: {},
   count: 0,
   searchResults: [],
-  artworkIds: []
+  artworkIds: [],
+  artworkIdsToLink: []
 };
 
 const exhReducer = reduceReducers(
@@ -22,6 +24,7 @@ const exhReducer = reduceReducers(
   getExhDetail,
   addExh,
   deleteExh,
+  linkArtToExh,
   search
 );
 

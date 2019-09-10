@@ -2,13 +2,18 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
   thumbnail: {
-    height: 150,
-    width: 150,
+    height: 75,
+    width: 75,
   },
 
   detailImage: {
     height: 400,
     width: 400,
+  },
+
+  selected: {
+    borderWidth: 2,
+    borderColor: 'red',
   },
 
   title: {
@@ -39,7 +44,7 @@ export default StyleSheet.create({
     borderWidth: 0.5,
     // borderRadius: 8,
     // margin: 20,
-    paddingVertical: 10
+    paddingVertical: 10,
   },
 
   row: {

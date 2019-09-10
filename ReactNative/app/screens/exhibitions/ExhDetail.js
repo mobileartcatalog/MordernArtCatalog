@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { View, Text, Image, SafeAreaView, Alert } from 'react-native';
 import { StyledButton, StyledSecondaryButton } from '../formComponents';
+import LinkArtModal from './LinkArtModal';
 import { getExhDetail } from '../../reducers/exhReducer/getExhDetail';
 import { deleteExh } from '../../reducers/exhReducer/deleteExh';
-
 import { filterArtworks, arrayBufferToBase64 } from '../../utils';
 import styles from '../../stylesheets/forms';
 import { clearSelected } from '../../reducers/exhReducer/getExhDetail';
@@ -29,7 +29,7 @@ class ExhDetail extends Component {
       venue,
       location,
       startDate,
-      endDate
+      endDate,
     } = this.props.selected;
 
     const artworks = filterArtworks(
@@ -68,7 +68,7 @@ class ExhDetail extends Component {
                       source={{
                         uri: `data:${
                           art.img1.contentType
-                        };base64,${arrayBufferToBase64(art.img1.data.data)}`
+                        };base64,${arrayBufferToBase64(art.img1.data.data)}`,
                       }}
                     />
                   </View>
@@ -76,10 +76,7 @@ class ExhDetail extends Component {
               })}
             </View>
 
-            <StyledSecondaryButton
-              title="add artwork"
-              onPress={() => Alert.alert(`this doesn't work yet`, `:(`)}
-            />
+            <LinkArtModal />
             <StyledSecondaryButton
               title="delete exhibition"
               onPress={() =>
@@ -90,16 +87,17 @@ class ExhDetail extends Component {
                     {
                       text: 'Cancel',
                       onPress: () => console.log('Cancel Pressed'),
-                      style: 'cancel'
+                      style: 'cancel',
                     },
                     {
                       text: 'Delete',
-                      onPress: () => this.handleDelete()
-                    }
+                      onPress: () => this.handleDelete(),
+                    },
                   ]
                 )
               }
             />
+
           </View>
         </SafeAreaView>
       );
@@ -112,14 +110,14 @@ const mapState = state => {
   return {
     allArtwork: state.art.all,
     selected: state.exhibitions.selected,
-    artworkIds: state.exhibitions.artworkIds
+    artworkIds: state.exhibitions.artworkIds,
   };
 };
 
 const mapDispatch = dispatch => ({
   getExhDetail: id => dispatch(getExhDetail(id)),
   deleteExh: id => dispatch(deleteExh(id)),
-  clearSelected: () => dispatch(clearSelected())
+  clearSelected: () => dispatch(clearSelected()),
 });
 
 export default withNavigation(
