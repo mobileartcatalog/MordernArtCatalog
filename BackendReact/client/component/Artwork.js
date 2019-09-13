@@ -52,7 +52,8 @@ class ArtworkCompo extends React.Component {
   render() {
     if (this.props.loading) return <div>Loading</div>;
     if (!this.props.selected.title) return <div>Loading</div>;
-    const { title, date, medium, img1, _id } = this.props.selected;
+    const { title, height, width, medium, img1, _id } = this.props.selected;
+    console.log('in the art compo', this.props.selected);
     const { images } = this.props;
 
     if (this.state.redirect) return <Redirect to='/' />;
@@ -82,7 +83,13 @@ class ArtworkCompo extends React.Component {
             <h4>Medium</h4>
             <p>{medium}</p>
             <h4>Dimensions</h4>
-            <p>XXinches ** YYinches</p>
+            {height && width ? (
+              <p>
+                {height.$numberDecimal}inches * {width.$numberDecimal}inches
+              </p>
+            ) : (
+              <p>[None]</p>
+            )}
             <div className='upload'>
               <UploadImages />
             </div>

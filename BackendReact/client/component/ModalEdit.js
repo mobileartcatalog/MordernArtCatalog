@@ -40,7 +40,8 @@ export class Modalcompo extends React.Component {
       title: '',
       date: '',
       medium: '',
-      dimensions: ''
+      height: '',
+      width: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -66,7 +67,7 @@ export class Modalcompo extends React.Component {
   }
 
   render() {
-    const { title, medium, date, dimensions } = this.props.selected;
+    const { title, medium, date, height, width } = this.props.selected;
 
     if (!this.props.show) {
       return null;
@@ -100,12 +101,20 @@ export class Modalcompo extends React.Component {
               placeholder={medium}
               onChange={this.handleChange}
             />
-            <label htmlFor='dimensions'>Dimensions:</label>
+            <label htmlFor='height'>Height:</label>
             <input
               type='text'
-              name='dimensions'
-              value={this.state.dimensions}
-              placeholder={dimensions}
+              name='height'
+              value={this.state.height}
+              placeholder={height ? height.$numberDecimal : 'none'}
+              onChange={this.handleChange}
+            />
+            <label htmlFor='width'>Width:</label>
+            <input
+              type='text'
+              name='width'
+              value={this.state.width}
+              placeholder={width ? width.$numberDecimal : 'none'}
               onChange={this.handleChange}
             />
             <button type='submit' style={buttonStyle2}>
