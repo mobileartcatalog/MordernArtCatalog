@@ -42,6 +42,7 @@ export const fetchArtworks = () => {
 export const addArtworkThunk = artwork => {
   return async dispatch => {
     try {
+      console.log('in thunk add artwork', artwork);
       const fd = new FormData();
       let keys = Object.keys(artwork);
       keys.forEach(key => {

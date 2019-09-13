@@ -38,7 +38,10 @@ const ArtworkSchema = new Schema({
     type: String
     // default: Date.now
   },
-  dimensions: {
+  height: {
+    type: Schema.Types.Decimal128
+  },
+  width: {
     type: Schema.Types.Decimal128
   },
   medium: {
@@ -51,22 +54,6 @@ const ArtworkSchema = new Schema({
     type: String
   },
   img1: {
-    data: Buffer,
-    contentType: String
-  },
-  img2: {
-    data: Buffer,
-    contentType: String
-  },
-  img3: {
-    data: Buffer,
-    contentType: String
-  },
-  img4: {
-    data: Buffer,
-    contentType: String
-  },
-  img5: {
     data: Buffer,
     contentType: String
   },
