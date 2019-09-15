@@ -44,12 +44,6 @@ const buttonStyle2 = {
 };
 
 export class Modalcompo extends React.Component {
-  // constructor() {
-  //   super();
-  //   this.state = {
-  //     message: false
-  //   };
-  // }
   render() {
     if (!this.props.show) {
       return null;
@@ -73,7 +67,7 @@ export class Modalcompo extends React.Component {
             type='button'
             style={buttonStyle2}
             onClick={() => {
-              this.props.deleteArtwork(this.props.id);
+              this.props.deleteArtwork(this.props.selected._id);
               this.props.confirm();
             }}
           >
@@ -85,6 +79,12 @@ export class Modalcompo extends React.Component {
   }
 }
 
+const mapState = state => {
+  return {
+    selected: state.artworks.selected
+  };
+};
+
 const mapDispatch = dispatch => {
   return {
     deleteArtwork: id => dispatch(deleteArtworkthunk(id))
@@ -92,6 +92,6 @@ const mapDispatch = dispatch => {
 };
 
 export const Modal = connect(
-  null,
+  mapState,
   mapDispatch
 )(Modalcompo);

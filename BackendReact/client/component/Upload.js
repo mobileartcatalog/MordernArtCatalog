@@ -10,7 +10,8 @@ class AddArtwork extends React.Component {
       title: '',
       date: '',
       medium: '',
-      dimension: '',
+      height: '',
+      width: '',
       img1: null
     };
     this.handleChange = this.handleChange.bind(this);
@@ -39,7 +40,8 @@ class AddArtwork extends React.Component {
       title: '',
       date: '',
       medium: '',
-      dimensions: '',
+      height: '',
+      width: '',
       img1: null
     });
   }
@@ -72,14 +74,26 @@ class AddArtwork extends React.Component {
             value={this.state.medium}
             onChange={this.handleChange}
           />
+          <div>
+            <span>Dimension:</span>
+            <label htmlFor='height'>Height</label>
+            <input
+              type='text'
+              name='height'
+              value={this.state.height}
+              onChange={this.handleChange}
+            />
+            <span>inches </span>
 
-          <label htmlFor='dimensions'>Dimension:</label>
-          <input
-            type='text'
-            name='dimensions'
-            value={this.state.dimensions}
-            onChange={this.handleChange}
-          />
+            <label htmlFor='width'>Width</label>
+            <input
+              type='text'
+              name='width'
+              value={this.state.width}
+              onChange={this.handleChange}
+            />
+            <span>inches</span>
+          </div>
 
           <input type='file' name='img1' onChange={this.fileSelectedHandler} />
 

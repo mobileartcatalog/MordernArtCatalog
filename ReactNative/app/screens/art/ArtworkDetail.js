@@ -47,7 +47,12 @@ class ArtworkDetail extends Component {
           <Text>{artwork.title}</Text>
           <Text>{artwork.date}</Text>
           <Text>{artwork.medium}</Text>
-          <Text>{artwork.dimensions}</Text>
+          {artwork.height ? (
+            <Text>{artwork.height.$numberDecimal}" height</Text>
+          ) : null}
+          {artwork.width ? (
+            <Text>{artwork.width.$numberDecimal}" width</Text>
+          ) : null}
           {images.length ? (
             <ScrollView horizontal>
               {images.map(image => {
