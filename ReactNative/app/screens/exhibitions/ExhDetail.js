@@ -77,8 +77,18 @@ class ExhDetail extends Component {
             </View>
 
             <LinkArtModal />
+
             <StyledSecondaryButton
-              title='delete exhibition'
+              title="edit exhibition"
+              onPress={() =>
+                this.props.navigation.navigate('ExhEdit', {
+                  title: 'Edit Exhibition',
+                })
+              }
+            />
+
+            <StyledSecondaryButton
+              title="delete exhibition"
               onPress={() =>
                 Alert.alert(
                   'Delete?',
@@ -97,7 +107,6 @@ class ExhDetail extends Component {
                 )
               }
             />
-
           </View>
         </SafeAreaView>
       );

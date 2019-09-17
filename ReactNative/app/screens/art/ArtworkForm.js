@@ -9,7 +9,7 @@ import { addArt } from '../../reducers/artReducer/addArtwork';
 
 class ArtworkForm extends Component {
   static navigationOptions = {
-    title: 'Enter New Artwork'
+    title: 'Enter New Artwork',
   };
 
   constructor() {
@@ -20,10 +20,10 @@ class ArtworkForm extends Component {
       medium: '',
       dimension: '',
       img1: null,
-      imageShow: false
+      imageShow: false,
     };
-    this.handleSave = this.handleSave.bind(this);
-    this.handleImage = this.handleImage.bind(this);
+    this.handleSave = this.handleSave(this);
+    this.handleImage = this.handleImage(this);
   }
 
   handleSave() {
@@ -34,13 +34,13 @@ class ArtworkForm extends Component {
       medium: '',
       dimension: '',
       img1: null,
-      imageShow: !this.state.imageShow
+      imageShow: !this.state.imageShow,
     });
   }
 
   handleImage(img1) {
     this.setState({
-      img1
+      img1,
     });
   }
 
@@ -92,7 +92,7 @@ class ArtworkForm extends Component {
 }
 
 const mapDispatch = dispatch => ({
-  addArtwork: artwork => dispatch(addArt(artwork))
+  addArtwork: artwork => dispatch(addArt(artwork)),
 });
 
 export default connect(

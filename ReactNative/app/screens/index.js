@@ -12,3 +12,4 @@ export { default as ExhList } from './exhibitions/ExhList';
 export { default as ExhListRow } from './exhibitions/ExhListRow';
 export { default as ExhDetail } from './exhibitions/ExhDetail';
 export { default as ExhForm } from './exhibitions/ExhForm';
+export { default as ExhEdit } from './exhibitions/ExhEdit';

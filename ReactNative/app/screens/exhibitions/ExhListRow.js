@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-import { View, Text, TouchableOpacity, } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import styles from '../../stylesheets/art';
 
 class ExhListRow extends Component {
+
+
   render() {
     const {
       _id,
@@ -12,7 +14,7 @@ class ExhListRow extends Component {
       venue,
       location,
       startDate,
-      endDate
+      endDate,
     } = this.props.exhibition;
 
     let venueDisplay, dateDisplay;
@@ -41,7 +43,7 @@ class ExhListRow extends Component {
 
 const mapState = state => {
   return {
-    selected: state.exhibitions.selected
+    selected: state.exhibitions.selected,
   };
 };
 
