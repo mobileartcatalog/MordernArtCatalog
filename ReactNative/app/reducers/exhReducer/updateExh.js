@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { BASE_URL } from 'react-native-dotenv';
 
 const UPDATING_EXH = 'UPDATING_EXH';
 const UPDATED_EXH = 'UPDATED_EXH';
@@ -7,8 +8,9 @@ const updatingExh = () => ({
   type: UPDATING_EXH,
 });
 
-const updatedExh = exh => ({
+const updatedExh = (id, exh) => ({
   type: UPDATED_EXH,
+  id,
   exh,
 });
 
@@ -17,8 +19,8 @@ export const updateExh = (id, exhData) => {
     try {
       dispatch(updatingExh());
       const { data } = await axios.patch(
-        `/api/exhibitions/${id}`,
-        JSON.stringify(exhData)
+        `${BASE_URL}/api/exhibitions/${id}`,
+        exhData
       );
       dispatch(updatedExh(id, data));
     } catch (error) {

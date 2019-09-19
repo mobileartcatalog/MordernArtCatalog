@@ -42,10 +42,13 @@ class ExhList extends Component {
       <View>
         <SearchBar
           placeholder="Search exhibitions..."
-          containerStyle={styles.inputContainer}
-          inputContainerStyle={styles.inputText}
+          containerStyle={styles.searchBarContainerStyle}
+          inputContainerStyle={styles.searchBarInputContainerStyle}
+          inputStyle={styles.searchBarInputStyle}
           onChangeText={searchTerm => this.searchFilter(searchTerm)}
           autoCorrect={false}
+          autoCapitalize="none"
+          autoFocusc
           value={this.state.searchTerm}
         />
         <Text style={styles.bodyText}>{`${count} ${label}`}</Text>
@@ -93,10 +96,10 @@ class ExhList extends Component {
       <ExhDetail />
     ) : (
       <SafeAreaView style={styles.container}>
-        <StyledSecondaryButton
+        {/* <StyledSecondaryButton
           title="new exhibition"
           onPress={() => navigate('ExhForm')}
-        />
+        /> */}
 
         <FlatList
           data={filtered}

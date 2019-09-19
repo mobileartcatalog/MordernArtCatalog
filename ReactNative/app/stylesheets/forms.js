@@ -5,28 +5,28 @@ export default StyleSheet.create({
     height: 700,
     width: 400,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   hamburger: { width: 44, height: 44, marginLeft: 20 },
 
   stackNav: {
-    backgroundColor: 'whitesmoke'
+    backgroundColor: 'whitesmoke',
   },
 
   thumbnail: {
     height: 150,
-    width: 150
+    width: 150,
   },
 
   button: {
     backgroundColor: 'orange',
     color: 'black',
-    width: '50%'
+    width: '50%',
   },
 
   container: {
     backgroundColor: 'whitesmoke',
-    height: '100%'
+    height: '100%',
   },
 
   innerContainer: {
@@ -36,23 +36,23 @@ export default StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 8,
     margin: 20,
-    paddingVertical: 30
+    paddingVertical: 30,
   },
 
   navContainer: {
     flexDirection: 'row',
-    margin: 10
+    margin: 10,
   },
 
   horizontalLabel: {
     flexDirection: 'row',
     alignItems: 'stretch',
-    marginBottom: 10
+    marginBottom: 10,
   },
 
   leftContainer: {
     flexDirection: 'column',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
   },
 
   inputContainer: {
@@ -62,11 +62,23 @@ export default StyleSheet.create({
     // marginBottom: 10,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: 'lightgray'
+    borderColor: 'lightgray',
   },
 
   inputText: {
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
+  },
+
+  searchBarContainerStyle: {
+    backgroundColor: 'slategray',
+  },
+  searchBarInputContainerStyle: {
+    height: 36,
+    backgroundColor: 'white',
+  },
+  searchBarInputStyle: {
+    fontSize: 16,
+    color: 'slategray',
   },
 
   primaryButton: {
@@ -79,19 +91,19 @@ export default StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.6,
-    shadowRadius: 2
+    shadowRadius: 2,
   },
 
   secondaryButton: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
 
   switch: {
-    marginBottom: 20
+    marginBottom: 20,
   },
 
   title: {
-    fontWeight: '700'
+    fontWeight: '700',
   },
 
   Disable: {
@@ -101,24 +113,24 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 60,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
 
   buttonText: {
-    color: 'slategray'
+    color: 'slategray',
   },
 
   icon: {
     color: 'slategray',
     fontSize: 20,
-    marginRight: 10
+    marginRight: 10,
   },
 
   headlineText: {
     textAlign: 'center',
     color: '#2b8c5f',
     fontSize: 30,
-    fontWeight: '500'
+    fontWeight: '500',
   },
 
   bodyText: {
@@ -126,24 +138,24 @@ export default StyleSheet.create({
     fontSize: 14,
     fontWeight: '100',
     textAlign: 'left',
-    margin: 10
+    margin: 10,
   },
   h1: {
     color: 'slategray',
     textAlign: 'center',
     fontSize: 20,
-    marginBottom: 10
+    marginBottom: 10,
   },
   inputWrapper: { marginHorizontal: 20, marginVertical: 5 },
 
   errorMessage: {
     color: '#2b8c5f',
-    marginVertical: 5
+    marginVertical: 5,
     // marginBottom: 6
   },
   formLabel: {
     fontSize: 16,
     color: 'slategray',
-    marginBottom: 3
-  }
+    marginBottom: 3,
+  },
 });
