@@ -54,15 +54,14 @@ router.get('/', async (req, res, next) => {
 router.patch('/:exhibitionId', async (req, res, next) => {
   try {
     const id = req.params.exhibitionId;
-    const updateOps = {};
+    // const updateOps = {};
     //req.body should be array, which has obj element with propName-attribute,value-tochange
-    for (let ops of req.body) {
-      updateOps[ops.propName] = ops.value;
-    }
-    const result = await Exhibitions.update(
-      { _id: id },
-      { $set: updateOps }
-    ).exec();
+    // for (let ops of req.body) {
+    //   updateOps[ops.propName] = ops.value;
+    // }
+    const result = await Exhibitions.findByIdAndUpdate(id, req.body, {
+      new: true,
+    }).exec();
     res.status(200).json(result);
   } catch (err) {
     console.error(err);
