@@ -6,7 +6,7 @@ export const arrayBufferToBase64 = buffer => {
   return window.btoa(binary);
 };
 
-export const filterArtworks = (ids, allArtworks) => {
+export const filterArtworks = (ids = [], allArtworks) => {
   let results = [];
   for (let i = 0; i < ids.length; i++) {
     let currId = ids[i];

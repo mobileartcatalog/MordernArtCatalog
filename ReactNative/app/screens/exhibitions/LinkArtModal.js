@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Text, TouchableHighlight, View, Alert } from 'react-native';
 import ArtworkListForLinks from '../art/ArtworkListForLinks';
+import styles from '../../stylesheets/forms';
 
 class LinkArtModal extends Component {
   state = {
@@ -15,7 +16,7 @@ class LinkArtModal extends Component {
     return (
       <View style={{ marginTop: 22 }}>
         <Modal
-          animationType="slide"
+          animationType="fade"
           transparent={true}
           presentationStyle={'overFullScreen'}
           visible={this.state.modalVisible}
@@ -23,10 +24,9 @@ class LinkArtModal extends Component {
             Alert.alert('Modal has been closed.');
           }}
         >
-          <View style={{ marginTop: 200 }}>
+          <View style={{ marginTop: 200, padding: 10 }}>
             <View>
               <ArtworkListForLinks />
-
               <TouchableHighlight
                 onPress={() => {
                   this.setModalVisible(!this.state.modalVisible);

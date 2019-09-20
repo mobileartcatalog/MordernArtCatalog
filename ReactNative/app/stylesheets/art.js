@@ -13,7 +13,11 @@ export default StyleSheet.create({
 
   selected: {
     borderWidth: 2,
-    borderColor: 'red',
+    borderColor: 'green',
+  },
+
+  listItem: {
+    borderWidth: 0,
   },
 
   title: {

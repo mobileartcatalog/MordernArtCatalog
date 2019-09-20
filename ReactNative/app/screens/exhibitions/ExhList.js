@@ -35,7 +35,10 @@ class ExhList extends Component {
   }
 
   renderHeader = () => {
-    let count = this.state.filteredCount;
+    let count;
+    this.state.searchTerm.length
+      ? (count = this.state.filteredCount)
+      : (count = this.props.count);
     let label;
     count === 1 ? (label = `exhibition found`) : (label = `exhibitions found`);
     return (
@@ -90,19 +93,22 @@ class ExhList extends Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    const { filtered } = this.state;
+    let data;
+    this.state.searchTerm.length
+      ? (data = this.state.filtered)
+      : (data = this.props.exhibitions);
 
     return this.props.selected ? (
       <ExhDetail />
     ) : (
       <SafeAreaView style={styles.container}>
-        {/* <StyledSecondaryButton
+        <StyledSecondaryButton
           title="new exhibition"
           onPress={() => navigate('ExhForm')}
-        /> */}
+        />
 
         <FlatList
-          data={filtered}
+          data={data}
           renderItem={({ item }) => <ExhListRow exhibition={item} />}
           keyExtractor={item => item._id}
           ListHeaderComponent={this.renderHeader}

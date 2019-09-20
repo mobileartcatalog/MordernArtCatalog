@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { View, Text, Image, SafeAreaView, Alert } from 'react-native';
-import { StyledButton, StyledSecondaryButton } from '../formComponents';
+import { StyledSecondaryButton } from '../formComponents';
 import LinkArtModal from './LinkArtModal';
 import { getExhDetail } from '../../reducers/exhReducer/getExhDetail';
 import { deleteExh } from '../../reducers/exhReducer/deleteExh';
 import { filterArtworks, arrayBufferToBase64 } from '../../utils';
 import styles from '../../stylesheets/forms';
-import { clearSelected } from '../../reducers/exhReducer/getExhDetail';
 
 class ExhDetail extends Component {
   componentDidMount() {
@@ -18,7 +17,6 @@ class ExhDetail extends Component {
 
   handleDelete() {
     this.props.deleteExh(this.props.selected._id);
-    this.props.clearSelected();
     this.props.navigation.navigate('ExhList');
   }
 
@@ -32,12 +30,7 @@ class ExhDetail extends Component {
       endDate,
     } = this.props.selected;
 
-    const artworks = filterArtworks(
-      this.props.artworkIds,
-      this.props.allArtwork
-    );
-
-    console.log('artworks', artworks);
+    let artworkData = [];
 
     let venueDisplay, dateDisplay;
     venue && location
@@ -49,6 +42,11 @@ class ExhDetail extends Component {
       : (dateDisplay = `${startDate}`);
 
     if (this.props.selected) {
+      artworkData = filterArtworks(
+        this.props.selected.artworks,
+        this.props.allArtwork
+      );
+
       return (
         <SafeAreaView style={styles.container}>
           <View style={{ margin: 10 }}>
@@ -57,9 +55,9 @@ class ExhDetail extends Component {
               <Text>{venueDisplay}</Text>
               <Text>{dateDisplay}</Text>
 
-              <Text>Artworks</Text>
+              <Text style={styles.headline}>Artworks</Text>
 
-              {artworks.map(art => {
+              {artworkData.map(art => {
                 return (
                   <View>
                     <Text>{art.title}</Text>
@@ -119,14 +117,12 @@ const mapState = state => {
   return {
     allArtwork: state.art.all,
     selected: state.exhibitions.selected,
-    artworkIds: state.exhibitions.artworkIds,
   };
 };
 
 const mapDispatch = dispatch => ({
   getExhDetail: id => dispatch(getExhDetail(id)),
   deleteExh: id => dispatch(deleteExh(id)),
-  clearSelected: () => dispatch(clearSelected()),
 });
 
 export default withNavigation(
