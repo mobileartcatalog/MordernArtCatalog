@@ -8,6 +8,7 @@ import UploadImages from './UploadImages';
 import { Modal } from './Modal';
 import { Redirect } from 'react-router-dom';
 import { ModalEdit } from './ModalEdit';
+import { FaTrashAlt, FaEdit } from 'react-icons/fa';
 
 class ArtworkCompo extends React.Component {
   constructor() {
@@ -68,6 +69,8 @@ class ArtworkCompo extends React.Component {
               )}`}
               alt='artworkimage'
             />
+            <FaTrashAlt className='faicontrash' />
+            <FaEdit className='faiconedit' />
           </div>
           <div className='artwork-detail'>
             <h3>{title}</h3>
@@ -110,11 +113,11 @@ class ArtworkCompo extends React.Component {
                   return (
                     <div key={image._id}>
                       <img
+                        className='singleimage'
                         src={`data: ${
                           image.contentType
                         }; base64,${arrayBufferToBase64(image.data.data)}`}
                         alt='image'
-                        style={{ height: 100, width: 100 }}
                       />
                     </div>
                   );
