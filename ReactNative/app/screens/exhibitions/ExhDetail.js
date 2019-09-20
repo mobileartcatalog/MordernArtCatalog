@@ -4,9 +4,10 @@ import { withNavigation } from 'react-navigation';
 import { View, Text, Image, SafeAreaView, Alert, FlatList } from 'react-native';
 import { StyledSecondaryButton } from '../formComponents';
 import LinkArtModal from './LinkArtModal';
-import ArtworkListRow from '../art/ArtworkListRow';
+import LinkedArtwork from '../exhibitions/LinkedArtwork';
 import { getExhDetail } from '../../reducers/exhReducer/getExhDetail';
 import { deleteExh } from '../../reducers/exhReducer/deleteExh';
+import { updateExh } from '../../reducers/exhReducer/updateExh';
 import { filterArtworks, arrayBufferToBase64 } from '../../utils';
 import styles from '../../stylesheets/forms';
 
@@ -29,6 +30,7 @@ class ExhDetail extends Component {
       location,
       startDate,
       endDate,
+      artworks,
     } = this.props.selected;
 
     let artworkData = [];
@@ -60,7 +62,14 @@ class ExhDetail extends Component {
 
               <FlatList
                 data={artworkData}
-                renderItem={({ item }) => <ArtworkListRow artwork={item} />}
+                renderItem={({ item }) => (
+                  <LinkedArtwork
+                    artwork={item}
+                    exhId={_id}
+                    linkedArtworks={artworks}
+                    updateExh={this.props.updateExh}
+                  />
+                )}
                 keyExtractor={item => item._id}
               />
             </View>
@@ -113,6 +122,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => ({
   getExhDetail: id => dispatch(getExhDetail(id)),
+  updateExh: (id, data) => dispatch(updateExh(id, data)),
   deleteExh: id => dispatch(deleteExh(id)),
 });
 
