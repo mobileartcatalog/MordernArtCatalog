@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-import { View, Text, Image, SafeAreaView, Alert } from 'react-native';
+import { View, Text, Image, SafeAreaView, Alert, FlatList } from 'react-native';
 import { StyledSecondaryButton } from '../formComponents';
 import LinkArtModal from './LinkArtModal';
+import ArtworkListRow from '../art/ArtworkListRow';
 import { getExhDetail } from '../../reducers/exhReducer/getExhDetail';
 import { deleteExh } from '../../reducers/exhReducer/deleteExh';
 import { filterArtworks, arrayBufferToBase64 } from '../../utils';
@@ -55,23 +56,13 @@ class ExhDetail extends Component {
               <Text>{venueDisplay}</Text>
               <Text>{dateDisplay}</Text>
 
-              <Text style={styles.headline}>Artworks</Text>
+              <Text style={styles.h1}>Artworks</Text>
 
-              {artworkData.map(art => {
-                return (
-                  <View>
-                    <Text>{art.title}</Text>
-                    <Image
-                      style={styles.thumbnail}
-                      source={{
-                        uri: `data:${
-                          art.img1.contentType
-                        };base64,${arrayBufferToBase64(art.img1.data.data)}`,
-                      }}
-                    />
-                  </View>
-                );
-              })}
+              <FlatList
+                data={artworkData}
+                renderItem={({ item }) => <ArtworkListRow artwork={item} />}
+                keyExtractor={item => item._id}
+              />
             </View>
 
             <LinkArtModal />
