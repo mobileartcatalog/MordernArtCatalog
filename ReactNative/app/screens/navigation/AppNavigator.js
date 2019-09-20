@@ -3,7 +3,7 @@ import {
   createBottomTabNavigator,
   createAppContainer,
   createStackNavigator,
-  createSwitchNavigator
+  createSwitchNavigator,
 } from 'react-navigation';
 import {
   UserHome,
@@ -13,30 +13,32 @@ import {
   ArtworkForm,
   ExhList,
   ExhDetail,
-  ExhForm
+  ExhForm,
+  ExhEdit,
 } from '..';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const HomeTab = createSwitchNavigator({
-  Home: { screen: UserHome }
+  Home: { screen: UserHome },
 });
 
 const FormTab = createStackNavigator({
   ArtworkForm: { screen: ArtworkForm },
-  ExhForm: { screen: ExhForm }
+  ExhForm: { screen: ExhForm },
 });
 
 const ArtworkTab = createStackNavigator({
   ArtworkList: { screen: ArtworkList },
   ArtworkListRow: { screen: ArtworkListRow },
-  ArtworkDetail: { screen: ArtworkDetail }
+  ArtworkDetail: { screen: ArtworkDetail },
 });
 
 const ExhTab = createStackNavigator({
   ExhList: { screen: ExhList },
   ExhDetail: { screen: ExhDetail },
-  ExhForm: { screen: ExhForm }
+  ExhForm: { screen: ExhForm },
+  ExhEdit: { screen: ExhEdit },
 });
 
 const AppNavigator = createBottomTabNavigator(
@@ -47,8 +49,8 @@ const AppNavigator = createBottomTabNavigator(
         tabBarLabel: 'Home',
         tabBarIcon: ({ tintColor }) => (
           <Ionicons name="ios-home" color={tintColor} size={25} />
-        )
-      }
+        ),
+      },
     },
     Form: {
       screen: FormTab,
@@ -56,8 +58,8 @@ const AppNavigator = createBottomTabNavigator(
         tabBarLabel: 'New Artwork',
         tabBarIcon: ({ tintColor }) => (
           <Ionicons name="ios-add-circle" color={tintColor} size={25} />
-        )
-      }
+        ),
+      },
     },
     Art: {
       screen: ArtworkTab,
@@ -65,8 +67,8 @@ const AppNavigator = createBottomTabNavigator(
         tabBarLabel: 'Artwork',
         tabBarIcon: ({ tintColor }) => (
           <Ionicons name="ios-square-outline" color={tintColor} size={25} />
-        )
-      }
+        ),
+      },
     },
 
     Exhibitions: {
@@ -75,9 +77,9 @@ const AppNavigator = createBottomTabNavigator(
         tabBarLabel: 'Exhibitions',
         tabBarIcon: ({ tintColor }) => (
           <Ionicons name="ios-business" color={tintColor} size={25} />
-        )
-      }
-    }
+        ),
+      },
+    },
   },
   {
     tabBarOptions: {
@@ -86,9 +88,9 @@ const AppNavigator = createBottomTabNavigator(
       inactiveTintColor: 'gray',
       style: {
         backgroundColor: 'whitesmoke',
-        paddingVertical: 10
-      }
-    }
+        paddingVertical: 10,
+      },
+    },
   }
 );
 

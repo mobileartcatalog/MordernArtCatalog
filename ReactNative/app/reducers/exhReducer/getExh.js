@@ -5,12 +5,12 @@ const GETTING_EXH = 'GETTING_EXH';
 const GOT_EXH = 'GOT_EXH';
 
 const gettingExh = () => ({
-  type: 'GETTING_EXH'
+  type: 'GETTING_EXH',
 });
 
 const gotExh = data => ({
   type: 'GOT_EXH',
-  data
+  data,
 });
 
 export const getExh = () => {
@@ -35,7 +35,7 @@ const reducer = (state, action) => {
         loading: false,
         loaded: true,
         all: action.data,
-        count: action.data.length
+        count: action.data.length,
       };
     default:
       return state;

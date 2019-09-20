@@ -26,6 +26,7 @@ const reducer = (state, action) => {
       let updatedCount = updatedExhList.length;
       return {
         ...state,
+        selected: {},
         all: updatedExhList,
         count: updatedCount,
       };

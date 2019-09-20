@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-import { View, Text, Image, SafeAreaView, Alert } from 'react-native';
-import { StyledButton, StyledSecondaryButton } from '../formComponents';
+import { View, Text, Image, SafeAreaView, Alert, FlatList } from 'react-native';
+import { StyledSecondaryButton } from '../formComponents';
+import LinkArtModal from './LinkArtModal';
+import ArtworkListRow from '../art/ArtworkListRow';
 import { getExhDetail } from '../../reducers/exhReducer/getExhDetail';
 import { deleteExh } from '../../reducers/exhReducer/deleteExh';
-
 import { filterArtworks, arrayBufferToBase64 } from '../../utils';
 import styles from '../../stylesheets/forms';
-import { clearSelected } from '../../reducers/exhReducer/getExhDetail';
 
 class ExhDetail extends Component {
   componentDidMount() {
@@ -18,7 +18,6 @@ class ExhDetail extends Component {
 
   handleDelete() {
     this.props.deleteExh(this.props.selected._id);
-    this.props.clearSelected();
     this.props.navigation.navigate('ExhList');
   }
 
@@ -29,15 +28,10 @@ class ExhDetail extends Component {
       venue,
       location,
       startDate,
-      endDate
+      endDate,
     } = this.props.selected;
 
-    const artworks = filterArtworks(
-      this.props.artworkIds,
-      this.props.allArtwork
-    );
-
-    console.log('artworks', artworks);
+    let artworkData = [];
 
     let venueDisplay, dateDisplay;
     venue && location
@@ -49,6 +43,11 @@ class ExhDetail extends Component {
       : (dateDisplay = `${startDate}`);
 
     if (this.props.selected) {
+      artworkData = filterArtworks(
+        this.props.selected.artworks,
+        this.props.allArtwork
+      );
+
       return (
         <SafeAreaView style={styles.container}>
           <View style={{ margin: 10 }}>
@@ -57,31 +56,28 @@ class ExhDetail extends Component {
               <Text>{venueDisplay}</Text>
               <Text>{dateDisplay}</Text>
 
-              <Text>Artworks</Text>
+              <Text style={styles.h1}>Artworks</Text>
 
-              {artworks.map(art => {
-                return (
-                  <View>
-                    <Text>{art.title}</Text>
-                    <Image
-                      style={styles.thumbnail}
-                      source={{
-                        uri: `data:${
-                          art.img1.contentType
-                        };base64,${arrayBufferToBase64(art.img1.data.data)}`
-                      }}
-                    />
-                  </View>
-                );
-              })}
+              <FlatList
+                data={artworkData}
+                renderItem={({ item }) => <ArtworkListRow artwork={item} />}
+                keyExtractor={item => item._id}
+              />
             </View>
 
+            <LinkArtModal />
+
             <StyledSecondaryButton
-              title='add artwork'
-              onPress={() => Alert.alert(`this doesn't work yet`, `:(`)}
+              title="edit exhibition"
+              onPress={() =>
+                this.props.navigation.navigate('ExhEdit', {
+                  title: 'Edit Exhibition',
+                })
+              }
             />
+
             <StyledSecondaryButton
-              title='delete exhibition'
+              title="delete exhibition"
               onPress={() =>
                 Alert.alert(
                   'Delete?',
@@ -90,12 +86,12 @@ class ExhDetail extends Component {
                     {
                       text: 'Cancel',
                       onPress: () => console.log('Cancel Pressed'),
-                      style: 'cancel'
+                      style: 'cancel',
                     },
                     {
                       text: 'Delete',
-                      onPress: () => this.handleDelete()
-                    }
+                      onPress: () => this.handleDelete(),
+                    },
                   ]
                 )
               }
@@ -112,14 +108,12 @@ const mapState = state => {
   return {
     allArtwork: state.art.all,
     selected: state.exhibitions.selected,
-    artworkIds: state.exhibitions.artworkIds
   };
 };
 
 const mapDispatch = dispatch => ({
   getExhDetail: id => dispatch(getExhDetail(id)),
   deleteExh: id => dispatch(deleteExh(id)),
-  clearSelected: () => dispatch(clearSelected())
 });
 
 export default withNavigation(
