@@ -10,11 +10,12 @@ import { artValidationSchema } from './artValidationSchema';
 import { addArt } from '../../reducers/artReducer/addArtwork';
 
 class ArtworkForm extends Component {
+
   constructor() {
     super();
     this.state = {
       img1: null,
-      imageShow: false,
+      imageShow: false
     };
 
     this.handleImage = this.handleImage.bind(this);
@@ -22,7 +23,7 @@ class ArtworkForm extends Component {
 
   handleImage(img1) {
     this.setState({
-      img1,
+      img1
     });
   }
 

@@ -8,6 +8,13 @@ import UploadImages from './UploadImages';
 import { Modal } from './Modal';
 import { Redirect } from 'react-router-dom';
 import { ModalEdit } from './ModalEdit';
+import {
+  FaTrashAlt,
+  FaEdit,
+  FaBars,
+  FaChevronRight,
+  FaChevronLeft
+} from 'react-icons/fa';
 
 class ArtworkCompo extends React.Component {
   constructor() {
@@ -15,13 +22,17 @@ class ArtworkCompo extends React.Component {
     this.state = {
       isOpen: false,
       redirect: false,
-      isEdit: false
+      isEdit: false,
+      imgIndex: 0
     };
     this.handleComfirm = this.handleComfirm.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleEditclick = this.handleEditclick.bind(this);
     this.handleEditComfirm = this.handleEditComfirm.bind(this);
+    this.imgClick = this.imgClick.bind(this);
+    this.handleRClick = this.handleRClick.bind(this);
+    this.handleLClick = this.handleLClick.bind(this);
   }
   componentDidMount() {
     const id = this.props.match.params.artworkId;
@@ -37,9 +48,7 @@ class ArtworkCompo extends React.Component {
   }
 
   handleDelete() {
-    this.setState({
-      isOpen: true
-    });
+    this.setState({ isOpen: true });
   }
 
   handleEditclick() {
@@ -49,12 +58,33 @@ class ArtworkCompo extends React.Component {
   handleEditComfirm() {
     this.setState({ isEdit: false });
   }
+
+  imgClick(index) {
+    this.setState({ imgIndex: index });
+  }
+
+  handleRClick() {
+    const { images } = this.props;
+    let index =
+      this.state.imgIndex === images.length - 1 ? 0 : this.state.imgIndex + 1;
+    this.setState({ imgIndex: index });
+  }
+
+  handleLClick() {
+    const { images } = this.props;
+    let index =
+      this.state.imgIndex === 0 ? images.length - 1 : this.state.imgIndex - 1;
+    this.setState({ imgIndex: index });
+  }
+
   render() {
     if (this.props.loading) return <div>Loading</div>;
     if (!this.props.selected.title) return <div>Loading</div>;
+    if (this.state.imgData === '') return <div>Loading</div>;
     const { title, height, width, medium, img1, _id } = this.props.selected;
     console.log('in the art compo', this.props.selected);
     const { images } = this.props;
+    console.log('images from fetch single', images);
 
     if (this.state.redirect) return <Redirect to='/' />;
 
@@ -63,11 +93,21 @@ class ArtworkCompo extends React.Component {
         <div className='artworkInfo'>
           <div className='imgContainer'>
             <img
-              src={`data: ${img1.contentType}; base64,${arrayBufferToBase64(
-                img1.data.data
+              src={`data: ${
+                images[this.state.imgIndex].contentType
+              }; base64,${arrayBufferToBase64(
+                images[this.state.imgIndex].data.data
               )}`}
               alt='artworkimage'
             />
+            <FaBars
+              className='faiconbars'
+              onClick={() => {
+                console.log('clicked!');
+              }}
+            />
+            <FaChevronRight className='faright' onClick={this.handleRClick} />
+            <FaChevronLeft className='faleft' onClick={this.handleLClick} />
           </div>
           <div className='artwork-detail'>
             <h3>{title}</h3>
@@ -106,15 +146,16 @@ class ArtworkCompo extends React.Component {
         <div className='subimages'>
           <div className='images'>
             {images.length
-              ? images.map(image => {
+              ? images.map((image, index) => {
                   return (
                     <div key={image._id}>
                       <img
+                        className='singleimage'
                         src={`data: ${
                           image.contentType
                         }; base64,${arrayBufferToBase64(image.data.data)}`}
                         alt='image'
-                        style={{ height: 100, width: 100 }}
+                        onClick={() => this.imgClick(index)}
                       />
                     </div>
                   );
