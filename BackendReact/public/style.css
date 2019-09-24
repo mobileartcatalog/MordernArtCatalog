@@ -46,11 +46,53 @@ p,
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  background-color: #e2e2e8;
 }
 
 .imgContainer img {
   /* width: 100%; */
   height: 100%;
+}
+
+.faiconbars {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: white;
+  height: 20px;
+  width: 20px;
+  padding: 3px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.faright {
+  position: absolute;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.865);
+  height: 20px;
+  width: 20px;
+  padding: 3px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.faleft {
+  position: absolute;
+  left: 0;
+  background-color: white;
+  height: 20px;
+  width: 20px;
+  padding: 3px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.artworkInfo .imgContainer:hover .faiconbars,
+.artworkInfo .imgContainer:hover .faleft,
+.artworkInfo .imgContainer:hover .faright {
+  opacity: 1;
 }
 
 .artwork-detail {
@@ -75,6 +117,17 @@ p,
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+}
+
+.singleimage {
+  height: 100px;
+  width: 100px;
+  transition: 0.3s ease;
+}
+
+.singleimage:hover {
+  height: 110px;
+  width: 110px;
 }
 
 .upload form {

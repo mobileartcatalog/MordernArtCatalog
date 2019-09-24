@@ -9,7 +9,7 @@ import { addArt } from '../../reducers/artReducer/addArtwork';
 
 class ArtworkForm extends Component {
   static navigationOptions = {
-    title: 'Enter New Artwork',
+    title: 'Enter New Artwork'
   };
 
   constructor() {
@@ -20,10 +20,10 @@ class ArtworkForm extends Component {
       medium: '',
       dimension: '',
       img1: null,
-      imageShow: false,
+      imageShow: false
     };
-    this.handleSave = this.handleSave(this);
-    this.handleImage = this.handleImage(this);
+    this.handleSave = this.handleSave.bind(this);
+    this.handleImage = this.handleImage.bind(this);
   }
 
   handleSave() {
@@ -34,13 +34,13 @@ class ArtworkForm extends Component {
       medium: '',
       dimension: '',
       img1: null,
-      imageShow: !this.state.imageShow,
+      imageShow: !this.state.imageShow
     });
   }
 
   handleImage(img1) {
     this.setState({
-      img1,
+      img1
     });
   }
 
@@ -50,38 +50,38 @@ class ArtworkForm extends Component {
       <View>
         <Input
           style={styles.field}
-          placeholder="title"
-          leftIcon={<Icon name="pencil" style={styles.icon} />}
+          placeholder='title'
+          leftIcon={<Icon name='pencil' style={styles.icon} />}
           value={this.state.title}
           onChangeText={title => this.setState({ title })}
         />
         <Input
           style={styles.field}
-          placeholder="date"
-          leftIcon={<Icon name="pencil" style={styles.icon} />}
+          placeholder='date'
+          leftIcon={<Icon name='pencil' style={styles.icon} />}
           value={this.state.date}
           onChangeText={date => this.setState({ date })}
         />
         <Input
           style={styles.field}
-          placeholder="medium"
-          leftIcon={<Icon name="pencil" style={styles.icon} />}
+          placeholder='medium'
+          leftIcon={<Icon name='pencil' style={styles.icon} />}
           value={this.state.medium}
           onChangeText={medium => this.setState({ medium })}
         />
         <Input
           style={styles.field}
-          placeholder="dimension"
-          leftIcon={<Icon name="pencil" style={styles.icon} />}
+          placeholder='dimension'
+          leftIcon={<Icon name='pencil' style={styles.icon} />}
           value={this.state.dimension}
           onChangeText={dimension => this.setState({ dimension })}
         />
         <Button
           style={styles.button}
-          title="Save Changes"
+          title='Save Changes'
           onPress={this.handleSave}
         />
-        <Button style={styles.button} title="Clear" />
+        <Button style={styles.button} title='Clear' />
         <UploadImage
           getimageData={this.handleImage}
           imageShow={this.state.imageShow}
@@ -92,7 +92,7 @@ class ArtworkForm extends Component {
 }
 
 const mapDispatch = dispatch => ({
-  addArtwork: artwork => dispatch(addArt(artwork)),
+  addArtwork: artwork => dispatch(addArt(artwork))
 });
 
 export default connect(
