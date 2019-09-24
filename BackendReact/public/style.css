@@ -47,6 +47,7 @@ p,
   align-items: center;
   justify-content: center;
   position: relative;
+  background-color: #e2e2e8;
 }
 
 .imgContainer img {
@@ -54,7 +55,7 @@ p,
   height: 100%;
 }
 
-.faicontrash {
+.faiconbars {
   position: absolute;
   top: 0;
   right: 0;
@@ -66,10 +67,20 @@ p,
   transition: opacity 0.35s ease;
 }
 
-.faiconedit {
+.faright {
+  position: absolute;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.865);
+  height: 20px;
+  width: 20px;
+  padding: 3px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.faleft {
   position: absolute;
   left: 0;
-  top: 0;
   background-color: white;
   height: 20px;
   width: 20px;
@@ -78,8 +89,9 @@ p,
   transition: opacity 0.35s ease;
 }
 
-.artworkInfo .imgContainer:hover .faiconedit,
-.artworkInfo .imgContainer:hover .faicontrash {
+.artworkInfo .imgContainer:hover .faiconbars,
+.artworkInfo .imgContainer:hover .faleft,
+.artworkInfo .imgContainer:hover .faright {
   opacity: 1;
 }
 
