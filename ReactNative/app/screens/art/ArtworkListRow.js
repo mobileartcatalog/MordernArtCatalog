@@ -14,21 +14,16 @@ class ArtworkListRow extends Component {
         onPress={() => navigate('ArtworkDetail', { id: artwork._id })}
       >
         <View>
-          {!artwork.imageUrl && true ? (
+          {artwork.img1 ? (
             <Image
               style={styles.thumbnail}
               source={{
                 uri: `data:${
                   artwork.img1.contentType
-                };base64,${arrayBufferToBase64(artwork.img1.data.data)}`
+                };base64,${arrayBufferToBase64(artwork.img1.data.data)}`,
               }}
             />
-          ) : (
-            <Image
-              style={styles.thumbnail}
-              source={{ uri: `${artwork.imageUrl}` }}
-            />
-          )}
+          ) : null}
           <Text style={styles.title}>{artwork.title}</Text>
           <Text>{artwork.date}</Text>
         </View>

@@ -4,7 +4,7 @@ const ADDED_ART = 'ADDED_ART';
 
 const addedArt = artwork => ({
   type: 'ADDED_ART',
-  artwork
+  artwork,
 });
 
 export const addArt = artwork => {
@@ -15,7 +15,7 @@ export const addArt = artwork => {
       fd.append('img1', {
         uri: img1.uri,
         type: img1.type,
-        name: img1.fileName
+        name: img1.fileName,
       });
       fd.append('title', title);
       fd.append('date', date);
@@ -35,10 +35,13 @@ export const addArt = artwork => {
 const reducer = (state, action) => {
   switch (action.type) {
     case ADDED_ART:
+      let updatedArtList = [action.artwork, ...state.all];
+      let updatedCount = updatedArtList.length;
       return {
         ...state,
-        all: [...state.all, action.artwork],
-        count: state.count + 1
+        all: updatedArtList,
+        count: updatedCount,
+        selected: action.artwork,
       };
     default:
       return state;
