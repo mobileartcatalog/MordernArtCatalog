@@ -7,6 +7,7 @@ const ADD_ARTWORK = 'ADD_ARTWORK';
 const SET_SINGLEART = 'SET_SINGLEART';
 const UPDATE_ARTWORK = 'UPDATE_ARTWORK';
 const DETELE_ARTWORK = 'DETELE_ARTWORK';
+const DETELE_IMAGE = 'DETELE_IMAGE';
 
 //action creator
 const loading = () => ({ type: LOADING });
@@ -23,6 +24,10 @@ const updateArtwork = (id, updateData) => ({
 });
 const deleteArtwork = id => ({
   type: DETELE_ARTWORK,
+  id
+});
+const deleteImage = id => ({
+  type: DETELE_IMAGE,
   id
 });
 
@@ -77,6 +82,8 @@ export const updateArtThunk = (id, updateData) => {
         fd.append('artworkpics', updateData[i]);
       }
       const { data } = await axios.patch(`/api/artworks/${id}`, fd);
+      const defaultImg = { ...data.artwork.img1, _id: data.artwork._id };
+      data.images.unshift(defaultImg);
       dispatch(updateArtwork(id, data));
     } catch (err) {
       console.log(err);
@@ -101,6 +108,16 @@ export const deleteArtworkthunk = id => {
       dispatch(loading());
       await axios.delete(`/api/artworks/${id}`);
       dispatch(deleteArtwork(id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const deleteImagethunk = id => {
+  return async dispatch => {
+    try {
+      //id is artworkId, axios.delete(`/api/images/${id})
     } catch (err) {
       console.log(err);
     }

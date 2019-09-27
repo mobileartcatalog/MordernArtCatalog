@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 router.use('/artworks', require('./artworks'));
 router.use('/exhibitions', require('./exhibitions'));
-// router.use('/images', require('./images'));
+router.use('/images', require('./images'));
 
 router.use(function(req, res, next) {
   const err = new Error('Not Found.');

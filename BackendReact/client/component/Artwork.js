@@ -6,8 +6,9 @@ import { fetchSingleArt, deleteArtworkthunk } from '../reducer/artworks';
 import { arrayBufferToBase64 } from '../../utils';
 import UploadImages from './UploadImages';
 import { Modal } from './Modal';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { ModalEdit } from './ModalEdit';
+import { DeleteSubimage } from './SubimageDelete';
 import {
   FaTrashAlt,
   FaEdit,
@@ -33,6 +34,7 @@ class ArtworkCompo extends React.Component {
     this.imgClick = this.imgClick.bind(this);
     this.handleRClick = this.handleRClick.bind(this);
     this.handleLClick = this.handleLClick.bind(this);
+    this.handleTrash = this.handleTrash.bind(this);
   }
   componentDidMount() {
     const id = this.props.match.params.artworkId;
@@ -77,6 +79,18 @@ class ArtworkCompo extends React.Component {
     this.setState({ imgIndex: index });
   }
 
+  handleTrash() {
+    const { images } = this.props;
+    console.log('images array', images);
+    if (this.state.imgIndex === 0) {
+      //image[0] === img1
+      console.log('images[0]', images[0]);
+      //call thunk , update the artwork.img1 with images[1], create a new image doc if no such doc(check images[0]._id if in the images collection)
+    } else {
+      //any image in images array
+    }
+  }
+
   render() {
     if (this.props.loading) return <div>Loading</div>;
     if (!this.props.selected.title) return <div>Loading</div>;
@@ -100,12 +114,14 @@ class ArtworkCompo extends React.Component {
               )}`}
               alt='artworkimage'
             />
-            <FaBars
-              className='faiconbars'
-              onClick={() => {
-                console.log('clicked!');
+            <Link
+              to={{
+                pathname: `/images/${images[this.state.imgIndex]._id}`,
+                artworkId: _id
               }}
-            />
+            >
+              <FaTrashAlt className='fatrash' onClick={this.handleTrash} />
+            </Link>
             <FaChevronRight className='faright' onClick={this.handleRClick} />
             <FaChevronLeft className='faleft' onClick={this.handleLClick} />
           </div>

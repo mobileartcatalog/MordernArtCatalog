@@ -108,6 +108,7 @@ router.patch(
       const id = req.params.artworkId;
 
       if (req.files) {
+        //add multi sub images
         console.log('req.file happen?????');
         Artworks.findById(id, async (err, artwork) => {
           if (err) {
@@ -139,7 +140,7 @@ router.patch(
           }
         });
       } else {
-        ////for other fields update
+        ////for other fields update(eidt)
         const result = await Artworks.findByIdAndUpdate(id, req.body, {
           new: true
         }).exec();
