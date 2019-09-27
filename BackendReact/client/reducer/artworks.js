@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import axios from 'axios';
 
 //action type
@@ -7,7 +8,6 @@ const ADD_ARTWORK = 'ADD_ARTWORK';
 const SET_SINGLEART = 'SET_SINGLEART';
 const UPDATE_ARTWORK = 'UPDATE_ARTWORK';
 const DETELE_ARTWORK = 'DETELE_ARTWORK';
-const DETELE_IMAGE = 'DETELE_IMAGE';
 
 //action creator
 const loading = () => ({ type: LOADING });
@@ -24,10 +24,6 @@ const updateArtwork = (id, updateData) => ({
 });
 const deleteArtwork = id => ({
   type: DETELE_ARTWORK,
-  id
-});
-const deleteImage = id => ({
-  type: DETELE_IMAGE,
   id
 });
 
@@ -114,10 +110,13 @@ export const deleteArtworkthunk = id => {
   };
 };
 
-export const deleteImagethunk = id => {
+export const deleteImagethunk = (imageId, artworkId) => {
   return async dispatch => {
     try {
-      //id is artworkId, axios.delete(`/api/images/${id})
+      dispatch(loading());
+      await axios.delete(`/api/images/${imageId}`, {
+        data: { artworkId: artworkId }
+      });
     } catch (err) {
       console.log(err);
     }

@@ -117,7 +117,7 @@ class ArtworkCompo extends React.Component {
             <Link
               to={{
                 pathname: `/images/${images[this.state.imgIndex]._id}`,
-                artworkId: _id
+                imageIndex: this.state.imgIndex
               }}
             >
               <FaTrashAlt className='fatrash' onClick={this.handleTrash} />
