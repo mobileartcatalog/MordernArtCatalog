@@ -8,6 +8,7 @@ const ADD_ARTWORK = 'ADD_ARTWORK';
 const SET_SINGLEART = 'SET_SINGLEART';
 const UPDATE_ARTWORK = 'UPDATE_ARTWORK';
 const DETELE_ARTWORK = 'DETELE_ARTWORK';
+const CHANGE_MAINIMAGE = 'CHANGE_MAINIMAGE';
 
 //action creator
 const loading = () => ({ type: LOADING });
@@ -24,6 +25,10 @@ const updateArtwork = (id, updateData) => ({
 });
 const deleteArtwork = id => ({
   type: DETELE_ARTWORK,
+  id
+});
+const changeMainimage = id => ({
+  type: CHANGE_MAINIMAGE,
   id
 });
 
@@ -61,8 +66,8 @@ export const fetchSingleArt = id => {
   return async dispatch => {
     try {
       const { data } = await axios.get(`/api/artworks/${id}`);
-      const defaultImg = { ...data.artwork.img1, _id: data.artwork._id };
-      data.images.unshift(defaultImg);
+      // const defaultImg = { ...data.artwork.img1, _id: data.artwork._id };
+      // data.images.unshift(defaultImg);
       dispatch(setSingleArt(data));
     } catch (err) {
       console.log('Fetching a singel artwork goes wrong');
@@ -78,8 +83,8 @@ export const updateArtThunk = (id, updateData) => {
         fd.append('artworkpics', updateData[i]);
       }
       const { data } = await axios.patch(`/api/artworks/${id}`, fd);
-      const defaultImg = { ...data.artwork.img1, _id: data.artwork._id };
-      data.images.unshift(defaultImg);
+      // const defaultImg = { ...data.artwork.img1, _id: data.artwork._id };
+      // data.images.unshift(defaultImg);
       dispatch(updateArtwork(id, data));
     } catch (err) {
       console.log(err);
@@ -117,6 +122,17 @@ export const deleteImagethunk = (imageId, artworkId) => {
       await axios.delete(`/api/images/${imageId}`, {
         data: { artworkId: artworkId }
       });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const changeMainimagethunk = (imageId, artworkId) => {
+  return async dispatch => {
+    try {
+      dispatch(loading());
+      await axios.patch(`/api/images/${imageId}`, { artworkId });
     } catch (err) {
       console.log(err);
     }

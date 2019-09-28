@@ -1,31 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteImagethunk } from '../reducer/artworks';
+import { deleteImagethunk, changeMainimagethunk } from '../reducer/artworks';
 import { arrayBufferToBase64 } from '../../utils';
 
 class DeleteSubimageCompo extends React.Component {
-  constructor() {
-    super();
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handelCancel = this.handelCancel.bind(this);
-  }
-
-  handleDelete() {
-    const imageId = this.props.match.params.imageId;
-    const { selected } = this.props;
-    this.props.deleteImage(imageId, selected._id);
-    this.props.history.push(`/${selected._id}`);
-  }
-
-  handelCancel() {
-    const { selected } = this.props;
-    this.props.history.push(`/${selected._id}`);
-  }
-
   render() {
-    const { images, selected } = this.props;
+    const { images, selected, changeMain, deleteImage, history } = this.props;
     const imageIndex = this.props.location.imageIndex;
     const imageId = this.props.match.params.imageId;
+    // check if imageId == selected._id, if yes => main image, fixed ,cannot delete, need to change ,pop up message modal or button delete validation
     return (
       <div>
         <p>Delete this image? Are you sure?</p>
@@ -35,10 +18,25 @@ class DeleteSubimageCompo extends React.Component {
           }; base64,${arrayBufferToBase64(images[imageIndex].data.data)}`}
           alt='artsubimage'
         />
-        <button type='button' onClick={this.handleDelete}>
+        <button
+          type='button'
+          onClick={() => {
+            changeMain(imageId, selected._id);
+            history.push(`/${selected._id}`);
+          }}
+        >
+          Set to Main Image
+        </button>
+        <button
+          type='button'
+          onClick={() => {
+            deleteImage(imageId, selected._id);
+            history.push(`/${selected._id}`);
+          }}
+        >
           Delete
         </button>
-        <button type='button' onClick={this.handelCancel}>
+        <button type='button' onClick={() => history.push(`/${selected._id}`)}>
           Cancel
         </button>
       </div>
@@ -56,7 +54,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    deleteImage: (id, artworkId) => dispatch(deleteImagethunk(id, artworkId))
+    deleteImage: (id, artworkId) => dispatch(deleteImagethunk(id, artworkId)),
+    changeMain: (id, artworkId) => dispatch(changeMainimagethunk(id, artworkId))
   };
 };
 
@@ -64,5 +63,3 @@ export const DeleteSubimage = connect(
   mapState,
   mapDispatch
 )(DeleteSubimageCompo);
-
-//when dipatch thunk, pass in artworkId, and imageId

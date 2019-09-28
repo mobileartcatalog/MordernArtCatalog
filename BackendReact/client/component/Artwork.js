@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-alert */
 import React from 'react';
@@ -8,7 +9,6 @@ import UploadImages from './UploadImages';
 import { Modal } from './Modal';
 import { Redirect, Link } from 'react-router-dom';
 import { ModalEdit } from './ModalEdit';
-import { DeleteSubimage } from './SubimageDelete';
 import {
   FaTrashAlt,
   FaEdit,
@@ -105,26 +105,31 @@ class ArtworkCompo extends React.Component {
     return (
       <div className='artwork'>
         <div className='artworkInfo'>
-          <div className='imgContainer'>
-            <img
-              src={`data: ${
-                images[this.state.imgIndex].contentType
-              }; base64,${arrayBufferToBase64(
-                images[this.state.imgIndex].data.data
-              )}`}
-              alt='artworkimage'
-            />
-            <Link
-              to={{
-                pathname: `/images/${images[this.state.imgIndex]._id}`,
-                imageIndex: this.state.imgIndex
-              }}
-            >
-              <FaTrashAlt className='fatrash' onClick={this.handleTrash} />
-            </Link>
-            <FaChevronRight className='faright' onClick={this.handleRClick} />
-            <FaChevronLeft className='faleft' onClick={this.handleLClick} />
-          </div>
+          {img1 ? (
+            <div className='imgContainer'>
+              <img
+                src={`data: ${
+                  images[this.state.imgIndex].contentType
+                }; base64,${arrayBufferToBase64(
+                  images[this.state.imgIndex].data.data
+                )}`}
+                alt='artworkimage'
+              />
+              <Link
+                to={{
+                  pathname: `/images/${images[this.state.imgIndex]._id}`,
+                  imageIndex: this.state.imgIndex
+                }}
+              >
+                <FaTrashAlt className='fatrash' onClick={this.handleTrash} />
+              </Link>
+              <FaChevronRight className='faright' onClick={this.handleRClick} />
+              <FaChevronLeft className='faleft' onClick={this.handleLClick} />
+            </div>
+          ) : (
+            <div className='imgContainer'></div>
+          )}
+
           <div className='artwork-detail'>
             <h3>{title}</h3>
             <button onClick={this.handleEditclick}>Edit</button>

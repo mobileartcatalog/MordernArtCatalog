@@ -39,8 +39,23 @@ router.post('/', upload.single('img1'), async (req, res, next) => {
       ...req.body
     });
     if (req.file) {
-      artwork.img1.data = fs.readFileSync(req.file.path);
-      artwork.img1.contentType = req.file.mimetype;
+      // artwork.img1.data = fs.readFileSync(req.file.path);
+      // artwork.img1.contentType = req.file.mimetype;
+      //add img1 to Images collection
+      const img = {
+        data: fs.readFileSync(req.file.path),
+        contentType: req.file.mimetype
+      };
+      artwork.img1 = img;
+      const image = new Image({
+        _id: new mongoose.Types.ObjectId(),
+        ...img
+      });
+      const imageResult = await image.save();
+      // console.log('in api after save init image', imageResult._id);
+      artwork.images = [imageResult._id];
+      artwork.img1.id = imageResult._id;
+      // console.log('artwork.image', artwork.images);
     }
     const result = await artwork.save();
     res.status(200).json({
