@@ -9,9 +9,11 @@ class DeleteSubimageCompo extends React.Component {
     const imageIndex = this.props.location.imageIndex;
     const imageId = this.props.match.params.imageId;
     // check if imageId == selected._id, if yes => main image, fixed ,cannot delete, need to change ,pop up message modal or button delete validation
+    const buttonOption = imageId === selected.img1.id;
     return (
       <div>
         <p>Delete this image? Are you sure?</p>
+        {buttonOption ? <p>Main Image can't be delete.</p> : null}
         <img
           src={`data: ${
             images[imageIndex].contentType
@@ -20,6 +22,7 @@ class DeleteSubimageCompo extends React.Component {
         />
         <button
           type='button'
+          disabled={buttonOption}
           onClick={() => {
             changeMain(imageId, selected._id);
             history.push(`/${selected._id}`);
@@ -29,6 +32,7 @@ class DeleteSubimageCompo extends React.Component {
         </button>
         <button
           type='button'
+          disabled={buttonOption}
           onClick={() => {
             deleteImage(imageId, selected._id);
             history.push(`/${selected._id}`);

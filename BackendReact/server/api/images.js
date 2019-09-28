@@ -8,7 +8,6 @@ router.patch('/:imageId', async (req, res, next) => {
   try {
     const imageId = req.params.imageId;
     const artworkId = req.body.artworkId;
-    console.log('in image api req.body', artworkId);
     const result = await Images.findById(imageId);
     //may refactor to only store id instead of data and contentType
     const img1 = {
@@ -16,7 +15,6 @@ router.patch('/:imageId', async (req, res, next) => {
       contentType: result.contentType,
       id: result._id
     };
-    console.log('after get from images col', img1);
     const artResult = await Artworks.findByIdAndUpdate(
       artworkId,
       { img1 },

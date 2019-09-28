@@ -3,15 +3,18 @@ import axios from 'axios';
 
 //action type
 const LOADING = 'LOADING';
+const SUBLOADING = 'SUBLOADING';
 const SET_ARTWORKS = 'SET_ARTWORKS';
 const ADD_ARTWORK = 'ADD_ARTWORK';
 const SET_SINGLEART = 'SET_SINGLEART';
 const UPDATE_ARTWORK = 'UPDATE_ARTWORK';
 const DETELE_ARTWORK = 'DETELE_ARTWORK';
+const DELETE_IMAGE = 'DELETE_IMAGE';
 const CHANGE_MAINIMAGE = 'CHANGE_MAINIMAGE';
 
 //action creator
 const loading = () => ({ type: LOADING });
+const subloading = () => ({ type: SUBLOADING });
 const setArtworks = artworks => ({ type: SET_ARTWORKS, artworks });
 const addArtwork = artwork => ({ type: ADD_ARTWORK, artwork });
 const setSingleArt = selected => ({
@@ -27,9 +30,12 @@ const deleteArtwork = id => ({
   type: DETELE_ARTWORK,
   id
 });
-const changeMainimage = id => ({
+const deleteImage = () => ({
+  type: DELETE_IMAGE
+});
+const changeMainimage = artwork => ({
   type: CHANGE_MAINIMAGE,
-  id
+  artwork
 });
 
 //thunk creator
@@ -118,10 +124,11 @@ export const deleteArtworkthunk = id => {
 export const deleteImagethunk = (imageId, artworkId) => {
   return async dispatch => {
     try {
-      dispatch(loading());
+      dispatch(subloading());
       await axios.delete(`/api/images/${imageId}`, {
         data: { artworkId: artworkId }
       });
+      dispatch(deleteImage());
     } catch (err) {
       console.log(err);
     }
@@ -131,8 +138,11 @@ export const deleteImagethunk = (imageId, artworkId) => {
 export const changeMainimagethunk = (imageId, artworkId) => {
   return async dispatch => {
     try {
-      dispatch(loading());
-      await axios.patch(`/api/images/${imageId}`, { artworkId });
+      dispatch(subloading());
+      const { data } = await axios.patch(`/api/images/${imageId}`, {
+        artworkId
+      });
+      dispatch(changeMainimage(data.artwork));
     } catch (err) {
       console.log(err);
     }
@@ -143,13 +153,16 @@ const initialState = {
   all: [],
   selected: {},
   images: [],
-  loading: false
+  loading: false,
+  subloading: false
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case LOADING:
       return { ...state, loading: true };
+    case SUBLOADING:
+      return { ...state, subloading: true };
     case SET_ARTWORKS:
       return { ...state, loading: false, all: action.artworks };
     case SET_SINGLEART:
@@ -182,6 +195,17 @@ const reducer = (state = initialState, action) => {
         ...state,
         all: state.all.filter(art => art._id !== action.id),
         loading: false
+      };
+    case DELETE_IMAGE:
+      return {
+        ...state,
+        subloading: false
+      };
+    case CHANGE_MAINIMAGE:
+      return {
+        ...state,
+        selected: action.artwork,
+        subloading: false
       };
     default:
       return state;

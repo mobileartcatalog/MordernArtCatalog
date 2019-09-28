@@ -13,6 +13,7 @@ import {
   FaTrashAlt,
   FaEdit,
   FaBars,
+  FaCheck,
   FaChevronRight,
   FaChevronLeft
 } from 'react-icons/fa';
@@ -34,7 +35,6 @@ class ArtworkCompo extends React.Component {
     this.imgClick = this.imgClick.bind(this);
     this.handleRClick = this.handleRClick.bind(this);
     this.handleLClick = this.handleLClick.bind(this);
-    this.handleTrash = this.handleTrash.bind(this);
   }
   componentDidMount() {
     const id = this.props.match.params.artworkId;
@@ -79,20 +79,9 @@ class ArtworkCompo extends React.Component {
     this.setState({ imgIndex: index });
   }
 
-  handleTrash() {
-    const { images } = this.props;
-    console.log('images array', images);
-    if (this.state.imgIndex === 0) {
-      //image[0] === img1
-      console.log('images[0]', images[0]);
-      //call thunk , update the artwork.img1 with images[1], create a new image doc if no such doc(check images[0]._id if in the images collection)
-    } else {
-      //any image in images array
-    }
-  }
-
   render() {
     if (this.props.loading) return <div>Loading</div>;
+    if (this.props.subloading) return <div>Loading</div>;
     if (!this.props.selected.title) return <div>Loading</div>;
     if (this.state.imgData === '') return <div>Loading</div>;
     const { title, height, width, medium, img1, _id } = this.props.selected;
@@ -105,7 +94,7 @@ class ArtworkCompo extends React.Component {
     return (
       <div className='artwork'>
         <div className='artworkInfo'>
-          {img1 ? (
+          {img1 || images.length > 0 ? (
             <div className='imgContainer'>
               <img
                 src={`data: ${
@@ -121,7 +110,7 @@ class ArtworkCompo extends React.Component {
                   imageIndex: this.state.imgIndex
                 }}
               >
-                <FaTrashAlt className='fatrash' onClick={this.handleTrash} />
+                <FaEdit className='faedit' />
               </Link>
               <FaChevronRight className='faright' onClick={this.handleRClick} />
               <FaChevronLeft className='faleft' onClick={this.handleLClick} />
@@ -169,7 +158,7 @@ class ArtworkCompo extends React.Component {
             {images.length
               ? images.map((image, index) => {
                   return (
-                    <div key={image._id}>
+                    <div key={image._id} className='singleimagecontainer'>
                       <img
                         className='singleimage'
                         src={`data: ${
@@ -178,6 +167,10 @@ class ArtworkCompo extends React.Component {
                         alt='image'
                         onClick={() => this.imgClick(index)}
                       />
+                      {/* ??render check a little slow,even add subloading */}
+                      {img1.id === image._id ? (
+                        <FaCheck className='facheck' />
+                      ) : null}
                     </div>
                   );
                 })
@@ -193,7 +186,8 @@ const mapState = state => {
   return {
     selected: state.artworks.selected,
     images: state.artworks.images,
-    loading: state.artworks.loading
+    loading: state.artworks.loading,
+    subloading: state.artworks.subloading
   };
 };
 
