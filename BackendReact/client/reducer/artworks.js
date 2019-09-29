@@ -71,6 +71,7 @@ export const addArtworkThunk = artwork => {
 export const fetchSingleArt = id => {
   return async dispatch => {
     try {
+      dispatch(loading());
       const { data } = await axios.get(`/api/artworks/${id}`);
       // const defaultImg = { ...data.artwork.img1, _id: data.artwork._id };
       // data.images.unshift(defaultImg);

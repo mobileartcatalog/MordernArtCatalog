@@ -89,7 +89,7 @@ class ArtworkCompo extends React.Component {
     const { images } = this.props;
     console.log('images from fetch single', images);
 
-    if (this.state.redirect) return <Redirect to='/' />;
+    if (this.state.redirect) return <Redirect to='/artworks' />;
 
     return (
       <div className='artwork'>

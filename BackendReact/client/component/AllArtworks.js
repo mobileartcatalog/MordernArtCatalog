@@ -21,7 +21,7 @@ export class AllArtworks extends React.Component {
           <h2>All Artworks</h2>
           {artworks.map(artwork => (
             <div key={artwork._id}>
-              <Link to={`/${artwork._id}`}>
+              <Link to={`/artworks/${artwork._id}`}>
                 <div>
                   <h4>{artwork.title}</h4>
                   {artwork.img1 && true ? (
