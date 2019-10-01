@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-alert */
 import React from 'react';
@@ -6,12 +7,13 @@ import { fetchSingleArt, deleteArtworkthunk } from '../reducer/artworks';
 import { arrayBufferToBase64 } from '../../utils';
 import UploadImages from './UploadImages';
 import { Modal } from './Modal';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { ModalEdit } from './ModalEdit';
 import {
   FaTrashAlt,
   FaEdit,
   FaBars,
+  FaCheck,
   FaChevronRight,
   FaChevronLeft
 } from 'react-icons/fa';
@@ -79,6 +81,7 @@ class ArtworkCompo extends React.Component {
 
   render() {
     if (this.props.loading) return <div>Loading</div>;
+    if (this.props.subloading) return <div>Loading</div>;
     if (!this.props.selected.title) return <div>Loading</div>;
     if (this.state.imgData === '') return <div>Loading</div>;
     const { title, height, width, medium, img1, _id } = this.props.selected;
@@ -86,29 +89,36 @@ class ArtworkCompo extends React.Component {
     const { images } = this.props;
     console.log('images from fetch single', images);
 
-    if (this.state.redirect) return <Redirect to='/' />;
+    if (this.state.redirect) return <Redirect to='/artworks' />;
 
     return (
       <div className='artwork'>
         <div className='artworkInfo'>
-          <div className='imgContainer'>
-            <img
-              src={`data: ${
-                images[this.state.imgIndex].contentType
-              }; base64,${arrayBufferToBase64(
-                images[this.state.imgIndex].data.data
-              )}`}
-              alt='artworkimage'
-            />
-            <FaBars
-              className='faiconbars'
-              onClick={() => {
-                console.log('clicked!');
-              }}
-            />
-            <FaChevronRight className='faright' onClick={this.handleRClick} />
-            <FaChevronLeft className='faleft' onClick={this.handleLClick} />
-          </div>
+          {img1 || images.length > 0 ? (
+            <div className='imgContainer'>
+              <img
+                src={`data: ${
+                  images[this.state.imgIndex].contentType
+                }; base64,${arrayBufferToBase64(
+                  images[this.state.imgIndex].data.data
+                )}`}
+                alt='artworkimage'
+              />
+              <Link
+                to={{
+                  pathname: `/images/${images[this.state.imgIndex]._id}`,
+                  imageIndex: this.state.imgIndex
+                }}
+              >
+                <FaEdit className='faedit' />
+              </Link>
+              <FaChevronRight className='faright' onClick={this.handleRClick} />
+              <FaChevronLeft className='faleft' onClick={this.handleLClick} />
+            </div>
+          ) : (
+            <div className='imgContainer'></div>
+          )}
+
           <div className='artwork-detail'>
             <h3>{title}</h3>
             <button onClick={this.handleEditclick}>Edit</button>
@@ -148,7 +158,7 @@ class ArtworkCompo extends React.Component {
             {images.length
               ? images.map((image, index) => {
                   return (
-                    <div key={image._id}>
+                    <div key={image._id} className='singleimagecontainer'>
                       <img
                         className='singleimage'
                         src={`data: ${
@@ -157,6 +167,10 @@ class ArtworkCompo extends React.Component {
                         alt='image'
                         onClick={() => this.imgClick(index)}
                       />
+                      {/* ??render check a little slow,even add subloading */}
+                      {img1.id === image._id ? (
+                        <FaCheck className='facheck' />
+                      ) : null}
                     </div>
                   );
                 })
@@ -172,7 +186,8 @@ const mapState = state => {
   return {
     selected: state.artworks.selected,
     images: state.artworks.images,
-    loading: state.artworks.loading
+    loading: state.artworks.loading,
+    subloading: state.artworks.subloading
   };
 };
 

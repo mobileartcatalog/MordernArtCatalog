@@ -1,15 +1,20 @@
+/* eslint-disable complexity */
 import axios from 'axios';
 
 //action type
 const LOADING = 'LOADING';
+const SUBLOADING = 'SUBLOADING';
 const SET_ARTWORKS = 'SET_ARTWORKS';
 const ADD_ARTWORK = 'ADD_ARTWORK';
 const SET_SINGLEART = 'SET_SINGLEART';
 const UPDATE_ARTWORK = 'UPDATE_ARTWORK';
 const DETELE_ARTWORK = 'DETELE_ARTWORK';
+const DELETE_IMAGE = 'DELETE_IMAGE';
+const CHANGE_MAINIMAGE = 'CHANGE_MAINIMAGE';
 
 //action creator
 const loading = () => ({ type: LOADING });
+const subloading = () => ({ type: SUBLOADING });
 const setArtworks = artworks => ({ type: SET_ARTWORKS, artworks });
 const addArtwork = artwork => ({ type: ADD_ARTWORK, artwork });
 const setSingleArt = selected => ({
@@ -24,6 +29,13 @@ const updateArtwork = (id, updateData) => ({
 const deleteArtwork = id => ({
   type: DETELE_ARTWORK,
   id
+});
+const deleteImage = () => ({
+  type: DELETE_IMAGE
+});
+const changeMainimage = artwork => ({
+  type: CHANGE_MAINIMAGE,
+  artwork
 });
 
 //thunk creator
@@ -59,9 +71,10 @@ export const addArtworkThunk = artwork => {
 export const fetchSingleArt = id => {
   return async dispatch => {
     try {
+      dispatch(loading());
       const { data } = await axios.get(`/api/artworks/${id}`);
-      const defaultImg = { ...data.artwork.img1, _id: data.artwork._id };
-      data.images.unshift(defaultImg);
+      // const defaultImg = { ...data.artwork.img1, _id: data.artwork._id };
+      // data.images.unshift(defaultImg);
       dispatch(setSingleArt(data));
     } catch (err) {
       console.log('Fetching a singel artwork goes wrong');
@@ -77,6 +90,8 @@ export const updateArtThunk = (id, updateData) => {
         fd.append('artworkpics', updateData[i]);
       }
       const { data } = await axios.patch(`/api/artworks/${id}`, fd);
+      // const defaultImg = { ...data.artwork.img1, _id: data.artwork._id };
+      // data.images.unshift(defaultImg);
       dispatch(updateArtwork(id, data));
     } catch (err) {
       console.log(err);
@@ -107,17 +122,48 @@ export const deleteArtworkthunk = id => {
   };
 };
 
+export const deleteImagethunk = (imageId, artworkId) => {
+  return async dispatch => {
+    try {
+      dispatch(subloading());
+      await axios.delete(`/api/images/${imageId}`, {
+        data: { artworkId: artworkId }
+      });
+      dispatch(deleteImage());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export const changeMainimagethunk = (imageId, artworkId) => {
+  return async dispatch => {
+    try {
+      dispatch(subloading());
+      const { data } = await axios.patch(`/api/images/${imageId}`, {
+        artworkId
+      });
+      dispatch(changeMainimage(data.artwork));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
 const initialState = {
   all: [],
   selected: {},
   images: [],
-  loading: false
+  loading: false,
+  subloading: false
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case LOADING:
       return { ...state, loading: true };
+    case SUBLOADING:
+      return { ...state, subloading: true };
     case SET_ARTWORKS:
       return { ...state, loading: false, all: action.artworks };
     case SET_SINGLEART:
@@ -150,6 +196,17 @@ const reducer = (state = initialState, action) => {
         ...state,
         all: state.all.filter(art => art._id !== action.id),
         loading: false
+      };
+    case DELETE_IMAGE:
+      return {
+        ...state,
+        subloading: false
+      };
+    case CHANGE_MAINIMAGE:
+      return {
+        ...state,
+        selected: action.artwork,
+        subloading: false
       };
     default:
       return state;

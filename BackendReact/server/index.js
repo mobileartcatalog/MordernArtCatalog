@@ -17,9 +17,14 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/api', require('./api'));
 
-app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname), '../public/index.html');
-});
+// app.get('*', function(req, res) {
+//   res.sendFile(path.join(__dirname), '../public/index.html');
+// });
+//too wield ,need help!! what is the difference??
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
+}); // Send index.html for any other requests
 
 app.use(function(err, req, res, next) {
   console.error(err);
