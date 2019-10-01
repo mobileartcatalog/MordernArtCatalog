@@ -3,13 +3,16 @@ import { Route, Link, Switch } from 'react-router-dom';
 import { Artworks } from './AllArtworks';
 import { Exhibitions } from './Exhibitions';
 import { Artwork } from './Artwork';
+import { Home } from './Home';
+import { DeleteSubimage } from './SubimageDelete';
 
 export const Root = () => {
   return (
     <div>
       <nav>
         Welcome!
-        <Link to='/'>Artworks</Link>
+        <Link to='/'>Home</Link>
+        <Link to='/artworks'>Artworks</Link>
         <Link to='/exhibitions'>Exhibitions</Link>
       </nav>
       <main>
@@ -19,8 +22,10 @@ export const Root = () => {
       </main>
       <Switch>
         <Route exact path='/exhibitions' component={Exhibitions} />
-        <Route exact path='/:artworkId' component={Artwork} />
-        <Route exact path='/' component={Artworks} />
+        <Route exact path='/artworks' component={Artworks} />
+        <Route exact path='/artworks/:artworkId' component={Artwork} />
+        <Route exact path='/images/:imageId' component={DeleteSubimage} />
+        <Route exact path='/' component={Home} />
       </Switch>
     </div>
   );

@@ -55,7 +55,8 @@ const ArtworkSchema = new Schema({
   },
   img1: {
     data: Buffer,
-    contentType: String
+    contentType: String,
+    id: String
   },
   images: [
     {
