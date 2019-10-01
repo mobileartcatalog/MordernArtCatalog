@@ -3,7 +3,11 @@
 /* eslint-disable no-alert */
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchSingleArt, deleteArtworkthunk } from '../reducer/artworks';
+import {
+  fetchSingleArt,
+  deleteArtworkthunk,
+  setSubloadingFalseThunk,
+} from '../reducer/artworks';
 import { arrayBufferToBase64 } from '../../utils';
 import UploadImages from './UploadImages';
 import { Modal } from './Modal';
@@ -15,7 +19,7 @@ import {
   FaBars,
   FaCheck,
   FaChevronRight,
-  FaChevronLeft
+  FaChevronLeft,
 } from 'react-icons/fa';
 
 class ArtworkCompo extends React.Component {
@@ -25,7 +29,7 @@ class ArtworkCompo extends React.Component {
       isOpen: false,
       redirect: false,
       isEdit: false,
-      imgIndex: 0
+      imgIndex: 0,
     };
     this.handleComfirm = this.handleComfirm.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
@@ -37,8 +41,9 @@ class ArtworkCompo extends React.Component {
     this.handleLClick = this.handleLClick.bind(this);
   }
   componentDidMount() {
+    const { subloading, setSubloadingFalse, setSingleArt } = this.props;
     const id = this.props.match.params.artworkId;
-    this.props.setSingleArt(id);
+    subloading ? setSubloadingFalse() : setSingleArt(id);
   }
 
   handleCancel() {
@@ -89,37 +94,37 @@ class ArtworkCompo extends React.Component {
     const { images } = this.props;
     console.log('images from fetch single', images);
 
-    if (this.state.redirect) return <Redirect to='/artworks' />;
+    if (this.state.redirect) return <Redirect to="/artworks" />;
 
     return (
-      <div className='artwork'>
-        <div className='artworkInfo'>
+      <div className="artwork">
+        <div className="artworkInfo">
           {img1 || images.length > 0 ? (
-            <div className='imgContainer'>
+            <div className="imgContainer">
               <img
                 src={`data: ${
                   images[this.state.imgIndex].contentType
                 }; base64,${arrayBufferToBase64(
                   images[this.state.imgIndex].data.data
                 )}`}
-                alt='artworkimage'
+                alt="artworkimage"
               />
               <Link
                 to={{
                   pathname: `/images/${images[this.state.imgIndex]._id}`,
-                  imageIndex: this.state.imgIndex
+                  imageIndex: this.state.imgIndex,
                 }}
               >
-                <FaEdit className='faedit' />
+                <FaEdit className="faedit" />
               </Link>
-              <FaChevronRight className='faright' onClick={this.handleRClick} />
-              <FaChevronLeft className='faleft' onClick={this.handleLClick} />
+              <FaChevronRight className="faright" onClick={this.handleRClick} />
+              <FaChevronLeft className="faleft" onClick={this.handleLClick} />
             </div>
           ) : (
-            <div className='imgContainer'></div>
+            <div className="imgContainer"></div>
           )}
 
-          <div className='artwork-detail'>
+          <div className="artwork-detail">
             <h3>{title}</h3>
             <button onClick={this.handleEditclick}>Edit</button>
             <ModalEdit
@@ -140,10 +145,10 @@ class ArtworkCompo extends React.Component {
             ) : (
               <p>[None]</p>
             )}
-            <div className='upload'>
+            <div className="upload">
               <UploadImages />
             </div>
-            <button id='deleteartwork' onClick={this.handleDelete}>
+            <button id="deleteartwork" onClick={this.handleDelete}>
               Delete this artwork
             </button>
             <Modal
@@ -153,23 +158,23 @@ class ArtworkCompo extends React.Component {
             />
           </div>
         </div>
-        <div className='subimages'>
-          <div className='images'>
+        <div className="subimages">
+          <div className="images">
             {images.length
               ? images.map((image, index) => {
                   return (
-                    <div key={image._id} className='singleimagecontainer'>
+                    <div key={image._id} className="singleimagecontainer">
                       <img
-                        className='singleimage'
+                        className="singleimage"
                         src={`data: ${
                           image.contentType
                         }; base64,${arrayBufferToBase64(image.data.data)}`}
-                        alt='image'
+                        alt="image"
                         onClick={() => this.imgClick(index)}
                       />
                       {/* ??render check a little slow,even add subloading */}
                       {img1.id === image._id ? (
-                        <FaCheck className='facheck' />
+                        <FaCheck className="facheck" />
                       ) : null}
                     </div>
                   );
@@ -187,14 +192,15 @@ const mapState = state => {
     selected: state.artworks.selected,
     images: state.artworks.images,
     loading: state.artworks.loading,
-    subloading: state.artworks.subloading
+    subloading: state.artworks.subloading,
   };
 };
 
 const mapDispatch = dispatch => {
   return {
     setSingleArt: id => dispatch(fetchSingleArt(id)),
-    deleteArtwork: id => dispatch(deleteArtworkthunk(id))
+    deleteArtwork: id => dispatch(deleteArtworkthunk(id)),
+    setSubloadingFalse: () => dispatch(setSubloadingFalseThunk()),
   };
 };
 
