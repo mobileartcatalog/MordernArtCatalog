@@ -5,13 +5,13 @@ const LINKING_ART_TO_EXH = 'LINKING_ART_TO_EXH';
 const LINKED_ART_TO_EXH = 'LINKED_ART_TO_EXH';
 
 const linkingArt = (exhId, artId) => ({
-  type: 'LINKING_ART_TO_EXH',
+  type: LINKING_ART_TO_EXH,
   exhId,
   artId,
 });
 
 const linkedArt = exh => ({
-  type: 'LINKED_ART_TO_EXH',
+  type: LINKED_ART_TO_EXH,
   exh,
 });
 

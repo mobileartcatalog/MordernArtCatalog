@@ -5,11 +5,11 @@ const GETTING_EXH = 'GETTING_EXH';
 const GOT_EXH = 'GOT_EXH';
 
 const gettingExh = () => ({
-  type: 'GETTING_EXH',
+  type: GETTING_EXH,
 });
 
 const gotExh = data => ({
-  type: 'GOT_EXH',
+  type: GOT_EXH,
   data,
 });
 
