@@ -45,6 +45,11 @@ const reducer = (state, action) => {
             return action.art;
           } else return art;
         }),
+        filtered: state.filtered.map(art => {
+          if (art._id === action.id) {
+            return action.art;
+          } else return art;
+        }),
         selected: action.art,
       };
     default:

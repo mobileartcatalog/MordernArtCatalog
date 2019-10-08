@@ -5,33 +5,20 @@ import { FlatGrid } from 'react-native-super-grid';
 import { connect } from 'react-redux';
 import styles from '../../stylesheets/forms';
 import { getArt } from '../../reducers/artReducer/getArt';
+import { filterArtThunk } from '../../reducers/artReducer/filterArt';
 import ArtworkListRow from './ArtworkListRow';
 import { withNavigation } from 'react-navigation';
 
 class ArtworkList extends Component {
-  constructor() {
-    super();
-    this.state = {
-      searchTerm: '',
-      filtered: [],
-      filteredCount: 0,
-    };
-  }
-
   componentDidMount() {
     const { getArt, loaded } = this.props;
     if (!loaded) getArt();
-    this.setState({
-      filtered: this.props.art,
-      filteredCount: this.props.count,
-    });
   }
 
   renderHeader = () => {
-    let count, label;
-    this.state.searchTerm.length
-      ? (count = this.state.filteredCount)
-      : (count = this.props.count);
+    const { searchTerm, count, filteredCount, filterArt } = this.props;
+    let displayCount, label;
+    searchTerm.length ? (displayCount = filteredCount) : (displayCount = count);
     count === 1 ? (label = `artwork found`) : (label = `artworks found`);
     return (
       <View>
@@ -40,12 +27,12 @@ class ArtworkList extends Component {
           containerStyle={styles.searchBarContainerStyle}
           inputContainerStyle={styles.searchBarInputContainerStyle}
           inputStyle={styles.searchBarInputStyle}
-          onChangeText={searchTerm => this.searchFilter(searchTerm)}
+          onChangeText={searchTerm => filterArt(searchTerm)}
           autoCorrect={false}
           autoCapitalize="none"
-          value={this.state.searchTerm}
+          value={searchTerm}
         />
-        <Text style={styles.bodyText}>{`${count} ${label}`}</Text>
+        <Text style={styles.bodyText}>{`${displayCount} ${label}`}</Text>
       </View>
     );
   };
@@ -79,8 +66,8 @@ class ArtworkList extends Component {
 
   render() {
     let data;
-    this.state.searchTerm.length
-      ? (data = this.state.filtered)
+    this.props.searchTerm.length
+      ? (data = this.props.filtered)
       : (data = this.props.art);
 
     return (
@@ -102,11 +89,15 @@ const mapState = state => {
     loaded: state.art.loaded,
     art: state.art.all,
     count: state.art.count,
+    searchTerm: state.art.searchTerm,
+    filtered: state.art.filtered,
+    filteredCount: state.art.filteredCount,
   };
 };
 
 const mapDispatch = dispatch => ({
   getArt: () => dispatch(getArt()),
+  filterArt: searchTerm => dispatch(filterArtThunk(searchTerm)),
 });
 
 export default withNavigation(

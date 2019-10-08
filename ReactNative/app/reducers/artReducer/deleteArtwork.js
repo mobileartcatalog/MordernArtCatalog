@@ -24,10 +24,16 @@ const reducer = (state, action) => {
     case DELETED_ARTWORK:
       let updatedArtList = state.all.filter(art => art._id !== action.id);
       let updatedCount = updatedArtList.length;
+      let updatedFilteredList = state.filtered.filter(
+        art => art._id !== action.id
+      );
+      let updatedFilteredCount = updatedFilteredList.length;
       return {
         ...state,
         all: updatedArtList,
         count: updatedCount,
+        filtered: updatedFilteredList,
+        filteredCount: updatedFilteredCount,
         selected: {},
       };
     default:
