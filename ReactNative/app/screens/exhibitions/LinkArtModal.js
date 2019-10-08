@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
   View,
-  Alert,
+  Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import styles from '../../stylesheets/art';
@@ -21,7 +21,7 @@ class LinkArtModal extends Component {
     super();
     this.state = {
       modalVisible: false,
-      selected: new Map(),
+      selected: new Map()
     };
   }
 
@@ -49,8 +49,8 @@ class LinkArtModal extends Component {
     let data = {
       artworks: [
         ...this.props.exhibition.artworks,
-        ...this.state.selected.keys(),
-      ],
+        ...this.state.selected.keys()
+      ]
     };
     this.props.updateExh(id, data);
     this.setState({ modalVisible: false, selected: new Map() });
@@ -60,7 +60,7 @@ class LinkArtModal extends Component {
     return (
       <TouchableOpacity
         style={[
-          this.state.selected.get(item._id) ? styles.selected : styles.listView,
+          this.state.selected.get(item._id) ? styles.selected : styles.listView
         ]}
         onPress={key => this.onPressItem(item._id)}
       >
@@ -71,7 +71,7 @@ class LinkArtModal extends Component {
               source={{
                 uri: `data:${
                   item.img1.contentType
-                };base64,${arrayBufferToBase64(item.img1.data.data)}`,
+                };base64,${arrayBufferToBase64(item.img1.data.data)}`
               }}
             />
           ) : (
@@ -91,7 +91,7 @@ class LinkArtModal extends Component {
     return (
       <View style={{ marginTop: 22 }}>
         <Modal
-          animationType="fade"
+          animationType='fade'
           transparent={true}
           presentationStyle={'overFullScreen'}
           visible={this.state.modalVisible}
@@ -103,7 +103,7 @@ class LinkArtModal extends Component {
             <View>
               <View>
                 <StyledSecondaryButton
-                  title="save artworks"
+                  title='save artworks'
                   onPress={() => this.linkArtworks()}
                 />
                 <FlatList
@@ -140,13 +140,13 @@ const mapState = state => {
   return {
     loaded: state.art.loaded,
     art: state.art.all,
-    exhibition: state.exhibitions.selected,
+    exhibition: state.exhibitions.selected
   };
 };
 
 const mapDispatch = dispatch => ({
   getArt: () => dispatch(getArt()),
-  updateExh: (id, exhData) => dispatch(updateExh(id, exhData)),
+  updateExh: (id, exhData) => dispatch(updateExh(id, exhData))
 });
 
 export default connect(

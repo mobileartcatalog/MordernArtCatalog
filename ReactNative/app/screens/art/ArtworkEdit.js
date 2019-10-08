@@ -4,10 +4,15 @@ import { connect } from 'react-redux';
 import { Text, View } from 'react-native';
 import { Formik } from 'formik';
 import styles from '../../stylesheets/forms.js';
-import { StyledButton, StyledInput } from '../formComponents';
+import {
+  StyledButton,
+  StyledInput,
+  StyledSecondaryButton
+} from '../formComponents';
 import MultiImages from './MultiImagesUpload';
 import { artValidationSchema } from './artValidationSchema';
 import { updateArtwork } from '../../reducers/artReducer/updateArtwork';
+import LinkExhiModal from './LinkExhiModal';
 
 class ArtworkEdit extends Component {
   render() {
@@ -20,7 +25,7 @@ class ArtworkEdit extends Component {
       medium,
       height,
       width,
-      depth,
+      depth
     } = this.props.selected;
     return (
       <View style={styles.container}>
@@ -34,7 +39,7 @@ class ArtworkEdit extends Component {
               medium: medium,
               height: height,
               width: width,
-              depth: depth,
+              depth: depth
             }}
             onSubmit={(values, actions) => {
               this.props
@@ -46,7 +51,7 @@ class ArtworkEdit extends Component {
                   actions.setSubmitting(false);
                   actions.resetForm();
                   navigate('ArtworkDetail', {
-                    id: this.props.selected._id,
+                    id: this.props.selected._id
                   });
                 });
             }}
@@ -55,21 +60,21 @@ class ArtworkEdit extends Component {
             {formikProps => (
               <React.Fragment>
                 <StyledButton
-                  title="Save artwork"
+                  title='Save artwork'
                   onPress={formikProps.handleSubmit}
                 />
 
                 <StyledInput
                   formikProps={formikProps}
                   formikKey={'inventorynumber'}
-                  placeholder="inventory number"
+                  placeholder='inventory number'
                   defaultValue={formikProps.initialValues.inventorynumber}
                   autoFocus
                 />
                 <StyledInput
                   formikProps={formikProps}
                   formikKey={'title'}
-                  placeholder="title"
+                  placeholder='title'
                   defaultValue={formikProps.initialValues.title}
                 />
                 <StyledInput
@@ -110,6 +115,7 @@ class ArtworkEdit extends Component {
         </View>
 
         <MultiImages artworkId={this.props.selected._id} />
+        <LinkExhiModal />
       </View>
     );
   }
@@ -117,11 +123,11 @@ class ArtworkEdit extends Component {
 
 const mapState = state => {
   return {
-    selected: state.art.selected,
+    selected: state.art.selected
   };
 };
 const mapDispatch = dispatch => ({
-  updateArtwork: (id, artData) => dispatch(updateArtwork(id, artData)),
+  updateArtwork: (id, artData) => dispatch(updateArtwork(id, artData))
 });
 
 export default withNavigation(
