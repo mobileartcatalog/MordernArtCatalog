@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Button, Image } from 'react-native';
+import { withNavigation } from 'react-navigation';
+import { StyledButton, StyledSecondaryButton } from '../formComponents';
 import ImagePicker from 'react-native-image-crop-picker';
 import styles from '../../stylesheets/art';
 import { connect } from 'react-redux';
@@ -25,7 +27,7 @@ export class MultiImages extends Component {
       .then(images => {
         this.setState({
           images: images.map(image => {
-            // console.log('received image', image);
+
             return {
               uri: image.path,
               width: image.width,
@@ -41,36 +43,75 @@ export class MultiImages extends Component {
 
   handleUpload() {
     const { uploadImages, artworkId } = this.props;
+
     uploadImages(artworkId, this.state.images);
     this.setState({
       images: null,
+    });
+    this.props.navigation.navigate('ArtworkDetail', {
+      id: artworkId,
     });
   }
 
   render() {
     return (
       <View>
-        <Button title="Select More Images" onPress={this.pickMultiImages} />
-        <ScrollView horizontal>
-          {this.state.images
-            ? this.state.images.map((i, index) => (
-                <View key={index}>
-                  <Image source={i} style={styles.thumbnail} />
-                </View>
-              ))
-            : null}
-        </ScrollView>
-        <Button title="Upload" onPress={this.handleUpload} />
+        {this.state.images ? (
+          <View>
+            <StyledButton title="save images" onPress={this.handleUpload} />
+            <StyledSecondaryButton
+              title="add more images"
+              onPress={this.pickMultiImages}
+            />
+
+            <ScrollView horizontal>
+              {this.state.images
+                ? this.state.images.map((i, index) => (
+                    <View key={index}>
+                      <Image source={i} style={styles.thumbnail} />
+                    </View>
+                  ))
+                : null}
+            </ScrollView>
+          </View>
+        ) : (
+          <View>
+            <StyledSecondaryButton
+              title="add more images"
+              onPress={this.pickMultiImages}
+            />
+          </View>
+        )}
       </View>
     );
   }
 }
 
+// <View>
+//   <StyledSecondaryButton title="Upload" onPress={this.handleUpload} />
+//   <StyledSecondaryButton
+//     title="add more images"
+//     onPress={this.pickMultiImages}
+//   />
+
+//   <ScrollView horizontal>
+//     {this.state.images
+//       ? this.state.images.map((i, index) => (
+//           <View key={index}>
+//             <Image source={i} style={styles.thumbnail} />
+//           </View>
+//         ))
+//       : null}
+//   </ScrollView>
+// </View>
+
 const mapDispatch = dispatch => ({
   uploadImages: (id, images) => dispatch(uploadImagesthunk(id, images)),
 });
 
-export default connect(
-  null,
-  mapDispatch
-)(MultiImages);
+export default withNavigation(
+  connect(
+    null,
+    mapDispatch
+  )(MultiImages)
+);

@@ -8,6 +8,7 @@ import {
   Image,
   Button,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { StyledSecondaryButton } from '../formComponents';
 import ScaledImage from 'react-native-scaled-image';
@@ -44,20 +45,11 @@ class ArtworkDetail extends Component {
     const { artwork, images } = this.props;
     const { windowWidth } = Dimensions.get('window');
 
-    if (artwork.img1) {
-      return (
-        <ScrollView>
-          <StyledSecondaryButton
-            title="edit artwork"
-            onPress={() =>
-              this.props.navigation.navigate('ArtworkEdit', {
-                title: 'Edit Artwork',
-                searchTerm: this.props.searchTerm,
-                filtered: this.props.filtered,
-                filteredCount: this.props.filteredCount,
-              })
-            }
-          />
+    return this.props.loading ? (
+      <ActivityIndicator />
+    ) : (
+      <ScrollView>
+        {artwork.img1 ? (
           <ScaledImage
             source={{
               uri: `data:${
@@ -66,54 +58,63 @@ class ArtworkDetail extends Component {
             }}
             width={windowWidth}
           />
-          <Text>{title}</Text>
-          <Text>{date}</Text>
-          <Text>{medium}</Text>
-          {artwork.height ? <Text>{height.$numberDecimal}" height</Text> : null}
-          {artwork.width ? <Text>{width.$numberDecimal}" width</Text> : null}
-          {images.length ? (
-            <ScrollView horizontal>
-              {images.map(image => {
-                return (
-                  <View key={image._id}>
-                    <Image
-                      source={{
-                        uri: `data:${
-                          image.contentType
-                        };base64,${arrayBufferToBase64(image.data.data)}`,
-                      }}
-                      style={styles.thumbnail}
-                    />
-                  </View>
-                );
-              })}
-            </ScrollView>
-          ) : null}
-          <MultiImages artworkId={artwork._id} />
-          <Button
-            title="Delete Artwork"
-            onPress={() =>
-              Alert.alert(
-                'Delete?',
-                'Are you sure you want to permanently delete this artwork?',
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'Delete',
-                    onPress: () => this.handleDelete(),
-                  },
-                ]
-              )
-            }
-          />
-        </ScrollView>
-      );
-    }
-    return <Text>loading</Text>;
+        ) : null}
+
+        <Text>{title}</Text>
+        <Text>{date}</Text>
+        <Text>{medium}</Text>
+        {artwork.height ? <Text>{height.$numberDecimal}" height</Text> : null}
+        {artwork.width ? <Text>{width.$numberDecimal}" width</Text> : null}
+        {images.length ? (
+          <ScrollView horizontal>
+            {images.map(image => {
+              return (
+                <View key={image._id}>
+                  <Image
+                    source={{
+                      uri: `data:${
+                        image.contentType
+                      };base64,${arrayBufferToBase64(image.data.data)}`,
+                    }}
+                    style={styles.thumbnail}
+                  />
+                </View>
+              );
+            })}
+          </ScrollView>
+        ) : null}
+
+        <StyledSecondaryButton
+          title="edit artwork"
+          onPress={() =>
+            this.props.navigation.navigate('ArtworkEdit', {
+              title: 'Edit Artwork',
+              artworkId: artwork._id,
+            })
+          }
+        />
+        <StyledSecondaryButton
+          title="delete artwork"
+          onPress={() =>
+            Alert.alert(
+              'Delete?',
+              'Are you sure you want to permanently delete this artwork?',
+              [
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {
+                  text: 'Delete',
+                  onPress: () => this.handleDelete(),
+                },
+              ]
+            )
+          }
+        />
+      </ScrollView>
+    );
   }
 }
 

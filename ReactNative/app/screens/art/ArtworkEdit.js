@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { Text, View } from 'react-native';
 import { Formik } from 'formik';
 import styles from '../../stylesheets/forms.js';
-import { StyledInput, StyledButton } from '../formComponents';
+import { StyledButton, StyledInput } from '../formComponents';
+import MultiImages from './MultiImagesUpload';
 import { artValidationSchema } from './artValidationSchema';
 import { updateArtwork } from '../../reducers/artReducer/updateArtwork';
 
@@ -107,6 +108,8 @@ class ArtworkEdit extends Component {
             )}
           </Formik>
         </View>
+
+        <MultiImages artworkId={this.props.selected._id} />
       </View>
     );
   }
