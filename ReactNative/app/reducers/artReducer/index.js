@@ -4,6 +4,7 @@ import getArt from './getArt';
 import getArtworkDetail from './getArtworkDetail';
 import addArtwork from './addArtwork';
 import deleteArtwork from './deleteArtwork';
+import updateArtwork from './updateArtwork';
 
 const initialState = {
   loading: false,
@@ -20,7 +21,8 @@ const artReducer = reduceReducers(
   getArt,
   getArtworkDetail,
   addArtwork,
-  deleteArtwork
+  deleteArtwork,
+  updateArtwork
 );
 
 export default artReducer;

@@ -43,7 +43,6 @@ class ArtworkList extends Component {
           onChangeText={searchTerm => this.searchFilter(searchTerm)}
           autoCorrect={false}
           autoCapitalize="none"
-          autoFocus
           value={this.state.searchTerm}
         />
         <Text style={styles.bodyText}>{`${count} ${label}`}</Text>
