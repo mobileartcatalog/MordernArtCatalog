@@ -28,7 +28,7 @@ const ArtworkSchema = new Schema({
     // required: true
   },
   inventorynumber: {
-    type: Number
+    type: String
   },
   title: {
     type: String,
@@ -42,6 +42,9 @@ const ArtworkSchema = new Schema({
     type: Schema.Types.Decimal128
   },
   width: {
+    type: Schema.Types.Decimal128
+  },
+  depth: {
     type: Schema.Types.Decimal128
   },
   medium: {
