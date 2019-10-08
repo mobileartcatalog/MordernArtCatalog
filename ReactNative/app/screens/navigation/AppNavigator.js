@@ -11,6 +11,7 @@ import {
   ArtworkListRow,
   ArtworkDetail,
   ArtworkForm,
+  ArtworkEdit,
   ExhList,
   ExhDetail,
   ExhForm,
@@ -32,6 +33,8 @@ const ArtworkTab = createStackNavigator({
   ArtworkList: { screen: ArtworkList },
   ArtworkListRow: { screen: ArtworkListRow },
   ArtworkDetail: { screen: ArtworkDetail },
+  ArtworkForm: { screen: ArtworkForm },
+  ArtworkEdit: { screen: ArtworkEdit },
 });
 
 const ExhTab = createStackNavigator({

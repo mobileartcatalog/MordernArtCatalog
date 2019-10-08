@@ -5,11 +5,11 @@ const ADDING_EXH = 'ADDING_EXH'
 const ADDED_EXH = 'ADDED_EXH';
 
 const addingExh = () => ({
-  type: 'ADDING_EXH',
+  type: ADDING_EXH,
 });
 
 const addedExh = exh => ({
-  type: 'ADDED_EXH',
+  type: ADDED_EXH,
   exh
 });
 
@@ -22,7 +22,6 @@ export const addingExhForm = () => {
 export const addExh = exh => {
   return async dispatch => {
     try {
-      console.log('exh', exh);
       let { data } = await axios.post(`${BASE_URL}/api/exhibitions`, exh);
       dispatch(addedExh(data.createExhibition));
     } catch (error) {
@@ -33,7 +32,7 @@ export const addExh = exh => {
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case ADDING_EXH: 
+    case ADDING_EXH:
       return {
         ...state, formVisible: true,
       }

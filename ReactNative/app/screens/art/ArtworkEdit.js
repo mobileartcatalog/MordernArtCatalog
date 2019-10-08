@@ -4,118 +4,112 @@ import { connect } from 'react-redux';
 import { Text, View } from 'react-native';
 import { Formik } from 'formik';
 import styles from '../../stylesheets/forms.js';
-import { StyledInput, StyledButton } from '../formComponents';
-import UploadImage from './UploadImage';
+import { StyledButton, StyledInput } from '../formComponents';
+import MultiImages from './MultiImagesUpload';
 import { artValidationSchema } from './artValidationSchema';
-import { addArt } from '../../reducers/artReducer/addArtwork';
+import { updateArtwork } from '../../reducers/artReducer/updateArtwork';
 
-class ArtworkForm extends Component {
-  constructor() {
-    super();
-    this.state = {
-      img1: null,
-      imageShow: false,
-    };
-
-    this.handleImage = this.handleImage.bind(this);
-  }
-
-  handleImage(img1) {
-    this.setState({
-      img1,
-    });
-  }
-
+class ArtworkEdit extends Component {
   render() {
     const { navigate } = this.props.navigation;
+    const {
+      _id,
+      inventorynumber,
+      title,
+      date,
+      medium,
+      height,
+      width,
+      depth,
+    } = this.props.selected;
     return (
       <View style={styles.container}>
-        <Text style={styles.headlineText}>Add New Artwork</Text>
+        <Text style={styles.headlineText}>Edit Artwork</Text>
         <View style={styles.innerContainer}>
           <Formik
             initialValues={{
-              inventorynumber: '',
-              title: '',
-              date: '',
-              medium: '',
-              height: null,
-              width: null,
-              depth: null,
+              inventorynumber: inventorynumber,
+              title: title,
+              date: date,
+              medium: medium,
+              height: height,
+              width: width,
+              depth: depth,
             }}
             onSubmit={(values, actions) => {
-              values.img1 = this.state.img1;
               this.props
-                .addArtwork(values)
+                .updateArtwork(_id, values)
                 .catch(error => {
                   actions.setFieldError('general', error.message);
                 })
                 .finally(() => {
                   actions.setSubmitting(false);
                   actions.resetForm();
-                  this.setState({
-                    img1: null,
-                    imageShow: !this.state.imageShow,
+                  navigate('ArtworkDetail', {
+                    id: this.props.selected._id,
                   });
-                  navigate('ArtworkDetail', { id: this.props.selected._id });
                 });
             }}
             validationSchema={artValidationSchema}
           >
             {formikProps => (
               <React.Fragment>
-                <UploadImage
-                  getimageData={this.handleImage}
-                  imageShow={this.state.imageShow}
-                />
                 <StyledButton
                   title="Save artwork"
                   onPress={formikProps.handleSubmit}
                 />
-                <StyledButton title="Clear" onPress={formikProps.handleReset} />
 
                 <StyledInput
                   formikProps={formikProps}
                   formikKey={'inventorynumber'}
                   placeholder="inventory number"
+                  defaultValue={formikProps.initialValues.inventorynumber}
                   autoFocus
                 />
                 <StyledInput
                   formikProps={formikProps}
                   formikKey={'title'}
                   placeholder="title"
-                  autoFocus
+                  defaultValue={formikProps.initialValues.title}
                 />
                 <StyledInput
                   formikProps={formikProps}
                   formikKey={'date'}
                   placeholder={'date'}
+                  defaultValue={formikProps.initialValues.date}
                 />
                 <StyledInput
                   formikProps={formikProps}
                   formikKey={'medium'}
                   placeholder={'medium'}
+                  defaultValue={formikProps.initialValues.medium}
                 />
-                <View style={{ flexDirection: 'row' }}>
+                {/* <View style={{ flexDirection: 'row' }}>
                   <StyledInput
                     formikProps={formikProps}
                     formikKey={'height'}
-                    placeholder={'height (in.)'}
+                    placeholder={'height'}
+                    defaultValue={formikProps.initialValues.height}
                   />
                   <StyledInput
                     formikProps={formikProps}
                     formikKey={'width'}
-                    placeholder={'width (in.)'}
+                    placeholder={'width'}
+                    defaultValue={formikProps.initialValues.width}
                   />
                   <StyledInput
                     formikProps={formikProps}
                     formikKey={'depth'}
-                    placeholder={'depth (in.)'}
+                    placeholder={'depth'}
+                    defaultValue={formikProps.initialValues.depth}
                   />
-                </View>
+                </View> */}
               </React.Fragment>
             )}
           </Formik>
         </View>
+
+        <MultiImages artworkId={this.props.selected._id} />
       </View>
     );
   }
@@ -127,12 +121,12 @@ const mapState = state => {
   };
 };
 const mapDispatch = dispatch => ({
-  addArtwork: art => dispatch(addArt(art)),
+  updateArtwork: (id, artData) => dispatch(updateArtwork(id, artData)),
 });
 
 export default withNavigation(
   connect(
     mapState,
     mapDispatch
-  )(ArtworkForm)
+  )(ArtworkEdit)
 );

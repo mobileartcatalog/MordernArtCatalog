@@ -10,37 +10,31 @@ import { SearchBar } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { connect } from 'react-redux';
 import { StyledSecondaryButton } from '../../screens/formComponents';
-import { getExh } from '../../reducers/exhReducer/getExh';
 import ExhListRow from './ExhListRow';
 import styles from '../../stylesheets/forms';
+import { getExh } from '../../reducers/exhReducer/getExh';
 import { addingExhForm } from '../../reducers/exhReducer/addExh';
+import { filterExhThunk } from '../../reducers/exhReducer/filterExh';
 
 class ExhList extends Component {
-  constructor() {
-    super();
-    this.state = {
-      searchTerm: '',
-      filtered: [],
-      filteredCount: 0,
-    };
-  }
-
   componentDidMount() {
     const { loaded, getExh } = this.props;
     if (!loaded) getExh();
-    this.setState({
-      filtered: this.props.exhibitions,
-      filteredCount: this.props.count,
-    });
   }
 
   renderHeader = () => {
-    let count;
-    this.state.searchTerm.length
-      ? (count = this.state.filteredCount)
-      : (count = this.props.count);
+    const {
+      searchTerm,
+      filtered,
+      filteredCount,
+      count,
+      filterExh,
+    } = this.props;
+    let displayCount;
+    searchTerm.length ? (displayCount = filteredCount) : (displayCount = count);
     let label;
     count === 1 ? (label = `exhibition found`) : (label = `exhibitions found`);
+
     return (
       <View>
         <SearchBar
@@ -48,13 +42,13 @@ class ExhList extends Component {
           containerStyle={styles.searchBarContainerStyle}
           inputContainerStyle={styles.searchBarInputContainerStyle}
           inputStyle={styles.searchBarInputStyle}
-          onChangeText={searchTerm => this.searchFilter(searchTerm)}
+          onChangeText={searchTerm => filterExh(searchTerm)}
           autoCorrect={false}
           autoCapitalize="none"
-          autoFocusc
-          value={this.state.searchTerm}
+          autoFocus
+          value={searchTerm}
         />
-        <Text style={styles.bodyText}>{`${count} ${label}`}</Text>
+        <Text style={styles.bodyText}>{`${displayCount} ${label}`}</Text>
       </View>
     );
   };
@@ -74,28 +68,11 @@ class ExhList extends Component {
     );
   };
 
-  searchFilter = searchTerm => {
-    const newList = this.props.exhibitions.filter(item => {
-      const textToSearch = `${item.title.toLowerCase()} ${item.venue.toLowerCase()} ${item.location.toLowerCase()} ${
-        item.startDate
-      } ${item.endDate}`;
-
-      return textToSearch.includes(searchTerm.toLowerCase());
-    });
-
-    console.log('this.state', this.state);
-    this.setState({
-      searchTerm: searchTerm,
-      filtered: newList,
-      filteredCount: newList.length,
-    });
-  };
-
   render() {
     const { navigate } = this.props.navigation;
     let data;
-    this.state.searchTerm.length
-      ? (data = this.state.filtered)
+    this.props.searchTerm.length
+      ? (data = this.props.filtered)
       : (data = this.props.exhibitions);
 
     return this.props.selected ? (
@@ -126,12 +103,16 @@ const mapState = state => {
     error: state.exhibitions.error,
     exhibitions: state.exhibitions.all,
     count: state.exhibitions.count,
+    searchTerm: state.exhibitions.searchTerm,
+    filtered: state.exhibitions.filtered,
+    filteredCount: state.exhibitions.filteredCount,
   };
 };
 
 const mapDispatch = dispatch => ({
   getExh: () => dispatch(getExh()),
   addingExhForm: () => dispatch(addingExhForm()),
+  filterExh: searchTerm => dispatch(filterExhThunk(searchTerm)),
 });
 
 export default withNavigation(

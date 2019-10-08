@@ -10,7 +10,7 @@ const StyledInput = ({ formikKey, formikProps, ...rest }) => {
     backgroundColor: 'whitesmoke',
     borderRadius: 8,
     borderWidth: 0.5,
-    borderColor: 'lightgray'
+    borderColor: 'lightgray',
   };
 
   if (formikProps.touched[formikKey] && formikProps.errors[formikKey]) {

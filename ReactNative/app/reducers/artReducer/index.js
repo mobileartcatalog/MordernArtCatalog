@@ -4,6 +4,8 @@ import getArt from './getArt';
 import getArtworkDetail from './getArtworkDetail';
 import addArtwork from './addArtwork';
 import deleteArtwork from './deleteArtwork';
+import updateArtwork from './updateArtwork';
+import filterArt from './filterArt';
 
 const initialState = {
   loading: false,
@@ -12,6 +14,9 @@ const initialState = {
   selected: {},
   images: [],
   count: 0,
+  searchTerm: '',
+  filtered: [],
+  filteredCount: 0,
 };
 
 const artReducer = reduceReducers(
@@ -20,7 +25,9 @@ const artReducer = reduceReducers(
   getArt,
   getArtworkDetail,
   addArtwork,
-  deleteArtwork
+  deleteArtwork,
+  updateArtwork,
+  filterArt
 );
 
 export default artReducer;

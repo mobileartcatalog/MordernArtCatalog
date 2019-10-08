@@ -6,17 +6,17 @@ const GOT_EXH_DETAIL = 'GOT_EXH_DETAIL';
 const CLEAR_SELECTED = 'CLEAR_SELECTED';
 
 const gettingExhDetail = id => ({
-  type: 'GETTING_EXH_DETAIL',
+  type: GETTING_EXH_DETAIL,
   id
 });
 
 const gotExhDetail = exh => ({
-  type: 'GOT_EXH_DETAIL',
+  type: GOT_EXH_DETAIL,
   exh
 });
 
 const clearingSelected = () => ({
-  type: 'CLEAR_SELECTED'
+  type: CLEAR_SELECTED
 });
 
 export const getExhDetail = id => {

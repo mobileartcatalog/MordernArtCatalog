@@ -4,7 +4,7 @@ import { BASE_URL } from 'react-native-dotenv';
 const DELETED_EXH = 'DELETED_EXH';
 
 const deletedExh = id => ({
-  type: 'DELETED_EXH',
+  type: DELETED_EXH,
   id,
 });
 
@@ -24,11 +24,17 @@ const reducer = (state, action) => {
     case DELETED_EXH:
       let updatedExhList = state.all.filter(exh => exh._id !== action.id);
       let updatedCount = updatedExhList.length;
+      let updatedFilteredList = state.filtered.filter(
+        exh => exh._id !== action.id
+      );
+      let updatedFilteredCount = updatedFilteredList.length;
       return {
         ...state,
         selected: {},
         all: updatedExhList,
         count: updatedCount,
+        filtered: updatedFilteredList,
+        filteredCount: updatedFilteredCount,
       };
     default:
       return state;

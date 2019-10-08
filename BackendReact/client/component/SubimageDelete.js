@@ -15,14 +15,18 @@ class DeleteSubimageCompo extends React.Component {
       <div>
         <p>Delete this image? Are you sure?</p>
         {buttonOption ? <p>Main Image can't be delete.</p> : null}
-        <img
-          src={`data: ${
-            images[imageIndex].contentType
-          }; base64,${arrayBufferToBase64(images[imageIndex].data.data)}`}
-          alt='artsubimage'
-        />
+        {!images[imageIndex] ? (
+          <Text>Loading</Text>
+        ) : (
+          <img
+            src={`data: ${
+              images[imageIndex].contentType
+            }; base64,${arrayBufferToBase64(images[imageIndex].data.data)}`}
+            alt="artsubimage"
+          />
+        )}
         <button
-          type='button'
+          type="button"
           disabled={buttonOption}
           onClick={() => {
             changeMain(imageId, selected._id);
@@ -32,17 +36,17 @@ class DeleteSubimageCompo extends React.Component {
           Set to Main Image
         </button>
         <button
-          type='button'
+          type="button"
           disabled={buttonOption}
-          onClick={() => {
-            deleteImage(imageId, selected._id);
+          onClick={async () => {
+            await deleteImage(imageId, selected._id);
             history.push(`/artworks/${selected._id}`);
           }}
         >
           Delete
         </button>
         <button
-          type='button'
+          type="button"
           onClick={() => history.push(`/artworks/${selected._id}`)}
         >
           Cancel
@@ -56,14 +60,15 @@ const mapState = state => {
   return {
     selected: state.artworks.selected,
     images: state.artworks.images,
-    loading: state.artworks.loading
+    loading: state.artworks.loading,
   };
 };
 
 const mapDispatch = dispatch => {
   return {
     deleteImage: (id, artworkId) => dispatch(deleteImagethunk(id, artworkId)),
-    changeMain: (id, artworkId) => dispatch(changeMainimagethunk(id, artworkId))
+    changeMain: (id, artworkId) =>
+      dispatch(changeMainimagethunk(id, artworkId)),
   };
 };
 

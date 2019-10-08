@@ -1,9 +1,10 @@
 import axios from 'axios';
+import { BASE_URL } from 'react-native-dotenv';
 
 const UPLOAD_IMAGES = 'UPLOAD_IMAGES';
 
 const uploadImages = (id, updateData) => ({
-  type: 'UPLOAD_IMAGES',
+  type: UPLOAD_IMAGES,
   id,
   updateData
 });
@@ -20,7 +21,7 @@ export const uploadImagesthunk = (id, images) => {
         });
       }
       const { data } = await axios.patch(
-        `http://localhost:3000/api/artworks/${id}`,
+        `${BASE_URL}/api/artworks/${id}`,
         fd
       );
       dispatch(uploadImages(id, data));
