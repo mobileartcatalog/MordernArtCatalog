@@ -3,16 +3,17 @@ import {
   Modal,
   Text,
   TouchableHighlight,
-  TouchabaleOpacity,
+  TouchableOpacity,
   FlatList,
   Alert,
-  View
+  View,
+  SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
 import styles from '../../stylesheets/art';
 import { getExh } from '../../reducers/exhReducer/getExh';
 import { SearchBar } from 'react-native-elements';
-import { ExhListRow } from '../exhibitions/ExhListRow';
+import ExhListRow from '../exhibitions/ExhListRow';
 import { StyledSecondaryButton } from '../formComponents';
 
 class LinkExhiModal extends Component {
@@ -33,28 +34,44 @@ class LinkExhiModal extends Component {
 
   render() {
     return (
-      <View style={{ marginTop: 22 }}>
+      <View style={{ marginTop: 10 }}>
         <Modal
           animationType='slide'
           transparent={true}
           visible={this.state.modalVisible}
           onRequestClose={() => Alert.alert('Modal has been closed')}
         >
-          <View>
+          <SafeAreaView style={{ flex: 1 }}>
             <SearchBar placeholder='Search exhibitions...' />
             <FlatList
               data={this.props.exhi}
               renderItem={({ item }) => <ExhListRow exhibition={item} />}
               keyExtractor={item => item._id}
             />
-          </View>
+            <TouchableOpacity
+              onPress={() => {
+                this.setModalVisible(!this.state.modalVisible);
+              }}
+            >
+              <Text style={{ alignSelf: 'center' }}>Close</Text>
+            </TouchableOpacity>
+          </SafeAreaView>
         </Modal>
         <TouchableHighlight
           onPress={() => {
             this.setModalVisible(true);
           }}
         >
-          <Text>add exhibitions</Text>
+          <Text
+            style={{
+              backgroundColor: 'transparent',
+              color: 'slategray',
+              fontSize: 18,
+              alignSelf: 'center'
+            }}
+          >
+            add exhibitions
+          </Text>
         </TouchableHighlight>
       </View>
     );

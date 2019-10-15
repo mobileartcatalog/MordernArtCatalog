@@ -11,7 +11,7 @@ export class MultiImages extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: null,
+      images: null
     };
     this.pickMultiImages = this.pickMultiImages.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
@@ -22,20 +22,19 @@ export class MultiImages extends Component {
       multiple: true,
       waitAnimationEnd: false,
       includeExif: true,
-      forceJpg: true,
+      forceJpg: true
     })
       .then(images => {
         this.setState({
           images: images.map(image => {
-
             return {
               uri: image.path,
               width: image.width,
               height: image.height,
               type: image.mime,
-              name: image.filename,
+              name: image.filename
             };
-          }),
+          })
         });
       })
       .catch(err => console.log(err));
@@ -46,10 +45,10 @@ export class MultiImages extends Component {
 
     uploadImages(artworkId, this.state.images);
     this.setState({
-      images: null,
+      images: null
     });
     this.props.navigation.navigate('ArtworkDetail', {
-      id: artworkId,
+      id: artworkId
     });
   }
 
@@ -58,9 +57,9 @@ export class MultiImages extends Component {
       <View>
         {this.state.images ? (
           <View>
-            <StyledButton title="save images" onPress={this.handleUpload} />
+            <StyledButton title='save images' onPress={this.handleUpload} />
             <StyledSecondaryButton
-              title="add more images"
+              title='add more images'
               onPress={this.pickMultiImages}
             />
 
@@ -77,7 +76,7 @@ export class MultiImages extends Component {
         ) : (
           <View>
             <StyledSecondaryButton
-              title="add more images"
+              title='add more images'
               onPress={this.pickMultiImages}
             />
           </View>
@@ -106,7 +105,7 @@ export class MultiImages extends Component {
 // </View>
 
 const mapDispatch = dispatch => ({
-  uploadImages: (id, images) => dispatch(uploadImagesthunk(id, images)),
+  uploadImages: (id, images) => dispatch(uploadImagesthunk(id, images))
 });
 
 export default withNavigation(

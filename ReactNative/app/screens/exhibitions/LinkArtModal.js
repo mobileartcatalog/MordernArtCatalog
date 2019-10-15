@@ -65,7 +65,7 @@ class LinkArtModal extends Component {
         onPress={key => this.onPressItem(item._id)}
       >
         <View style={styles.innerContainer}>
-          {!item.imageUrl && true ? (
+          {item.img1 ? (
             <Image
               style={styles.thumbnail}
               source={{
@@ -74,12 +74,7 @@ class LinkArtModal extends Component {
                 };base64,${arrayBufferToBase64(item.img1.data.data)}`
               }}
             />
-          ) : (
-            <Image
-              style={styles.thumbnail}
-              source={{ uri: `${item.imageUrl}` }}
-            />
-          )}
+          ) : null}
           <Text style={styles.title}>{item.title}</Text>
           <Text>{item.date}</Text>
         </View>
