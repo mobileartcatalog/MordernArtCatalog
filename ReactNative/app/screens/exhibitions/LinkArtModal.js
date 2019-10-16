@@ -37,9 +37,7 @@ class LinkArtModal extends Component {
   onPressItem = key => {
     this.setState(state => {
       const selected = new Map(state.selected);
-      this.state.selected.has(key)
-        ? selected.delete(key, !selected.get(key))
-        : selected.set(key, !selected.get(key));
+      state.selected.has(key) ? selected.delete(key) : selected.set(key, true);
       return { selected };
     });
   };
@@ -62,7 +60,10 @@ class LinkArtModal extends Component {
         style={[
           this.state.selected.get(item._id) ? styles.selected : styles.listView
         ]}
-        onPress={key => this.onPressItem(item._id)}
+        onPress={key => {
+          this.onPressItem(item._id);
+          console.log(this.state);
+        }}
       >
         <View style={styles.innerContainer}>
           {item.img1 ? (

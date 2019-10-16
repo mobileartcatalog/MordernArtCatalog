@@ -124,7 +124,6 @@ router.patch(
 
       if (req.files) {
         //add multi sub images
-        console.log('req.file happen?????');
         Artworks.findById(id, async (err, artwork) => {
           if (err) {
             console.error(err);
