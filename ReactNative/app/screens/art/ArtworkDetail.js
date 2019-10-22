@@ -25,6 +25,7 @@ import { arrayBufferToBase64 } from '../../utils';
 import MultiImages from './MultiImagesUpload';
 import ImageCarousel from './ImageCarousel';
 import StyledImage from './StyledImage';
+import HamburgerIcon from '../navigation/HamburgerIcon';
 
 class ArtworkDetail extends Component {
   componentDidMount() {
@@ -45,6 +46,13 @@ class ArtworkDetail extends Component {
       </View>
     );
   }
+
+  static navigationOptions = () => {
+    return {
+      headerRight: <HamburgerIcon />,
+      headerLeft: <HamburgerIcon />,
+    };
+  };
 
   render() {
     const {

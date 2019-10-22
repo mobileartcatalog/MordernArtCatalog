@@ -4,6 +4,7 @@ import {
   createAppContainer,
   createStackNavigator,
   createSwitchNavigator,
+  createDrawerNavigator,
 } from 'react-navigation';
 import {
   UserHome,
@@ -24,11 +25,6 @@ const HomeTab = createSwitchNavigator({
   Home: { screen: UserHome },
 });
 
-const FormTab = createStackNavigator({
-  ArtworkForm: { screen: ArtworkForm },
-  ExhForm: { screen: ExhForm },
-});
-
 const ArtworkTab = createStackNavigator({
   ArtworkList: { screen: ArtworkList },
   ArtworkListRow: { screen: ArtworkListRow },
@@ -37,11 +33,35 @@ const ArtworkTab = createStackNavigator({
   ArtworkEdit: { screen: ArtworkEdit },
 });
 
+const ArtForms = createStackNavigator({
+  ArtworkForm: {
+    screen: ArtworkForm,
+    navigationOptions: {
+      headerTitle: 'New Artwork',
+    },
+  },
+  ArtworkEdit: {
+    screen: ArtworkEdit,
+    navigationOptions: {
+      headerTitle: 'Edit Artwork',
+    },
+  },
+});
+
+const MainDrawer = createDrawerNavigator({
+  ArtForms: { screen: ArtForms },
+});
+
 const ExhTab = createStackNavigator({
   ExhList: { screen: ExhList },
   ExhDetail: { screen: ExhDetail },
   ExhForm: { screen: ExhForm },
   ExhEdit: { screen: ExhEdit },
+});
+
+const FormTab = createStackNavigator({
+  ArtworkForm: { screen: ArtworkForm },
+  ExhForm: { screen: ExhForm },
 });
 
 const AppNavigator = createBottomTabNavigator(
@@ -55,15 +75,15 @@ const AppNavigator = createBottomTabNavigator(
         ),
       },
     },
-    Form: {
-      screen: FormTab,
-      navigationOptions: {
-        tabBarLabel: 'New Artwork',
-        tabBarIcon: ({ tintColor }) => (
-          <Ionicons name="ios-add-circle" color={tintColor} size={25} />
-        ),
-      },
-    },
+    // Form: {
+    //   screen: FormTab,
+    //   navigationOptions: {
+    //     tabBarLabel: 'New Artwork',
+    //     tabBarIcon: ({ tintColor }) => (
+    //       <Ionicons name="ios-add-circle" color={tintColor} size={25} />
+    //     ),
+    //   },
+    // },
     Art: {
       screen: ArtworkTab,
       navigationOptions: {
