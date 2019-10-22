@@ -24,9 +24,9 @@ class ArtworkList extends Component {
       <View>
         <SearchBar
           placeholder="Search artwork..."
-          containerStyle={styles.searchBarContainerStyle}
-          inputContainerStyle={styles.searchBarInputContainerStyle}
-          inputStyle={styles.searchBarInputStyle}
+          containerStyle={styles.ContainerStyle}
+          inputContainerStyle={styles.InputContainerStyle}
+          inputStyle={styles.InputStyle}
           onChangeText={searchTerm => filterArt(searchTerm)}
           autoCorrect={false}
           autoCapitalize="none"

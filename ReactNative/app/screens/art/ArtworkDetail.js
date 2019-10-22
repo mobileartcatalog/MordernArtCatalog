@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   Button,
+  Animated,
   Alert,
   ActivityIndicator,
 } from 'react-native';
@@ -14,10 +15,16 @@ import { StyledSecondaryButton } from '../formComponents';
 import ScaledImage from 'react-native-scaled-image';
 import { getArtworkDetail } from '../../reducers/artReducer/getArtworkDetail';
 import { deleteArtwork } from '../../reducers/artReducer/deleteArtwork';
-import { updateArtwork } from '../../reducers/artReducer/updateArtwork';
+import {
+  updateArtwork,
+  deleteImage,
+  setMainImageThunk,
+} from '../../reducers/artReducer/updateArtwork';
 import styles from '../../stylesheets/art';
 import { arrayBufferToBase64 } from '../../utils';
 import MultiImages from './MultiImagesUpload';
+import ImageCarousel from './ImageCarousel';
+import StyledImage from './StyledImage';
 
 class ArtworkDetail extends Component {
   componentDidMount() {
@@ -30,6 +37,15 @@ class ArtworkDetail extends Component {
     this.props.deleteArtwork(this.props.artwork._id);
     this.props.navigation.navigate('ArtworkList');
   }
+
+  _renderItem({ item, index }) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ color: '#fff' }}>{item.title}</Text>
+      </View>
+    );
+  }
+
   render() {
     const {
       _id,
@@ -43,21 +59,68 @@ class ArtworkDetail extends Component {
       inventorynumber,
     } = this.props.artwork;
     const { artwork, images } = this.props;
-    const { windowWidth } = Dimensions.get('window');
+    const windowWidth = Dimensions.get('window').width;
 
     return this.props.loading ? (
       <ActivityIndicator />
     ) : (
       <ScrollView>
-        {artwork.img1 ? (
-          <ScaledImage
-            source={{
-              uri: `data:${
-                artwork.img1.contentType
-              };base64,${arrayBufferToBase64(artwork.img1.data.data)}`,
-            }}
-            width={windowWidth}
-          />
+        {images.length ? (
+          <React.Fragment>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={true}
+              scrollEventThrottle={10}
+              pagingEnabled
+              onScroll={Animated.event([
+                { nativeEvent: { contentOffset: { x: this.animVal } } },
+              ])}
+            >
+              {images.map(image => {
+                return (
+                  <View key={image._id}>
+                    <Image
+                      source={{
+                        uri: `data:${
+                          image.contentType
+                        };base64,${arrayBufferToBase64(image.data.data)}`,
+                      }}
+                      style={{
+                        width: windowWidth,
+                        height: 250,
+                      }}
+                    />
+                    <StyledSecondaryButton
+                      title="delete image"
+                      onPress={() =>
+                        Alert.alert(
+                          'Delete?',
+                          'Are you sure you want to permanently delete this image?',
+                          [
+                            {
+                              text: 'Cancel',
+                              onPress: () => console.log('Cancel Pressed'),
+                              style: 'cancel',
+                            },
+                            {
+                              text: 'Delete',
+                              onPress: () => this.props.deleteImage(image._id),
+                            },
+                          ]
+                        )
+                      }
+                    />
+                    <StyledSecondaryButton
+                      title="set as main image"
+                      onPress={() =>
+                        this.props.setMainImage(image._id, artwork._id)
+                      }
+                    />
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </React.Fragment>
         ) : null}
 
         <Text>{title}</Text>
@@ -65,24 +128,6 @@ class ArtworkDetail extends Component {
         <Text>{medium}</Text>
         {artwork.height ? <Text>{height.$numberDecimal}" height</Text> : null}
         {artwork.width ? <Text>{width.$numberDecimal}" width</Text> : null}
-        {images.length ? (
-          <ScrollView horizontal>
-            {images.map(image => {
-              return (
-                <View key={image._id}>
-                  <Image
-                    source={{
-                      uri: `data:${
-                        image.contentType
-                      };base64,${arrayBufferToBase64(image.data.data)}`,
-                    }}
-                    style={styles.thumbnail}
-                  />
-                </View>
-              );
-            })}
-          </ScrollView>
-        ) : null}
 
         <StyledSecondaryButton
           title="edit artwork"
@@ -130,6 +175,9 @@ const mapDispatch = dispatch => ({
   getArtworkDetail: id => dispatch(getArtworkDetail(id)),
   deleteArtwork: id => dispatch(deleteArtwork(id)),
   updateArtwork: (id, data) => dispatch(updateArtwork(id, data)),
+  deleteImage: imageId => dispatch(deleteImage(imageId)),
+  setMainImage: (imageId, artworkId) =>
+    dispatch(setMainImageThunk(imageId, artworkId)),
 });
 
 export default connect(
