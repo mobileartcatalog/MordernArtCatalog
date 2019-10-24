@@ -5,13 +5,13 @@ const UPDATING_EXH = 'UPDATING_EXH';
 const UPDATED_EXH = 'UPDATED_EXH';
 
 const updatingExh = () => ({
-  type: UPDATING_EXH,
+  type: UPDATING_EXH
 });
 
 const updatedExh = (id, exh) => ({
   type: UPDATED_EXH,
   id,
-  exh,
+  exh
 });
 
 export const updateExh = (id, exhData) => {
@@ -47,7 +47,7 @@ const reducer = (state, action) => {
             return action.exh;
           } else return exh;
         }),
-        selected: action.exh,
+        selected: action.exh
       };
     default:
       return state;

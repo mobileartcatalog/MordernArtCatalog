@@ -155,6 +155,7 @@ router.patch(
         });
       } else {
         ////for other fields update(eidt)
+        console.log('in artwork api req.body,', req.body);
         const result = await Artworks.findByIdAndUpdate(id, req.body, {
           new: true
         }).exec();

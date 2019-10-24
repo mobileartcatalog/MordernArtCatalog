@@ -128,7 +128,7 @@ class LinkExhiModal extends Component {
               backgroundColor: 'transparent',
               color: 'slategray',
               fontSize: 18,
-              alignSelf: 'center'
+              alignSelf: 'flex-start'
             }}
           >
             add exhibitions

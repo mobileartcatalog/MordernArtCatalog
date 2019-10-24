@@ -12,7 +12,7 @@ import {
 import MultiImages from './MultiImagesUpload';
 import { artValidationSchema } from './artValidationSchema';
 import { updateArtwork } from '../../reducers/artReducer/updateArtwork';
-import LinkExhiModal from './LinkExhiModal';
+// import LinkExhiModal from './LinkExhiModal';
 
 class ArtworkEdit extends Component {
   render() {
@@ -59,11 +59,6 @@ class ArtworkEdit extends Component {
           >
             {formikProps => (
               <React.Fragment>
-                <StyledButton
-                  title='Save artwork'
-                  onPress={formikProps.handleSubmit}
-                />
-
                 <StyledInput
                   formikProps={formikProps}
                   formikKey={'inventorynumber'}
@@ -109,13 +104,17 @@ class ArtworkEdit extends Component {
                     defaultValue={formikProps.initialValues.depth}
                   />
                 </View> */}
+                <StyledButton
+                  title='Save artwork'
+                  onPress={formikProps.handleSubmit}
+                />
               </React.Fragment>
             )}
           </Formik>
         </View>
 
         <MultiImages artworkId={this.props.selected._id} />
-        <LinkExhiModal />
+        {/* <LinkExhiModal /> */}
       </View>
     );
   }

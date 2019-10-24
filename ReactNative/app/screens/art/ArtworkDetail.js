@@ -6,9 +6,8 @@ import {
   Dimensions,
   ScrollView,
   Image,
-  Button,
   Alert,
-  ActivityIndicator,
+  ActivityIndicator
 } from 'react-native';
 import { StyledSecondaryButton } from '../formComponents';
 import ScaledImage from 'react-native-scaled-image';
@@ -17,7 +16,7 @@ import { deleteArtwork } from '../../reducers/artReducer/deleteArtwork';
 import { updateArtwork } from '../../reducers/artReducer/updateArtwork';
 import styles from '../../stylesheets/art';
 import { arrayBufferToBase64 } from '../../utils';
-import MultiImages from './MultiImagesUpload';
+import LinkedExhi from './LinkedExhi';
 
 class ArtworkDetail extends Component {
   componentDidMount() {
@@ -32,18 +31,25 @@ class ArtworkDetail extends Component {
   }
   render() {
     const {
-      _id,
       title,
       date,
       medium,
+      exhibitions,
       height,
       width,
       depth,
       tags,
-      inventorynumber,
+      inventorynumber
     } = this.props.artwork;
-    const { artwork, images } = this.props;
+    const { artwork, images, allExhi, navigation, updateArtwork } = this.props;
     const { windowWidth } = Dimensions.get('window');
+    let exhisInArt;
+    if (exhibitions) {
+      exhisInArt = exhibitions.reduce((accum, cur) => {
+        const exhi = allExhi.filter(ele => ele._id === cur);
+        return accum.concat(exhi);
+      }, []);
+    }
 
     return this.props.loading ? (
       <ActivityIndicator />
@@ -54,7 +60,7 @@ class ArtworkDetail extends Component {
             source={{
               uri: `data:${
                 artwork.img1.contentType
-              };base64,${arrayBufferToBase64(artwork.img1.data.data)}`,
+              };base64,${arrayBufferToBase64(artwork.img1.data.data)}`
             }}
             width={windowWidth}
           />
@@ -74,7 +80,7 @@ class ArtworkDetail extends Component {
                     source={{
                       uri: `data:${
                         image.contentType
-                      };base64,${arrayBufferToBase64(image.data.data)}`,
+                      };base64,${arrayBufferToBase64(image.data.data)}`
                     }}
                     style={styles.thumbnail}
                   />
@@ -84,17 +90,23 @@ class ArtworkDetail extends Component {
           </ScrollView>
         ) : null}
 
+        <LinkedExhi
+          exhisInArt={exhisInArt}
+          exhibitions={exhibitions}
+          artId={artwork._id}
+          updateArtwork={updateArtwork}
+        />
         <StyledSecondaryButton
-          title="edit artwork"
+          title='edit artwork'
           onPress={() =>
-            this.props.navigation.navigate('ArtworkEdit', {
+            navigation.navigate('ArtworkEdit', {
               title: 'Edit Artwork',
-              artworkId: artwork._id,
+              artworkId: artwork._id
             })
           }
         />
         <StyledSecondaryButton
-          title="delete artwork"
+          title='delete artwork'
           onPress={() =>
             Alert.alert(
               'Delete?',
@@ -103,12 +115,12 @@ class ArtworkDetail extends Component {
                 {
                   text: 'Cancel',
                   onPress: () => console.log('Cancel Pressed'),
-                  style: 'cancel',
+                  style: 'cancel'
                 },
                 {
                   text: 'Delete',
-                  onPress: () => this.handleDelete(),
-                },
+                  onPress: () => this.handleDelete()
+                }
               ]
             )
           }
@@ -123,13 +135,14 @@ const mapState = state => {
     artwork: state.art.selected,
     images: state.art.images,
     loading: state.art.loading,
+    allExhi: state.exhibitions.all
   };
 };
 
 const mapDispatch = dispatch => ({
   getArtworkDetail: id => dispatch(getArtworkDetail(id)),
   deleteArtwork: id => dispatch(deleteArtwork(id)),
-  updateArtwork: (id, data) => dispatch(updateArtwork(id, data)),
+  updateArtwork: (id, data) => dispatch(updateArtwork(id, data))
 });
 
 export default connect(
