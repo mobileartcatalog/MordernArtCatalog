@@ -156,7 +156,7 @@ router.patch(
       } else {
         ////for other fields update(eidt)
         console.log('in artwork api req.body,', req.body);
-        const { exhibitions, deleteExhId, addLinkedExhs } = req.body;
+        const { deleteExhId, addLinkedExhs } = req.body;
         const result = await Artworks.findByIdAndUpdate(id, req.body, {
           new: true
         }).exec();
