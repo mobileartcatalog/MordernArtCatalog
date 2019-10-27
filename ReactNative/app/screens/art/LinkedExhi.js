@@ -63,7 +63,10 @@ class LinkedExhi extends React.Component {
                     let updatedExhis = exhibitions.filter(
                       ele => ele !== item._id
                     );
-                    updateArtwork(artId, { exhibitions: updatedExhis });
+                    updateArtwork(artId, {
+                      exhibitions: updatedExhis,
+                      deleteExhId: item._id
+                    });
                   }}
                 />
               ) : null}

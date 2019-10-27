@@ -46,11 +46,14 @@ class LinkExhiModal extends Component {
 
   linkExhibitions = () => {
     let id = this.props.artwork._id;
+    let newExhs = [
+      ...this.props.artwork.exhibitions,
+      ...this.state.selected.keys()
+    ];
+    let exhibitions = [...new Set(newExhs)];
     let data = {
-      exhibitions: [
-        ...this.props.artwork.exhibitions,
-        ...this.state.selected.keys()
-      ]
+      exhibitions,
+      addLinkedExhs: [...this.state.selected.keys()]
     };
     this.props.updateArtwork(id, data);
     this.setState({ modalVisible: false, selected: new Map() });
