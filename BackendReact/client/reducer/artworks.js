@@ -20,27 +20,27 @@ const setArtworks = artworks => ({ type: SET_ARTWORKS, artworks });
 const addArtwork = artwork => ({ type: ADD_ARTWORK, artwork });
 const setSingleArt = selected => ({
   type: SET_SINGLEART,
-  selected,
+  selected
 });
 const updateArtwork = (id, updateData) => ({
   type: UPDATE_ARTWORK,
   updateData,
-  id,
+  id
 });
 const deleteArtwork = id => ({
   type: DETELE_ARTWORK,
-  id,
+  id
 });
 const setSubloadingFalse = () => ({
-  type: SET_SUBLOADING_FALSE,
+  type: SET_SUBLOADING_FALSE
 });
 const changeMainimage = artwork => ({
   type: CHANGE_MAINIMAGE,
-  artwork,
+  artwork
 });
 const updateImageArray = imageId => ({
   type: UPDATE_IMAGE_ARRAY,
-  imageId,
+  imageId
 });
 
 //thunk creator
@@ -132,7 +132,7 @@ export const deleteImagethunk = (imageId, artworkId) => {
     try {
       dispatch(subloading());
       await axios.delete(`/api/images/${imageId}`, {
-        data: { artworkId: artworkId },
+        data: { artworkId: artworkId }
       });
       dispatch(updateImageArray(imageId));
     } catch (err) {
@@ -156,7 +156,7 @@ export const changeMainimagethunk = (imageId, artworkId) => {
     try {
       dispatch(subloading());
       const { data } = await axios.patch(`/api/images/${imageId}`, {
-        artworkId,
+        artworkId
       });
       dispatch(changeMainimage(data.artwork));
     } catch (err) {
@@ -170,7 +170,7 @@ const initialState = {
   selected: {},
   images: [],
   loading: false,
-  subloading: false,
+  subloading: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -186,7 +186,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         selected: action.selected.artwork,
         images: action.selected.images,
-        loading: false,
+        loading: false
       };
     case ADD_ARTWORK:
       return { ...state, all: [...state.all, action.artwork] };
@@ -204,18 +204,18 @@ const reducer = (state = initialState, action) => {
         images:
           action.updateData.images.length > 0
             ? action.updateData.images
-            : state.images,
+            : state.images
       };
     case DETELE_ARTWORK:
       return {
         ...state,
         all: state.all.filter(art => art._id !== action.id),
-        loading: false,
+        loading: false
       };
     case SET_SUBLOADING_FALSE:
       return {
         ...state,
-        subloading: false,
+        subloading: false
       };
     case UPDATE_IMAGE_ARRAY:
       let updatedArray = state.images.filter(
@@ -223,13 +223,13 @@ const reducer = (state = initialState, action) => {
       );
       return {
         ...state,
-        images: updatedArray,
+        images: updatedArray
       };
     case CHANGE_MAINIMAGE:
       return {
         ...state,
         selected: action.artwork,
-        subloading: false,
+        subloading: false
       };
     default:
       return state;

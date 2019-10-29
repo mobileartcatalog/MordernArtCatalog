@@ -21,7 +21,7 @@ class LinkedArtwork extends Component {
               source={{
                 uri: `data:${
                   artwork.img1.contentType
-                };base64,${arrayBufferToBase64(artwork.img1.data.data)}`,
+                };base64,${arrayBufferToBase64(artwork.img1.data.data)}`
               }}
             />
           ) : (
@@ -32,14 +32,17 @@ class LinkedArtwork extends Component {
           )}
 
           <Icon
-            name="trash"
-            type="font-awesome"
+            name='trash'
+            type='font-awesome'
             size={16}
             onPress={() => {
               let updatedArtworks = linkedArtworks.filter(
                 item => item !== artwork._id
               );
-              updateExh(exhId, { artworks: updatedArtworks });
+              updateExh(exhId, {
+                artworks: updatedArtworks,
+                deleteArtId: artwork._id
+              });
             }}
           />
           {/* <Text style={styles.title}>{artwork.title}</Text>

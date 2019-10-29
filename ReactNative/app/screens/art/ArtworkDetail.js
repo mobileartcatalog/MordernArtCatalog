@@ -11,6 +11,8 @@ import {
   Alert,
   ActivityIndicator,
   TouchableOpacity,
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import { Overlay, Icon } from 'react-native-elements';
 import { StyledSecondaryButton } from '../formComponents';
@@ -29,6 +31,7 @@ import ImageCarousel from './ImageCarousel';
 import StyledImage from './StyledImage';
 import HamburgerIcon from '../navigation/HamburgerIcon';
 import { IconButton } from '../formComponents';
+import LinkedExhi from './LinkedExhi';
 
 class ArtworkDetail extends Component {
   constructor(props) {
@@ -80,18 +83,25 @@ class ArtworkDetail extends Component {
 
   render() {
     const {
-      _id,
       title,
       date,
       medium,
+      exhibitions,
       height,
       width,
       depth,
       tags,
-      inventorynumber,
+      inventorynumber
     } = this.props.artwork;
-    const { artwork, images } = this.props;
-    const windowWidth = Dimensions.get('window').width;
+    const { artwork, images, allExhi, navigation, updateArtwork } = this.props;
+    const { windowWidth } = Dimensions.get('window').width;
+    let exhisInArt;
+    if (exhibitions) {
+      exhisInArt = exhibitions.reduce((accum, cur) => {
+        const exhi = allExhi.filter(ele => ele._id === cur);
+        return accum.concat(exhi);
+      }, []);
+    }
 
     return this.props.loading ? (
       <ActivityIndicator />
@@ -165,6 +175,15 @@ class ArtworkDetail extends Component {
               })}
             </ScrollView>
           </React.Fragment>
+        {artwork.img1 ? (
+          <ScaledImage
+            source={{
+              uri: `data:${
+                artwork.img1.contentType
+              };base64,${arrayBufferToBase64(artwork.img1.data.data)}`
+            }}
+            width={windowWidth}
+          />
         ) : null}
 
         <Text>{title}</Text>
@@ -172,18 +191,42 @@ class ArtworkDetail extends Component {
         <Text>{medium}</Text>
         {artwork.height ? <Text>{height.$numberDecimal}" height</Text> : null}
         {artwork.width ? <Text>{width.$numberDecimal}" width</Text> : null}
+        {images.length ? (
+          <ScrollView horizontal>
+            {images.map(image => {
+              return (
+                <View key={image._id}>
+                  <Image
+                    source={{
+                      uri: `data:${
+                        image.contentType
+                      };base64,${arrayBufferToBase64(image.data.data)}`
+                    }}
+                    style={styles.thumbnail}
+                  />
+                </View>
+              );
+            })}
+          </ScrollView>
+        ) : null}
 
+        <LinkedExhi
+          exhisInArt={exhisInArt}
+          exhibitions={exhibitions}
+          artId={artwork._id}
+          updateArtwork={updateArtwork}
+        />
         <StyledSecondaryButton
-          title="edit artwork"
+          title='edit artwork'
           onPress={() =>
-            this.props.navigation.navigate('ArtworkEdit', {
+            navigation.navigate('ArtworkEdit', {
               title: 'Edit Artwork',
-              artworkId: artwork._id,
+              artworkId: artwork._id
             })
           }
         />
         <StyledSecondaryButton
-          title="delete artwork"
+          title='delete artwork'
           onPress={() =>
             Alert.alert(
               'Delete?',
@@ -192,12 +235,12 @@ class ArtworkDetail extends Component {
                 {
                   text: 'Cancel',
                   onPress: () => console.log('Cancel Pressed'),
-                  style: 'cancel',
+                  style: 'cancel'
                 },
                 {
                   text: 'Delete',
-                  onPress: () => this.handleDelete(),
-                },
+                  onPress: () => this.handleDelete()
+                }
               ]
             )
           }
@@ -212,6 +255,7 @@ const mapState = state => {
     artwork: state.art.selected,
     images: state.art.images,
     loading: state.art.loading,
+    allExhi: state.exhibitions.all
   };
 };
 
@@ -222,6 +266,7 @@ const mapDispatch = dispatch => ({
   deleteImage: imageId => dispatch(deleteImage(imageId)),
   setMainImage: (imageId, artworkId) =>
     dispatch(setMainImageThunk(imageId, artworkId)),
+  updateArtwork: (id, data) => dispatch(updateArtwork(id, data))
 });
 
 export default connect(

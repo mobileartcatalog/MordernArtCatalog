@@ -7,13 +7,13 @@ const UPDATE_IMAGE_ARRAY = 'UPDATE_IMAGE_ARRAY';
 const SET_MAIN_IMAGE = 'SET_MAIN_IMAGE';
 
 const updatingArt = () => ({
-  type: UPDATING_ART,
+  type: UPDATING_ART
 });
 
 const updatedArt = (id, art) => ({
   type: UPDATED_ART,
   id,
-  art,
+  art
 });
 
 const updateImageArray = imageId => ({
@@ -76,7 +76,7 @@ const reducer = (state, action) => {
     case UPDATING_ART:
       return {
         ...state,
-        loading: true,
+        loading: true
       };
     case UPDATED_ART:
       return {
@@ -92,7 +92,7 @@ const reducer = (state, action) => {
             return action.art;
           } else return art;
         }),
-        selected: action.art,
+        selected: action.art
       };
     case SET_MAIN_IMAGE:
       const shiftToFront = (data, id) => {
