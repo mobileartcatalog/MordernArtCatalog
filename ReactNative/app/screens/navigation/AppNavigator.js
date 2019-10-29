@@ -40,6 +40,10 @@ const ArtworkTab = createStackNavigator(
     ArtworkListRow: { screen: ArtworkListRow },
     ArtworkDetail: { screen: ArtworkDetail },
     ArtworkForms: { screen: ArtworkForms },
+    ExhList: { screen: ExhList },
+    ExhDetail: { screen: ExhDetail },
+    ExhForm: { screen: ExhForm },
+    ExhEdit: { screen: ExhEdit },
   },
   {
     defaultNavigationOptions: {
@@ -56,11 +60,24 @@ const ExhTab = createStackNavigator({
   ExhDetail: { screen: ExhDetail },
   ExhForm: { screen: ExhForm },
   ExhEdit: { screen: ExhEdit },
+  ArtworkList: { screen: ArtworkList },
+  ArtworkDetail: { screen: ArtworkDetail },
 });
 
 const FormTab = createStackNavigator({
   ArtworkForm: { screen: ArtworkForm },
   ExhForm: { screen: ExhForm },
+});
+
+const AppTab = createStackNavigator({
+  ArtworkList: { screen: ArtworkList },
+  ArtworkListRow: { screen: ArtworkListRow },
+  ArtworkDetail: { screen: ArtworkDetail },
+  ArtworkForms: { screen: ArtworkForms },
+  ExhList: { screen: ExhList },
+  ExhDetail: { screen: ExhDetail },
+  ExhForm: { screen: ExhForm },
+  ExhEdit: { screen: ExhEdit },
 });
 
 const AppNavigator = createBottomTabNavigator(

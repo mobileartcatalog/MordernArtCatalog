@@ -8,11 +8,9 @@ import {
   Image,
   ButtonGroup,
   Animated,
-  Alert,
-  ActivityIndicator,
   TouchableOpacity,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import { Overlay, Icon } from 'react-native-elements';
 import { StyledSecondaryButton } from '../formComponents';
@@ -91,10 +89,11 @@ class ArtworkDetail extends Component {
       width,
       depth,
       tags,
-      inventorynumber
+      inventorynumber,
     } = this.props.artwork;
     const { artwork, images, allExhi, navigation, updateArtwork } = this.props;
-    const { windowWidth } = Dimensions.get('window').width;
+    const  windowWidth  = Dimensions.get('window').width;
+
     let exhisInArt;
     if (exhibitions) {
       exhisInArt = exhibitions.reduce((accum, cur) => {
@@ -137,7 +136,7 @@ class ArtworkDetail extends Component {
                         height: 250,
                       }}
                     />
-                    {/* <StyledSecondaryButton
+                    <StyledSecondaryButton
                       title="delete image"
                       onPress={() =>
                         Alert.alert(
@@ -156,60 +155,22 @@ class ArtworkDetail extends Component {
                           ]
                         )
                       }
-                    /> */}
-                    {/* <StyledSecondaryButton
+                    />
+                    <StyledSecondaryButton
                       title="set as main image"
                       onPress={() =>
                         this.props.setMainImage(image._id, artwork._id)
                       }
-                    /> */}
-
-                    {/* <ButtonGroup
-                      buttons={[
-                        { element: this.deleteImageButton },
-                        { element: this.setMainImageButton },
-                      ]}
-                    /> */}
+                    />
                   </View>
                 );
               })}
             </ScrollView>
           </React.Fragment>
-        {artwork.img1 ? (
-          <ScaledImage
-            source={{
-              uri: `data:${
-                artwork.img1.contentType
-              };base64,${arrayBufferToBase64(artwork.img1.data.data)}`
-            }}
-            width={windowWidth}
-          />
         ) : null}
-
         <Text>{title}</Text>
         <Text>{date}</Text>
         <Text>{medium}</Text>
-        {artwork.height ? <Text>{height.$numberDecimal}" height</Text> : null}
-        {artwork.width ? <Text>{width.$numberDecimal}" width</Text> : null}
-        {images.length ? (
-          <ScrollView horizontal>
-            {images.map(image => {
-              return (
-                <View key={image._id}>
-                  <Image
-                    source={{
-                      uri: `data:${
-                        image.contentType
-                      };base64,${arrayBufferToBase64(image.data.data)}`
-                    }}
-                    style={styles.thumbnail}
-                  />
-                </View>
-              );
-            })}
-          </ScrollView>
-        ) : null}
-
         <LinkedExhi
           exhisInArt={exhisInArt}
           exhibitions={exhibitions}
@@ -217,16 +178,16 @@ class ArtworkDetail extends Component {
           updateArtwork={updateArtwork}
         />
         <StyledSecondaryButton
-          title='edit artwork'
+          title="edit artwork"
           onPress={() =>
             navigation.navigate('ArtworkEdit', {
               title: 'Edit Artwork',
-              artworkId: artwork._id
+              artworkId: artwork._id,
             })
           }
         />
         <StyledSecondaryButton
-          title='delete artwork'
+          title="delete artwork"
           onPress={() =>
             Alert.alert(
               'Delete?',
@@ -235,12 +196,12 @@ class ArtworkDetail extends Component {
                 {
                   text: 'Cancel',
                   onPress: () => console.log('Cancel Pressed'),
-                  style: 'cancel'
+                  style: 'cancel',
                 },
                 {
                   text: 'Delete',
-                  onPress: () => this.handleDelete()
-                }
+                  onPress: () => this.handleDelete(),
+                },
               ]
             )
           }
@@ -255,7 +216,7 @@ const mapState = state => {
     artwork: state.art.selected,
     images: state.art.images,
     loading: state.art.loading,
-    allExhi: state.exhibitions.all
+    allExhi: state.exhibitions.all,
   };
 };
 
@@ -266,7 +227,7 @@ const mapDispatch = dispatch => ({
   deleteImage: imageId => dispatch(deleteImage(imageId)),
   setMainImage: (imageId, artworkId) =>
     dispatch(setMainImageThunk(imageId, artworkId)),
-  updateArtwork: (id, data) => dispatch(updateArtwork(id, data))
+  updateArtwork: (id, data) => dispatch(updateArtwork(id, data)),
 });
 
 export default connect(
