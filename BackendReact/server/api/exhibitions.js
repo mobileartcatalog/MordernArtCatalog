@@ -2,18 +2,19 @@ const router = require('express').Router();
 const mongoose = require('mongoose');
 
 const Exhibitions = require('../../models/exhibitions');
+const Artworks = require('../../models/artwork');
 
 //Post
 router.post('/', async (req, res, next) => {
   try {
     const exhibition = new Exhibitions({
       _id: new mongoose.Types.ObjectId(),
-      ...req.body,
+      ...req.body
     });
     const result = await exhibition.save();
     res.status(200).json({
       message: 'Handling post',
-      createExhibition: result,
+      createExhibition: result
     });
   } catch (err) {
     console.error(err);
@@ -54,9 +55,28 @@ router.get('/', async (req, res, next) => {
 router.patch('/:exhibitionId', async (req, res, next) => {
   try {
     const id = req.params.exhibitionId;
+    const { deleteArtId, addLinkedArts } = req.body;
     const result = await Exhibitions.findByIdAndUpdate(id, req.body, {
-      new: true,
+      new: true
     }).exec();
+
+    if (deleteArtId) {
+      const artwork = await Artworks.findByIdAndUpdate(
+        deleteArtId,
+        { $pull: { exhibitions: id } },
+        { new: true }
+      ).exec();
+    }
+
+    if (addLinkedArts) {
+      const artResult = await Artworks.updateMany(
+        {
+          _id: { $in: addLinkedArts }
+        },
+        { $addToSet: { exhibitions: id } }
+      ).exec();
+    }
+
     res.status(200).json(result);
   } catch (err) {
     console.error(err);

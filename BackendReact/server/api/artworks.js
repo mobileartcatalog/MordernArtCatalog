@@ -4,6 +4,7 @@ const fs = require('fs');
 const multer = require('multer'); //file storing middleware
 const Artworks = require('../../models/artwork');
 const Image = require('../../models/image');
+const Exhibitions = require('../../models/exhibitions');
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -121,10 +122,8 @@ router.patch(
     try {
       console.log('*****in api updata req.file,', req.files);
       const id = req.params.artworkId;
-
       if (req.files) {
         //add multi sub images
-        console.log('req.file happen?????');
         Artworks.findById(id, async (err, artwork) => {
           if (err) {
             console.error(err);
@@ -156,9 +155,31 @@ router.patch(
         });
       } else {
         ////for other fields update(eidt)
+        console.log('in artwork api req.body,', req.body);
+        const { deleteExhId, addLinkedExhs } = req.body;
         const result = await Artworks.findByIdAndUpdate(id, req.body, {
           new: true
         }).exec();
+        //when delete linked exhibition from artowrk compo, remove artworkId from Exhibitions documents
+        if (deleteExhId) {
+          const exhibition = await Exhibitions.findByIdAndUpdate(
+            deleteExhId,
+            {
+              $pull: { artworks: id }
+            },
+            {
+              new: true
+            }
+          ).exec();
+        }
+        //when update linked exhs in artwork, add artworkId in Exhibitions documents
+        if (addLinkedExhs) {
+          const exhResult = await Exhibitions.updateMany(
+            { _id: { $in: addLinkedExhs } },
+            { $addToSet: { artworks: id } }
+          ).exec();
+        }
+
         res.status(200).json({ artwork: result, images: [] });
       }
     } catch (err) {

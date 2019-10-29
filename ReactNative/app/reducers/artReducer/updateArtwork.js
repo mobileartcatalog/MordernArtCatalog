@@ -5,13 +5,13 @@ const UPDATING_ART = 'UPDATING_ART';
 const UPDATED_ART = 'UPDATED_ART';
 
 const updatingArt = () => ({
-  type: UPDATING_ART,
+  type: UPDATING_ART
 });
 
 const updatedArt = (id, art) => ({
   type: UPDATED_ART,
   id,
-  art,
+  art
 });
 
 export const updateArtwork = (id, artData) => {
@@ -34,7 +34,7 @@ const reducer = (state, action) => {
     case UPDATING_ART:
       return {
         ...state,
-        loading: true,
+        loading: true
       };
     case UPDATED_ART:
       return {
@@ -50,7 +50,7 @@ const reducer = (state, action) => {
             return action.art;
           } else return art;
         }),
-        selected: action.art,
+        selected: action.art
       };
     default:
       return state;
