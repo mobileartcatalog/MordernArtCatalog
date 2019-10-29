@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, Component } from 'react';
 import { connect } from 'react-redux';
 import {
   View,
@@ -6,11 +6,13 @@ import {
   Dimensions,
   ScrollView,
   Image,
-  Button,
+  ButtonGroup,
   Animated,
   Alert,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
+import { Overlay, Icon } from 'react-native-elements';
 import { StyledSecondaryButton } from '../formComponents';
 import ScaledImage from 'react-native-scaled-image';
 import { getArtworkDetail } from '../../reducers/artReducer/getArtworkDetail';
@@ -26,8 +28,37 @@ import MultiImages from './MultiImagesUpload';
 import ImageCarousel from './ImageCarousel';
 import StyledImage from './StyledImage';
 import HamburgerIcon from '../navigation/HamburgerIcon';
+import { IconButton } from '../formComponents';
 
 class ArtworkDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      overlayVisible: false,
+    };
+  }
+
+  static navigationOptions = ({ navigation }) => ({
+    headerTitle: (
+      <IconButton
+        reversed
+        name="plus"
+        type="font-awesome"
+        color="slategray"
+        onPress={() => {
+          navigation.navigate('ArtworkForm');
+        }}
+      />
+    ),
+    headerRight: (
+      <HamburgerIcon
+        onPress={() => {
+          this.setState({ overlayVisible: true });
+        }}
+      />
+    ),
+  });
+
   componentDidMount() {
     const id = this.props.navigation.getParam('id');
     this.props.getArtworkDetail(id);
@@ -46,13 +77,6 @@ class ArtworkDetail extends Component {
       </View>
     );
   }
-
-  static navigationOptions = () => {
-    return {
-      headerRight: <HamburgerIcon />,
-      headerLeft: <HamburgerIcon />,
-    };
-  };
 
   render() {
     const {
@@ -73,6 +97,11 @@ class ArtworkDetail extends Component {
       <ActivityIndicator />
     ) : (
       <ScrollView>
+        {this.state.overlayVisible && (
+          <Overlay isVisible>
+            <Text>Overlay!</Text>
+          </Overlay>
+        )}
         {images.length ? (
           <React.Fragment>
             <ScrollView
@@ -98,7 +127,7 @@ class ArtworkDetail extends Component {
                         height: 250,
                       }}
                     />
-                    <StyledSecondaryButton
+                    {/* <StyledSecondaryButton
                       title="delete image"
                       onPress={() =>
                         Alert.alert(
@@ -117,13 +146,20 @@ class ArtworkDetail extends Component {
                           ]
                         )
                       }
-                    />
-                    <StyledSecondaryButton
+                    /> */}
+                    {/* <StyledSecondaryButton
                       title="set as main image"
                       onPress={() =>
                         this.props.setMainImage(image._id, artwork._id)
                       }
-                    />
+                    /> */}
+
+                    {/* <ButtonGroup
+                      buttons={[
+                        { element: this.deleteImageButton },
+                        { element: this.setMainImageButton },
+                      ]}
+                    /> */}
                   </View>
                 );
               })}

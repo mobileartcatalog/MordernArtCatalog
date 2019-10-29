@@ -10,6 +10,12 @@ import { artValidationSchema } from './artValidationSchema';
 import { updateArtwork } from '../../reducers/artReducer/updateArtwork';
 
 class ArtworkEdit extends Component {
+  static navigationOptions = () => {
+    return {
+      headerBackTitle: 'Cancel',
+    };
+  };
+
   render() {
     const { navigate } = this.props.navigation;
     const {
