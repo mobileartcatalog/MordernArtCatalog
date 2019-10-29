@@ -4,6 +4,7 @@ import {
   createAppContainer,
   createStackNavigator,
   createSwitchNavigator,
+  createDrawerNavigator,
 } from 'react-navigation';
 import {
   UserHome,
@@ -20,8 +21,47 @@ import {
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const HomeTab = createSwitchNavigator({
+const HomeTab = createStackNavigator({
   Home: { screen: UserHome },
+});
+
+const ArtworkForms = createSwitchNavigator({
+  ArtworkForm: {
+    screen: ArtworkForm,
+  },
+  ArtworkEdit: {
+    screen: ArtworkEdit,
+  },
+});
+
+const ArtworkTab = createStackNavigator(
+  {
+    ArtworkList: { screen: ArtworkList },
+    ArtworkListRow: { screen: ArtworkListRow },
+    ArtworkDetail: { screen: ArtworkDetail },
+    ArtworkForms: { screen: ArtworkForms },
+    ExhList: { screen: ExhList },
+    ExhDetail: { screen: ExhDetail },
+    ExhForm: { screen: ExhForm },
+    ExhEdit: { screen: ExhEdit },
+  },
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor: 'whitesmoke',
+      },
+      headerTintColor: 'slategray',
+    },
+  }
+);
+
+const ExhTab = createStackNavigator({
+  ExhList: { screen: ExhList },
+  ExhDetail: { screen: ExhDetail },
+  ExhForm: { screen: ExhForm },
+  ExhEdit: { screen: ExhEdit },
+  ArtworkList: { screen: ArtworkList },
+  ArtworkDetail: { screen: ArtworkDetail },
 });
 
 const FormTab = createStackNavigator({
@@ -29,15 +69,11 @@ const FormTab = createStackNavigator({
   ExhForm: { screen: ExhForm },
 });
 
-const ArtworkTab = createStackNavigator({
+const AppTab = createStackNavigator({
   ArtworkList: { screen: ArtworkList },
   ArtworkListRow: { screen: ArtworkListRow },
   ArtworkDetail: { screen: ArtworkDetail },
-  ArtworkForm: { screen: ArtworkForm },
-  ArtworkEdit: { screen: ArtworkEdit },
-});
-
-const ExhTab = createStackNavigator({
+  ArtworkForms: { screen: ArtworkForms },
   ExhList: { screen: ExhList },
   ExhDetail: { screen: ExhDetail },
   ExhForm: { screen: ExhForm },
@@ -55,15 +91,7 @@ const AppNavigator = createBottomTabNavigator(
         ),
       },
     },
-    Form: {
-      screen: FormTab,
-      navigationOptions: {
-        tabBarLabel: 'New Artwork',
-        tabBarIcon: ({ tintColor }) => (
-          <Ionicons name="ios-add-circle" color={tintColor} size={25} />
-        ),
-      },
-    },
+
     Art: {
       screen: ArtworkTab,
       navigationOptions: {

@@ -15,6 +15,12 @@ import { updateArtwork } from '../../reducers/artReducer/updateArtwork';
 // import LinkExhiModal from './LinkExhiModal';
 
 class ArtworkEdit extends Component {
+  static navigationOptions = () => {
+    return {
+      headerBackTitle: 'Cancel',
+    };
+  };
+
   render() {
     const { navigate } = this.props.navigation;
     const {

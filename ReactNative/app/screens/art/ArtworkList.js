@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView, FlatList } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { FlatGrid } from 'react-native-super-grid';
 import { connect } from 'react-redux';
@@ -8,8 +8,23 @@ import { getArt } from '../../reducers/artReducer/getArt';
 import { filterArtThunk } from '../../reducers/artReducer/filterArt';
 import ArtworkListRow from './ArtworkListRow';
 import { withNavigation } from 'react-navigation';
+import { IconButton } from '../formComponents';
 
 class ArtworkList extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    headerTitle: (
+      <IconButton
+        raised
+        name="plus"
+        type="font-awesome"
+        color="slategray"
+        onPress={() => {
+          navigation.navigate('ArtworkForm');
+        }}
+      />
+    ),
+  });
+
   componentDidMount() {
     const { getArt, loaded } = this.props;
     if (!loaded) getArt();
@@ -30,6 +45,7 @@ class ArtworkList extends Component {
           onChangeText={searchTerm => filterArt(searchTerm)}
           autoCorrect={false}
           autoCapitalize="none"
+          autoFocus
           value={searchTerm}
         />
         <Text style={styles.bodyText}>{`${displayCount} ${label}`}</Text>
@@ -72,11 +88,12 @@ class ArtworkList extends Component {
 
     return (
       <View>
+        {this.renderHeader()}
         <FlatGrid
-          itemDimension={150}
+          itemDimension={100}
           items={data}
           renderItem={({ item }) => <ArtworkListRow artwork={item} />}
-          ListHeaderComponent={this.renderHeader}
+          // ListHeaderComponent={this.renderHeader}
           ListFooterComponent={this.renderFooter}
         />
       </View>

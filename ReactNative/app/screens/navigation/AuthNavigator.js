@@ -1,11 +1,16 @@
 import React from 'react';
-import { createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
-import { LandingScreen, LoginScreen, SignupScreen } from '..';
+import {
+  createAppContainer,
+  createStackNavigator,
+  createSwitchNavigator,
+} from 'react-navigation';
+import { LandingScreen, LoginScreen, SignupScreen, UserHome } from '..';
 
-const AuthNavigator = createSwitchNavigator({
+const AuthNavigator = createStackNavigator({
   Landing: { screen: LandingScreen },
   Login: { screen: LoginScreen },
-  Signup: { screen: SignupScreen }
+  Signup: { screen: SignupScreen },
+  UserHome: { screen: UserHome },
 });
 
 export default createAppContainer(AuthNavigator);
