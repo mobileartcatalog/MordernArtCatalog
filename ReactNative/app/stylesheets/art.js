@@ -30,14 +30,15 @@ export default StyleSheet.create({
   },
 
   container: {
-    // flex: 1,
-    // flexDirection: 'row',
-    // flexWrap: 'wrap',
-    // width: '33%',
-    // flexDirection: 'column',
-    // backgroundColor: 'lightgray',
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    width: '33%',
+    flexDirection: 'column',
+    backgroundColor: 'lightgray',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   innerContainer: {
@@ -52,10 +53,8 @@ export default StyleSheet.create({
   },
 
   row: {
-    // flex: 1,
+    display: 'flex',
     flexWrap: 'wrap',
-    // width: '100%',
-    // flexDirection: 'row',
   },
 
   cardDivider: {
@@ -70,14 +69,45 @@ export default StyleSheet.create({
   },
 
   headlineText: {
-    color: 'orangered',
-    fontSize: 34,
+    color: 'slategray',
+    fontSize: 16,
     fontWeight: '500',
   },
 
   bodyText: {
-    color: 'gray',
-    fontSize: 24,
-    fontWeight: '100',
+    color: 'slategray',
+    fontSize: 16,
+    fontWeight: '400',
+  },
+
+  imageCarousel: {
+    position: 'relative',
+  },
+  button: {
+    position: 'absolute',
+    bottom: 0,
+  },
+
+  separator: {
+    color: '#000',
+  },
+
+  sectionHeader: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    backgroundColor: 'whitesmoke',
+    marginTop: 10,
+    padding: 5,
+  },
+
+  listRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: 'whitesmoke'
   },
 });
