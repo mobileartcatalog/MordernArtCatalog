@@ -4,28 +4,33 @@ import { Artworks } from './AllArtworks';
 import { Exhibitions } from './Exhibitions';
 import { Artwork } from './Artwork';
 import { Home } from './Home';
+import AddArtwork from './Upload';
 import { DeleteSubimage } from './SubimageDelete';
 
 export const Root = () => {
   return (
     <div>
       <nav>
-        Welcome!
-        <Link to='/'>Home</Link>
-        <Link to='/artworks'>Artworks</Link>
-        <Link to='/exhibitions'>Exhibitions</Link>
-      </nav>
-      <main>
-        <div>
-          <h1>Modern Art Catalog</h1>
+        <div className="logo">
+          <Link to="/">Art Catalog</Link>
         </div>
-      </main>
+        <div className="nav-menu">
+          <div className="nav-button">
+            <Link to="/artworks">Artworks</Link>
+          </div>
+          <div className="nav-button">
+            <Link to="/exhibitions">Exhibitions</Link>
+          </div>
+        </div>
+      </nav>
+
       <Switch>
-        <Route exact path='/exhibitions' component={Exhibitions} />
-        <Route exact path='/artworks' component={Artworks} />
-        <Route exact path='/artworks/:artworkId' component={Artwork} />
-        <Route exact path='/images/:imageId' component={DeleteSubimage} />
-        <Route exact path='/' component={Home} />
+        <Route exact path="/exhibitions" component={Exhibitions} />
+        <Route exact path="/artworks" component={Artworks} />
+        <Route exact path="/artworks/new" component={AddArtwork} />
+        <Route exact path="/artworks/:artworkId" component={Artwork} />
+        <Route exact path="/images/:imageId" component={DeleteSubimage} />
+        <Route exact path="/" component={Home} />
       </Switch>
     </div>
   );
