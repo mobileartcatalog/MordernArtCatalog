@@ -12,10 +12,12 @@ import {
 } from '../formComponents';
 import signupValidationSchema from './validationSchema';
 import { signupUser } from '../../reducers/authReducer/authUser';
+import * as firebase from '../firebase';
 
 class SignupScreen extends Component {
   render() {
     const { navigate } = this.props.navigation;
+
     return (
       <View style={styles.container}>
         <View style={styles.innerContainer}>
@@ -23,22 +25,35 @@ class SignupScreen extends Component {
 
           <Formik
             initialValues={{
-              name: '',
+              email: '',
               password: '',
               confirmPassword: ''
             }}
-            onSubmit={(values, actions) => {
-              this.props
-                .signupUser(values.email, values.password)
-                .then(() => {
-                  actions.setFieldError('general', 'success!');
-                })
-                .catch(error => {
-                  actions.setFieldError('general', error.message);
-                })
-                .finally(() => {
-                  actions.setSubmitting(false);
-                });
+            onSubmit={async (values, actions) => {
+              // this.props
+              //   .signupUser(values.email, values.password)
+              //   .then(() => {
+              //     actions.setFieldError('general', 'success!');
+              //     actions.setSubmitting(false);
+              //     this.props.navigation.navigate('Home');
+              //   })
+              //   .catch(error => {
+              //     actions.setFieldError('general', error.message);
+              //   })
+              //   .finally(() => {
+              //     // actions.setSubmitting(false);
+              //     // this.props.navigation.navigate('Home');
+              //   });
+              try {
+                await this.props.signupUser(values.email, values.password);
+
+                alert('submitting!!');
+                actions.setFieldError('general', 'success!');
+                actions.setSubmitting(false);
+                this.props.navigation.navigate('Home');
+              } catch (err) {
+                actions.setFieldError('general', err.message);
+              }
             }}
             validationSchema={signupValidationSchema}
           >
@@ -47,7 +62,7 @@ class SignupScreen extends Component {
                 <StyledInput
                   formikProps={formikProps}
                   formikKey={'email'}
-                  placeholder="email"
+                  placeholder='email'
                   autoFocus
                 />
                 <StyledInput
@@ -68,7 +83,7 @@ class SignupScreen extends Component {
                 ) : (
                   <React.Fragment>
                     <StyledButton
-                      title="Create account"
+                      title='Create account'
                       onPress={formikProps.handleSubmit}
                     />
                     <Text style={styles.errorMessage}>{this.props.error}</Text>
@@ -80,18 +95,18 @@ class SignupScreen extends Component {
         </View>
         <View>
           <StyledSecondaryButton
-            title="Login"
+            title='Login'
             onPress={() => navigate('Login')}
           />
           <StyledSecondaryButton
-            title="Sign up with Google"
-            icon={<Icon name="google" style={styles.icon} />}
+            title='Sign up with Google'
+            icon={<Icon name='google' style={styles.icon} />}
             iconLeft
             // onPress={}
           />
           <StyledSecondaryButton
-            title="Sign up with Facebook"
-            icon={<Icon name="facebook" style={styles.icon} />}
+            title='Sign up with Facebook'
+            icon={<Icon name='facebook' style={styles.icon} />}
             iconLeft
             // onPress={}
           />

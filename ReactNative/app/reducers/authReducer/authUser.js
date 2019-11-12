@@ -23,12 +23,12 @@ export const signupUser = (email, password) => {
   return async dispatch => {
     try {
       await firebase.auth().createUserWithEmailAndPassword(email, password);
-      await firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          const { uid, email } = user;
-          dispatch(authUser(uid, email));
-        }
-      });
+      // await firebase.auth().onAuthStateChanged(function(user) {
+      //   if (user) {
+      //     const { uid, email } = user;
+      //     dispatch(authUser(uid, email));
+      //   }
+      // });
     } catch (error) {
       dispatch(authError(error));
     }
