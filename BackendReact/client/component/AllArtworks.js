@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { fetchArtworks } from '../reducer/artworks';
 import { arrayBufferToBase64 } from '../../utils';
 import AddArtwork from './Upload';
+// import { IoIosAddCircleOutline } from 'react-icons/io';
+import { FiPlusCircle } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 export class AllArtworks extends React.Component {
@@ -16,35 +18,41 @@ export class AllArtworks extends React.Component {
     if (loading) return <div>Loading</div>;
 
     return (
-      <div>
-        <div>
-          <h2>All Artworks</h2>
+      <div className="page">
+        <div className="page-header">
+          <h3 className="page-title artwork">Artwork</h3>
+          <div className="page-header-button-bar">
+            <FiPlusCircle
+              className="button"
+              onClick={() => this.props.history.push('/artworks/new')}
+            />
+          </div>
+        </div>
+
+        <div className="artwork-container">
           {artworks.map(artwork => (
-            <div key={artwork._id}>
+            <div className="artwork-item" key={artwork._id}>
               <Link to={`/artworks/${artwork._id}`}>
-                <div>
-                  <h4>{artwork.title}</h4>
-                  {artwork.img1 && true ? (
-                    <img
-                      src={`data: ${
-                        artwork.img1.contentType
-                      }; base64,${arrayBufferToBase64(artwork.img1.data.data)}`}
-                      alt='image'
-                      style={{ height: 400 }}
-                    />
-                  ) : (
-                    <img
-                      src='defaultImage.png'
-                      alt='image'
-                      style={{ height: 400 }}
-                    />
-                  )}
-                </div>
+                {artwork.img1 && true ? (
+                  <img
+                    className="artwork-image"
+                    src={`data: ${
+                      artwork.img1.contentType
+                    }; base64,${arrayBufferToBase64(artwork.img1.data.data)}`}
+                    alt="image"
+                  />
+                ) : (
+                  <img
+                    className="artwork-image"
+                    src="defaultImage.png"
+                    alt="image"
+                  />
+                )}
+                <div className="artwork-description">{artwork.title}</div>
               </Link>
             </div>
           ))}
         </div>
-        <AddArtwork />
       </div>
     );
   }
@@ -53,13 +61,13 @@ export class AllArtworks extends React.Component {
 const mapState = state => {
   return {
     artworks: state.artworks.all,
-    loading: state.artworks.loading
+    loading: state.artworks.loading,
   };
 };
 
 const mapDispatch = dispatch => {
   return {
-    setArtworks: () => dispatch(fetchArtworks())
+    setArtworks: () => dispatch(fetchArtworks()),
   };
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   View,
@@ -92,7 +92,7 @@ class ArtworkDetail extends Component {
       inventorynumber,
     } = this.props.artwork;
     const { artwork, images, allExhi, navigation, updateArtwork } = this.props;
-    const  windowWidth  = Dimensions.get('window').width;
+
 
     let exhisInArt;
     if (exhibitions) {
@@ -111,72 +111,18 @@ class ArtworkDetail extends Component {
             <Text>Overlay!</Text>
           </Overlay>
         )}
-        {images.length ? (
-          <React.Fragment>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={true}
-              scrollEventThrottle={10}
-              pagingEnabled
-              onScroll={Animated.event([
-                { nativeEvent: { contentOffset: { x: this.animVal } } },
-              ])}
-            >
-              {images.map(image => {
-                return (
-                  <View key={image._id}>
-                    <Image
-                      source={{
-                        uri: `data:${
-                          image.contentType
-                        };base64,${arrayBufferToBase64(image.data.data)}`,
-                      }}
-                      style={{
-                        width: windowWidth,
-                        height: 250,
-                      }}
-                    />
-                    <StyledSecondaryButton
-                      title="delete image"
-                      onPress={() =>
-                        Alert.alert(
-                          'Delete?',
-                          'Are you sure you want to permanently delete this image?',
-                          [
-                            {
-                              text: 'Cancel',
-                              onPress: () => console.log('Cancel Pressed'),
-                              style: 'cancel',
-                            },
-                            {
-                              text: 'Delete',
-                              onPress: () => this.props.deleteImage(image._id),
-                            },
-                          ]
-                        )
-                      }
-                    />
-                    <StyledSecondaryButton
-                      title="set as main image"
-                      onPress={() =>
-                        this.props.setMainImage(image._id, artwork._id)
-                      }
-                    />
-                  </View>
-                );
-              })}
-            </ScrollView>
-          </React.Fragment>
-        ) : null}
-        <Text>{title}</Text>
-        <Text>{date}</Text>
-        <Text>{medium}</Text>
-        <LinkedExhi
-          exhisInArt={exhisInArt}
-          exhibitions={exhibitions}
-          artId={artwork._id}
-          updateArtwork={updateArtwork}
-        />
+        {images.length ? <ImageCarousel images={images} /> : null}
+        <View style={{ margin: 10 }}>
+          <Text style={styles.title}>{title}</Text>
+          <Text>{date}</Text>
+          <Text>{medium}</Text>
+          <LinkedExhi
+            exhisInArt={exhisInArt}
+            exhibitions={exhibitions}
+            artId={artwork._id}
+            updateArtwork={updateArtwork}
+          />
+        </View>
         <StyledSecondaryButton
           title="edit artwork"
           onPress={() =>
