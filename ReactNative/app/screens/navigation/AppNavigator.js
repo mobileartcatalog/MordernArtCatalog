@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 import {
   createBottomTabNavigator,
   createAppContainer,
   createStackNavigator,
   createSwitchNavigator,
-  createDrawerNavigator,
-} from 'react-navigation';
+  createDrawerNavigator
+} from "react-navigation";
 import {
   UserHome,
   ArtworkList,
@@ -16,22 +16,22 @@ import {
   ExhList,
   ExhDetail,
   ExhForm,
-  ExhEdit,
-} from '..';
+  ExhEdit
+} from "..";
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const HomeTab = createStackNavigator({
-  Home: { screen: UserHome },
+  Home: { screen: UserHome }
 });
 
 const ArtworkForms = createSwitchNavigator({
   ArtworkForm: {
-    screen: ArtworkForm,
+    screen: ArtworkForm
   },
   ArtworkEdit: {
-    screen: ArtworkEdit,
-  },
+    screen: ArtworkEdit
+  }
 });
 
 const ArtworkTab = createStackNavigator(
@@ -43,15 +43,15 @@ const ArtworkTab = createStackNavigator(
     ExhList: { screen: ExhList },
     ExhDetail: { screen: ExhDetail },
     ExhForm: { screen: ExhForm },
-    ExhEdit: { screen: ExhEdit },
+    ExhEdit: { screen: ExhEdit }
   },
   {
     defaultNavigationOptions: {
       headerStyle: {
-        backgroundColor: 'whitesmoke',
+        backgroundColor: "whitesmoke"
       },
-      headerTintColor: 'slategray',
-    },
+      headerTintColor: "slategray"
+    }
   }
 );
 
@@ -61,12 +61,12 @@ const ExhTab = createStackNavigator({
   ExhForm: { screen: ExhForm },
   ExhEdit: { screen: ExhEdit },
   ArtworkList: { screen: ArtworkList },
-  ArtworkDetail: { screen: ArtworkDetail },
+  ArtworkDetail: { screen: ArtworkDetail }
 });
 
 const FormTab = createStackNavigator({
   ArtworkForm: { screen: ArtworkForm },
-  ExhForm: { screen: ExhForm },
+  ExhForm: { screen: ExhForm }
 });
 
 const AppTab = createStackNavigator({
@@ -77,7 +77,7 @@ const AppTab = createStackNavigator({
   ExhList: { screen: ExhList },
   ExhDetail: { screen: ExhDetail },
   ExhForm: { screen: ExhForm },
-  ExhEdit: { screen: ExhEdit },
+  ExhEdit: { screen: ExhEdit }
 });
 
 const AppNavigator = createBottomTabNavigator(
@@ -85,43 +85,43 @@ const AppNavigator = createBottomTabNavigator(
     Home: {
       screen: HomeTab,
       navigationOptions: {
-        tabBarLabel: 'Home',
+        tabBarLabel: "Home",
         tabBarIcon: ({ tintColor }) => (
           <Ionicons name="ios-home" color={tintColor} size={25} />
-        ),
-      },
+        )
+      }
     },
 
     Art: {
       screen: ArtworkTab,
       navigationOptions: {
-        tabBarLabel: 'Artwork',
+        tabBarLabel: "Artwork",
         tabBarIcon: ({ tintColor }) => (
           <Ionicons name="ios-square-outline" color={tintColor} size={25} />
-        ),
-      },
+        )
+      }
     },
 
     Exhibitions: {
       screen: ExhTab,
       navigationOptions: {
-        tabBarLabel: 'Exhibitions',
+        tabBarLabel: "Exhibitions",
         tabBarIcon: ({ tintColor }) => (
           <Ionicons name="ios-business" color={tintColor} size={25} />
-        ),
-      },
-    },
+        )
+      }
+    }
   },
   {
     tabBarOptions: {
-      initialRouteName: 'Art',
-      activeTintColor: 'black',
-      inactiveTintColor: 'gray',
+      initialRouteName: "Art",
+      activeTintColor: "black",
+      inactiveTintColor: "gray",
       style: {
-        backgroundColor: 'whitesmoke',
-        paddingVertical: 10,
-      },
-    },
+        backgroundColor: "whitesmoke",
+        paddingVertical: 10
+      }
+    }
   }
 );
 

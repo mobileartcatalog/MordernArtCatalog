@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import { withNavigation } from 'react-navigation';
-import { connect } from 'react-redux';
-import { Text, View, ActivityIndicator } from 'react-native';
-import { Formik } from 'formik';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from '../../stylesheets/forms.js';
+import React, { Component } from "react";
+import { withNavigation } from "react-navigation";
+import { connect } from "react-redux";
+import { Text, View, ActivityIndicator } from "react-native";
+import { Formik } from "formik";
+import Icon from "react-native-vector-icons/FontAwesome";
+import styles from "../../stylesheets/forms.js";
 import {
   StyledInput,
   StyledSwitch,
   StyledButton,
   StyledSecondaryButton
-} from '../formComponents';
-import { loginValidationSchema } from './validationSchema';
-import { loginUser } from '../../reducers/authReducer/authUser';
+} from "../formComponents";
+import { loginValidationSchema } from "./validationSchema";
+import { loginUser } from "../../reducers/authReducer/authUser";
 
 class LoginScreen extends Component {
   render() {
-    const {navigate} = this.props.navigation;
+    const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
         <Text style={styles.headlineText}>Art Catalog</Text>
@@ -26,15 +26,16 @@ class LoginScreen extends Component {
 
           <Formik
             initialValues={{
-              email: '',
-              password: '',
+              email: "",
+              password: "",
               persistLogin: false
             }}
             onSubmit={(values, actions) => {
               this.props
                 .loginUser(values.email, values.password, values.persistLogin)
+                .then(() => this.props.navigation.navigate("Home"))
                 .catch(error => {
-                  actions.setFieldError('general', error.message);
+                  actions.setFieldError("general", error.message);
                 })
                 .finally(() => {
                   actions.setSubmitting(false);
@@ -47,14 +48,14 @@ class LoginScreen extends Component {
               <React.Fragment>
                 <StyledInput
                   formikProps={formikProps}
-                  formikKey={'email'}
+                  formikKey={"email"}
                   placeholder="email"
                   autoFocus
                 />
                 <StyledInput
                   formikProps={formikProps}
-                  formikKey={'password'}
-                  placeholder={'password'}
+                  formikKey={"password"}
+                  placeholder={"password"}
                   secureTextEntry
                 />
 
@@ -89,9 +90,9 @@ class LoginScreen extends Component {
         </View>
         <View>
           <StyledSecondaryButton
-            titleStyle={{ color: '#2b8c5f' }}
+            titleStyle={{ color: "#2b8c5f" }}
             title="Create new account"
-            onPress={() => navigate('Signup')}
+            onPress={() => navigate("Signup")}
           />
           <StyledSecondaryButton
             title="Log in with Google"
@@ -129,9 +130,4 @@ const mapDispatch = dispatch => ({
     dispatch(loginUser(email, password, persistLogin))
 });
 
-export default withNavigation(
-  connect(
-    mapState,
-    mapDispatch
-  )(LoginScreen)
-);
+export default withNavigation(connect(mapState, mapDispatch)(LoginScreen));

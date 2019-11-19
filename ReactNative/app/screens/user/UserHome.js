@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withNavigation } from 'react-navigation';
-import { View, Text, ActivityIndicator } from 'react-native';
-import styles from '../../stylesheets/forms.js';
-import { getArt } from '../../reducers/artReducer/getArt';
-import { getExh } from '../../reducers/exhReducer/getExh';
-import { logoutUser } from '../../reducers/authReducer/authUser';
-import { StyledSecondaryButton } from '../formComponents';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withNavigation } from "react-navigation";
+import { View, Text, ActivityIndicator } from "react-native";
+import styles from "../../stylesheets/forms.js";
+import { getArt } from "../../reducers/artReducer/getArt";
+import { getExh } from "../../reducers/exhReducer/getExh";
+import { logoutUser } from "../../reducers/authReducer/authUser";
+import { StyledSecondaryButton } from "../formComponents";
 
 class UserHome extends Component {
   componentDidMount() {
@@ -29,8 +29,7 @@ class UserHome extends Component {
       logoutUser
     } = this.props;
 
-    // if (authenticated) {
-    return (
+    return authenticated ? (
       <View style={styles.container}>
         <Text style={styles.headlineText}>User Home</Text>
         <Text style={styles.h1}>{email}</Text>
@@ -41,7 +40,7 @@ class UserHome extends Component {
           ) : (
             <StyledSecondaryButton
               title={`Artwork  ${artCount}`}
-              onPress={() => navigate('ArtworkList')}
+              onPress={() => navigate("ArtworkList")}
             />
           )}
         </View>
@@ -52,13 +51,21 @@ class UserHome extends Component {
           ) : (
             <StyledSecondaryButton
               title={`Exhibitions  ${exhCount}`}
-              onPress={() => navigate('ExhList')}
+              onPress={() => navigate("ExhList")}
             />
           )}
         </View>
 
-        <StyledSecondaryButton title="Log out" onPress={() => logoutUser()} />
+        <StyledSecondaryButton
+          title="Log out"
+          onPress={() => {
+            logoutUser();
+            this.props.navigation.navigate("Login");
+          }}
+        />
       </View>
+    ) : (
+      <ActivityIndicator />
     );
     // }
   }
@@ -82,9 +89,4 @@ const mapDispatch = dispatch => ({
   logoutUser: () => dispatch(logoutUser())
 });
 
-export default withNavigation(
-  connect(
-    mapState,
-    mapDispatch
-  )(UserHome)
-);
+export default withNavigation(connect(mapState, mapDispatch)(UserHome));
