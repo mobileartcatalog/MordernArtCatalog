@@ -21,7 +21,11 @@ class LandingScreen extends Component {
 
   render() {
     const { authenticated } = this.props;
-    return authenticated ? <UserHome /> : <LoginScreen />;
+    return (
+      <View style={{ marginTop: 75 }}>
+        {authenticated ? <UserHome /> : <LoginScreen />}
+      </View>
+    );
   }
 }
 

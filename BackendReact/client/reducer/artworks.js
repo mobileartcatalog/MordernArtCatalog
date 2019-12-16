@@ -1,17 +1,17 @@
 /* eslint-disable complexity */
-import axios from 'axios';
+import axios from "axios";
 
 //action type
-const LOADING = 'LOADING';
-const SUBLOADING = 'SUBLOADING';
-const SET_ARTWORKS = 'SET_ARTWORKS';
-const ADD_ARTWORK = 'ADD_ARTWORK';
-const SET_SINGLEART = 'SET_SINGLEART';
-const UPDATE_ARTWORK = 'UPDATE_ARTWORK';
-const DETELE_ARTWORK = 'DETELE_ARTWORK';
-const SET_SUBLOADING_FALSE = 'SET_SUBLOADING_FALSE';
-const CHANGE_MAINIMAGE = 'CHANGE_MAINIMAGE';
-const UPDATE_IMAGE_ARRAY = 'UPDATE_IMAGES_ARRAY';
+const LOADING = "LOADING";
+const SUBLOADING = "SUBLOADING";
+const SET_ARTWORKS = "SET_ARTWORKS";
+const ADD_ARTWORK = "ADD_ARTWORK";
+const SET_SINGLEART = "SET_SINGLEART";
+const UPDATE_ARTWORK = "UPDATE_ARTWORK";
+const DETELE_ARTWORK = "DETELE_ARTWORK";
+const SET_SUBLOADING_FALSE = "SET_SUBLOADING_FALSE";
+const CHANGE_MAINIMAGE = "CHANGE_MAINIMAGE";
+const UPDATE_IMAGE_ARRAY = "UPDATE_IMAGES_ARRAY";
 
 //action creator
 const loading = () => ({ type: LOADING });
@@ -44,14 +44,16 @@ const updateImageArray = imageId => ({
 });
 
 //thunk creator
-export const fetchArtworks = () => {
+//add uid for testing
+export const fetchArtworks = (uid) => {
   return async dispatch => {
     try {
       dispatch(loading());
-      const { data } = await axios.get('/api/artworks');
+      // const { data } = await axios.get("/api/artworks");
+      const {data} = await axios.get(`/api/artworks/user/${uid}`);
       dispatch(setArtworks(data));
     } catch (err) {
-      console.log('Fetching all artworks goes wrong.');
+      console.log("Fetching all artworks goes wrong.");
     }
   };
 };
@@ -59,16 +61,16 @@ export const fetchArtworks = () => {
 export const addArtworkThunk = artwork => {
   return async dispatch => {
     try {
-      console.log('in thunk add artwork', artwork);
+      console.log("in thunk add artwork", artwork);
       const fd = new FormData();
       let keys = Object.keys(artwork);
       keys.forEach(key => {
         fd.append(`${key}`, artwork[key]);
       });
-      const { data } = await axios.post('/api/artworks', fd);
+      const { data } = await axios.post("/api/artworks", fd);
       dispatch(addArtwork(data.createArtwork));
     } catch (err) {
-      console.log('Add artwork goes wrong.');
+      console.log("Add artwork goes wrong.");
     }
   };
 };
@@ -82,7 +84,7 @@ export const fetchSingleArt = id => {
       // data.images.unshift(defaultImg);
       dispatch(setSingleArt(data));
     } catch (err) {
-      console.log('Fetching a singel artwork goes wrong');
+      console.log("Fetching a singel artwork goes wrong");
     }
   };
 };
@@ -92,7 +94,7 @@ export const updateArtThunk = (id, updateData) => {
     try {
       const fd = new FormData();
       for (let i = 0; i < updateData.length; i++) {
-        fd.append('artworkpics', updateData[i]);
+        fd.append("artworkpics", updateData[i]);
       }
       const { data } = await axios.patch(`/api/artworks/${id}`, fd);
       // const defaultImg = { ...data.artwork.img1, _id: data.artwork._id };
@@ -132,7 +134,7 @@ export const deleteImagethunk = (imageId, artworkId) => {
     try {
       dispatch(subloading());
       await axios.delete(`/api/images/${imageId}`, {
-        data: { artworkId: artworkId }
+        data: { artworkId }
       });
       dispatch(updateImageArray(imageId));
     } catch (err) {

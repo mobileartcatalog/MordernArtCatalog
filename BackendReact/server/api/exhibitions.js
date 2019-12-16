@@ -7,6 +7,7 @@ const Artworks = require('../../models/artwork');
 //Post
 router.post('/', async (req, res, next) => {
   try {
+    console.log('in exhi api,the new exhi added is:', req.body)
     const exhibition = new Exhibitions({
       _id: new mongoose.Types.ObjectId(),
       ...req.body
@@ -42,9 +43,10 @@ router.get('/:exhibitionId', async (req, res, next) => {
 
 //GET all
 //@/api/exhibitions
-router.get('/', async (req, res, next) => {
+router.get('/user/:uid', async (req, res, next) => {
   try {
-    const result = await Exhibitions.find();
+    const uid =  req.params.uid;
+    const result = await Exhibitions.find({uid: uid});
     res.json(result);
   } catch (err) {
     console.error(err);

@@ -1,22 +1,25 @@
-import axios from 'axios';
+import axios from "axios";
+import { BASE_URL } from 'react-native-dotenv';
 
-const GETTING_ART = 'GETTING_ART';
-const GOT_ART = 'GOT_ART';
+const GETTING_ART = "GETTING_ART";
+const GOT_ART = "GOT_ART";
 
 const gettingArt = () => ({
-  type: 'GETTING_ART'
+  type: "GETTING_ART"
 });
 
 const gotArt = data => ({
-  type: 'GOT_ART',
+  type: "GOT_ART",
   data
 });
 
-export const getArt = () => {
+export const getArt = uid => {
   return async dispatch => {
     try {
       dispatch(gettingArt());
-      const { data } = await axios.get('http://localhost:3000/api/artworks');
+      const { data } = await axios.get(
+        `${BASE_URL}/api/artworks/user/${uid}`
+      );
       dispatch(gotArt(data));
     } catch (err) {
       console.error(err);

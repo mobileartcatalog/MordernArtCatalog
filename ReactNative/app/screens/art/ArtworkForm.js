@@ -45,7 +45,7 @@ class ArtworkForm extends Component {
             onSubmit={(values, actions) => {
               values.img1 = this.state.img1;
               this.props
-                .addArtwork(values)
+                .addArtwork(values,this.props.uid)
                 .catch(error => {
                   actions.setFieldError('general', error.message);
                 })
@@ -124,10 +124,11 @@ class ArtworkForm extends Component {
 const mapState = state => {
   return {
     selected: state.art.selected,
+    uid: state.auth.uid,
   };
 };
 const mapDispatch = dispatch => ({
-  addArtwork: art => dispatch(addArt(art)),
+  addArtwork: (art,uid) => dispatch(addArt(art,uid)),
 });
 
 export default withNavigation(

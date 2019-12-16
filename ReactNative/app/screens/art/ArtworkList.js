@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { View, Text, ScrollView, SafeAreaView, FlatList } from 'react-native';
-import { SearchBar } from 'react-native-elements';
-import { FlatGrid } from 'react-native-super-grid';
-import { connect } from 'react-redux';
-import styles from '../../stylesheets/forms';
-import { getArt } from '../../reducers/artReducer/getArt';
-import { filterArtThunk } from '../../reducers/artReducer/filterArt';
-import ArtworkListRow from './ArtworkListRow';
-import { withNavigation } from 'react-navigation';
-import { IconButton } from '../formComponents';
+import React, { Component } from "react";
+import { View, Text, ScrollView, SafeAreaView, FlatList } from "react-native";
+import { SearchBar } from "react-native-elements";
+import { FlatGrid } from "react-native-super-grid";
+import { connect } from "react-redux";
+import styles from "../../stylesheets/forms";
+import { getArt } from "../../reducers/artReducer/getArt";
+import { filterArtThunk } from "../../reducers/artReducer/filterArt";
+import ArtworkListRow from "./ArtworkListRow";
+import { withNavigation } from "react-navigation";
+import { IconButton } from "../formComponents";
 
 class ArtworkList extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -19,14 +19,15 @@ class ArtworkList extends Component {
         type="font-awesome"
         color="slategray"
         onPress={() => {
-          navigation.navigate('ArtworkForm');
+          navigation.navigate("ArtworkForm");
         }}
       />
-    ),
+    )
   });
 
   componentDidMount() {
     const { getArt, loaded } = this.props;
+    console.log("in ArtworkList screen", this.props);
     if (!loaded) getArt();
   }
 
@@ -60,7 +61,7 @@ class ArtworkList extends Component {
         style={{
           paddingVertical: 20,
           borderTopWidth: 1,
-          borderColor: '#CED0CE',
+          borderColor: "#CED0CE"
         }}
       >
         <ActivityIndicator animating size="large" />
@@ -76,7 +77,7 @@ class ArtworkList extends Component {
     this.setState({
       searchTerm: searchTerm,
       filtered: newList,
-      filteredCount: newList.length,
+      filteredCount: newList.length
     });
   };
 
@@ -108,18 +109,13 @@ const mapState = state => {
     count: state.art.count,
     searchTerm: state.art.searchTerm,
     filtered: state.art.filtered,
-    filteredCount: state.art.filteredCount,
+    filteredCount: state.art.filteredCount
   };
 };
 
 const mapDispatch = dispatch => ({
   getArt: () => dispatch(getArt()),
-  filterArt: searchTerm => dispatch(filterArtThunk(searchTerm)),
+  filterArt: searchTerm => dispatch(filterArtThunk(searchTerm))
 });
 
-export default withNavigation(
-  connect(
-    mapState,
-    mapDispatch
-  )(ArtworkList)
-);
+export default withNavigation(connect(mapState, mapDispatch)(ArtworkList));

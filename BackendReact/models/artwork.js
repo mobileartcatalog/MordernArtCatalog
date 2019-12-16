@@ -12,7 +12,7 @@
 		{ id: ObjectID(‘1234’), title, venue, catalogueNumber },
 ]
 */
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 //create schema
@@ -26,6 +26,9 @@ const ArtworkSchema = new Schema({
   artistname: {
     type: String
     // required: true
+  },
+  uid: {
+    type: String
   },
   inventorynumber: {
     type: String
@@ -64,16 +67,16 @@ const ArtworkSchema = new Schema({
   images: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Image'
+      ref: "Image"
     }
   ],
   exhibitions: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Exhibitions'
+      ref: "Exhibitions"
     }
   ]
 });
 
-const Artworks = mongoose.model('Artworks', ArtworkSchema);
+const Artworks = mongoose.model("Artworks", ArtworkSchema);
 module.exports = Artworks;

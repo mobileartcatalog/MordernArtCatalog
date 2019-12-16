@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 
 export class AllArtworks extends React.Component {
   componentDidMount() {
+    console.log('this.props,',this.props);
     this.props.setArtworks();
   }
 

@@ -1,14 +1,14 @@
-const router = require('express').Router();
-const mongoose = require('mongoose');
-const fs = require('fs');
-const multer = require('multer'); //file storing middleware
-const Artworks = require('../../models/artwork');
-const Image = require('../../models/image');
-const Exhibitions = require('../../models/exhibitions');
+const router = require("express").Router();
+const mongoose = require("mongoose");
+const fs = require("fs");
+const multer = require("multer"); //file storing middleware
+const Artworks = require("../../models/artwork");
+const Image = require("../../models/image");
+const Exhibitions = require("../../models/exhibitions");
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    cb(null, './public/imageUploads/');
+    cb(null, "./public/imageUploads/");
   },
   filename: function(req, file, cb) {
     cb(null, file.originalname);
@@ -17,10 +17,10 @@ const storage = multer.diskStorage({
 
 const fileFilter = (req, file, cb) => {
   //reject a file
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
     cb(null, true);
   } else {
-    cb(new Error('file should be jpeg/png'), false);
+    cb(new Error("file should be jpeg/png"), false);
   }
 };
 const upload = multer({
@@ -32,7 +32,7 @@ const upload = multer({
 });
 
 //post
-router.post('/', upload.single('img1'), async (req, res, next) => {
+router.post("/", upload.single("img1"), async (req, res, next) => {
   try {
     console.log(req.file);
     const artwork = new Artworks({
@@ -60,7 +60,7 @@ router.post('/', upload.single('img1'), async (req, res, next) => {
     }
     const result = await artwork.save();
     res.status(200).json({
-      message: 'Handling Post',
+      message: "Handling Post",
       createArtwork: result
     });
   } catch (err) {
@@ -69,8 +69,22 @@ router.post('/', upload.single('img1'), async (req, res, next) => {
   }
 });
 
+//get all artworks
+//@/api/artworks
+router.get("/user/:uid", async (req, res, next) => {
+  try {
+    const uid = req.params.uid;
+    console.log("in api uid,", uid);
+    const data = await Artworks.find({ uid: uid }).select("-images"); //will return selected attributes
+    // const data = await Artworks.find();
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 //get single artwork
-router.get('/:artworkId', async (req, res, next) => {
+router.get("/:artworkId", async (req, res, next) => {
   try {
     const id = req.params.artworkId;
     // console.log('req.params:', req.params);
@@ -80,9 +94,9 @@ router.get('/:artworkId', async (req, res, next) => {
         const response = { artwork, images: [] };
         res.status(200).json(response);
       } else {
-        console.log('image arrr', artwork.images);
+        console.log("image arrr", artwork.images);
         const images = await Image.find()
-          .where('_id')
+          .where("_id")
           .in(artwork.images)
           .exec();
         const response = {
@@ -94,7 +108,7 @@ router.get('/:artworkId', async (req, res, next) => {
     } else {
       res
         .status(404)
-        .json({ message: 'No valid entry found for provided ID.' });
+        .json({ message: "No valid entry found for provided ID." });
     }
   } catch (err) {
     console.log(err);
@@ -102,25 +116,13 @@ router.get('/:artworkId', async (req, res, next) => {
   }
 });
 
-//get all artworks
-//@/api/artworks
-router.get('/', async (req, res, next) => {
-  try {
-    const data = await Artworks.find().select('-images'); //will return selected attributes
-    // const data = await Artworks.find();
-    res.json(data);
-  } catch (err) {
-    console.error(err);
-  }
-});
-
 //update
 router.patch(
-  '/:artworkId',
-  upload.array('artworkpics', 4),
+  "/:artworkId",
+  upload.array("artworkpics", 4),
   async (req, res, next) => {
     try {
-      console.log('*****in api updata req.file,', req.files);
+      console.log("*****in api updata req.file,", req.files);
       const id = req.params.artworkId;
       if (req.files) {
         //add multi sub images
@@ -144,7 +146,7 @@ router.patch(
             artwork.images = [...artwork.images, ...imgIdArr];
             const updatedArtwork = await artwork.save();
             const images = await Image.find()
-              .where('_id')
+              .where("_id")
               .in(updatedArtwork.images)
               .exec();
             res.status(200).json({
@@ -155,7 +157,7 @@ router.patch(
         });
       } else {
         ////for other fields update(eidt)
-        console.log('in artwork api req.body,', req.body);
+        console.log("in artwork api req.body,", req.body);
         const { deleteExhId, addLinkedExhs } = req.body;
         const result = await Artworks.findByIdAndUpdate(id, req.body, {
           new: true
@@ -192,13 +194,13 @@ router.patch(
 );
 
 //delete
-router.delete('/:artworkId', async (req, res, next) => {
+router.delete("/:artworkId", async (req, res, next) => {
   const id = req.params.artworkId;
   try {
     const artwork = await Artworks.findByIdAndRemove(id);
     if (artwork.images.length) {
       await Image.deleteMany()
-        .where('_id')
+        .where("_id")
         .in(artwork.images);
     }
     res.status(200).json({ message: `${artwork._id} is deleted` });

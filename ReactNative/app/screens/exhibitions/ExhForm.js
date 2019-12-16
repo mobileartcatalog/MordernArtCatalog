@@ -24,6 +24,8 @@ class ExhForm extends Component {
               endDate: ''
             }}
             onSubmit={(values, actions) => {
+              values.uid = this.props.uid;
+              console.log('in exhform the uid is', values)
               this.props
                 .addExh(values)
                 .catch(error => {
@@ -81,12 +83,13 @@ class ExhForm extends Component {
 
 const mapState = state => {
   return {
-    selected: state.exhibitions.selected
+    selected: state.exhibitions.selected,
+    uid: state.auth.uid
   };
 };
 
 const mapDispatch = dispatch => ({
-  addExh: exh => dispatch(addExh(exh))
+  addExh: (exh) => dispatch(addExh(exh))
 });
 
 export default withNavigation(
