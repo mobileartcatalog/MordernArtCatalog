@@ -13,11 +13,11 @@ const gotExh = data => ({
   data,
 });
 
-export const getExh = () => {
+export const getExh = (uid) => {
   return async dispatch => {
     try {
       dispatch(gettingExh());
-      const { data } = await axios.get(`${BASE_URL}/api/exhibitions`);
+      const { data } = await axios.get(`${BASE_URL}/api/exhibitions/user/${uid}`);
       dispatch(gotExh(data));
     } catch (err) {
       console.error(err);

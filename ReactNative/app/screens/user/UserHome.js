@@ -10,10 +10,11 @@ import { StyledSecondaryButton } from "../formComponents";
 
 class UserHome extends Component {
   componentDidMount() {
-    const { loaded, getExh, getArt } = this.props;
+    const { loaded, getExh, getArt, uid } = this.props;
+    console.log("in UserHome screen,", uid);
     if (!loaded) {
-      getArt();
-      getExh();
+      getArt(uid);
+      getExh(uid);
     }
   }
 
@@ -26,6 +27,7 @@ class UserHome extends Component {
       exhCount,
       authenticated,
       email,
+      uid,
       logoutUser
     } = this.props;
 
@@ -33,6 +35,7 @@ class UserHome extends Component {
       <View style={styles.container}>
         <Text style={styles.headlineText}>User Home</Text>
         <Text style={styles.h1}>{email}</Text>
+        <Text style={styles.h1}>{uid}</Text>
 
         <View style={styles.innerContainer}>
           {!artCount ? (
@@ -75,6 +78,7 @@ const mapState = state => {
   return {
     authenticated: state.auth.authenticated,
     email: state.auth.email,
+    uid: state.auth.uid,
     loaded: state.art.loaded,
     art: state.art.all,
     artCount: state.art.count,
@@ -84,8 +88,8 @@ const mapState = state => {
 };
 
 const mapDispatch = dispatch => ({
-  getArt: () => dispatch(getArt()),
-  getExh: () => dispatch(getExh()),
+  getArt: uid => dispatch(getArt(uid)),
+  getExh: uid => dispatch(getExh(uid)),
   logoutUser: () => dispatch(logoutUser())
 });
 

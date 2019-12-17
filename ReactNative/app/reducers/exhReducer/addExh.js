@@ -22,6 +22,7 @@ export const addingExhForm = () => {
 export const addExh = exh => {
   return async dispatch => {
     try {
+      console.log('in exhi reducer, the new exhi added is:', exh)
       let { data } = await axios.post(`${BASE_URL}/api/exhibitions`, exh);
       dispatch(addedExh(data.createExhibition));
     } catch (error) {

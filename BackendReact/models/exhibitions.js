@@ -1,6 +1,7 @@
 /*
 Exhibitions
-	Id
+  Id
+  UID
 	Venue
 	Location
 	Title
@@ -39,7 +40,10 @@ const ExhibitionSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: 'Artworks'
     }
-  ]
+  ],
+  uid: {
+    type: String
+  }
 });
 
 ExhibitionSchema.methods.getDateRange = function() {

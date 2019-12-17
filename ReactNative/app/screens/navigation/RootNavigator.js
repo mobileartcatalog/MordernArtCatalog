@@ -9,9 +9,10 @@ import AppNavigator from "./AppNavigator";
 import AuthNavigator from "./AuthNavigator";
 import LandingScreen from "../auth/LandingScreen";
 
-const RootNavigator = createSwitchNavigator(
+// const RootNavigator = createSwitchNavigator(
+// {
+const RootNavigator = createBottomTabNavigator(
   {
-    // const RootNavigator = createBottomTabNavigator({
     AuthLanding: { screen: LandingScreen },
     App: { screen: AppNavigator },
     Auth: { screen: AuthNavigator }

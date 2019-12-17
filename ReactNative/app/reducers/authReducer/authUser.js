@@ -45,7 +45,6 @@ export const loginUser = (email, password, persistLogin) => {
     try {
       console.log("in reducer loginUser,", persistLogin);
       if (persistLogin) {
-        console.log("persi", firebase.auth.Auth.Persistence);
         firebase
           .auth()
           .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
