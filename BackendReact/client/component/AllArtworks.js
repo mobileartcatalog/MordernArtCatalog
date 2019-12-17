@@ -10,8 +10,8 @@ import { Link } from 'react-router-dom';
 
 export class AllArtworks extends React.Component {
   componentDidMount() {
-    console.log('this.props,',this.props);
-    this.props.setArtworks();
+    const uid = 'eEwtWeAN6JeaVH4zQpVYLm5oVHn2';
+    this.props.setArtworks(uid);
   }
 
   render() {
@@ -68,7 +68,7 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    setArtworks: () => dispatch(fetchArtworks()),
+    setArtworks: (uid) => dispatch(fetchArtworks(uid)),
   };
 };
 
