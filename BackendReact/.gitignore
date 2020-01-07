@@ -3,3 +3,6 @@ bundle.js
 bundle.js.map
 config/default.json
 public/imageUploads
+
+.env
+config.js

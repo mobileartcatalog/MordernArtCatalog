@@ -6,14 +6,14 @@ module.exports = {
   context: __dirname,
   output: {
     path: __dirname,
-    filename: './public/bundle.js'
+    filename: './public/bundle.js',
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   devtool: 'source-maps',
   watchOptions: {
-    ignored: /node_modules/
+    ignored: /node_modules/,
   },
   module: {
     rules: [
@@ -21,12 +21,15 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         include: resolve(__dirname, './client'),
-        loader: 'babel-loader'
+        loader: 'babel-loader',
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      }
-    ]
-  }
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+  node: {
+    fs: 'empty',
+  },
 };
