@@ -13,7 +13,7 @@ class ArtworkListRow extends Component {
       <TouchableOpacity
         onPress={() => navigate('ArtworkDetail', { id: artwork._id })}
       >
-        <View>
+        <View style={styles.artworkContainer}>
           {artwork.img1 ? (
             <Image
               style={styles.thumbnail}

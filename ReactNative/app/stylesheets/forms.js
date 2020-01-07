@@ -139,7 +139,15 @@ export default StyleSheet.create({
     fontWeight: '100',
     textAlign: 'left',
     margin: 10,
+
   },
+
+  header: {
+    backgroundColor: '#FFF',
+    borderBottomWidth: 1,
+    borderColor: 'gray'
+  },
+
   h1: {
     color: 'slategray',
     textAlign: 'center',

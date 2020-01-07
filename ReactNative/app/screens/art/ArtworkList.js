@@ -1,14 +1,15 @@
-import React, { Component } from "react";
-import { View, Text, ScrollView, SafeAreaView, FlatList } from "react-native";
-import { SearchBar } from "react-native-elements";
-import { FlatGrid } from "react-native-super-grid";
-import { connect } from "react-redux";
-import styles from "../../stylesheets/forms";
-import { getArt } from "../../reducers/artReducer/getArt";
-import { filterArtThunk } from "../../reducers/artReducer/filterArt";
-import ArtworkListRow from "./ArtworkListRow";
-import { withNavigation } from "react-navigation";
-import { IconButton } from "../formComponents";
+import React, { Component } from 'react';
+import { View, Text, ScrollView, SafeAreaView, FlatList } from 'react-native';
+import { SearchBar } from 'react-native-elements';
+import { FlatGrid } from 'react-native-super-grid';
+import { connect } from 'react-redux';
+import styles from '../../stylesheets/forms';
+import artStyles from '../../stylesheets/art';
+import { getArt } from '../../reducers/artReducer/getArt';
+import { filterArtThunk } from '../../reducers/artReducer/filterArt';
+import ArtworkListRow from './ArtworkListRow';
+import { withNavigation } from 'react-navigation';
+import { IconButton } from '../formComponents';
 
 class ArtworkList extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -49,7 +50,9 @@ class ArtworkList extends Component {
           autoFocus
           value={searchTerm}
         />
+        <View style={styles.header}>
         <Text style={styles.bodyText}>{`${displayCount} ${label}`}</Text>
+        </View>
       </View>
     );
   };
@@ -88,13 +91,12 @@ class ArtworkList extends Component {
       : (data = this.props.art);
 
     return (
-      <View>
+      <View style={artStyles.artworkBackground}>
         {this.renderHeader()}
         <FlatGrid
           itemDimension={100}
           items={data}
           renderItem={({ item }) => <ArtworkListRow artwork={item} />}
-          // ListHeaderComponent={this.renderHeader}
           ListFooterComponent={this.renderFooter}
         />
       </View>
